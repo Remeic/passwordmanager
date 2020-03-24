@@ -20,4 +20,4 @@ cache:
       - $HOME/.m2
 
 script:
-   - mvn -f dev.justgiulio.passwordmanager/pom.xml clean verify 
+   - mvn -f ./pom.xml clean verify 
