@@ -1,5 +1,10 @@
 language: java
 
+addons:
+   sonarcloud:
+     organization: "remeic"
+     token: ${SONAR_TOKEN}
+
 matrix:
    include:
       # always build this environment
@@ -12,12 +17,17 @@ matrix:
         osx_image: xcode10.1
         if: type IN (pull_request) OR commit_message =~ /^Merge pull request/
 
+services:
+   - docker
+   - xvfb
 # skip installation step
 install: true
+
 
 cache:
    directories:
       - $HOME/.m2
+      - $HOME/.sonar/cache
 
 script:
-   - mvn -f ./pom.xml clean verify 
+   - mvn -f ./pom.xml -Pjacoco clean verify sonar:sonar
