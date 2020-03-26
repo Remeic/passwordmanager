@@ -3,8 +3,7 @@ language: java
 addons:
    sonarcloud:
      organization: "remeic"
-     token:
-       secure: $SONAR_TOKEN
+     token: ${SONAR_TOKEN}
 
 matrix:
    include:
