@@ -30,4 +30,4 @@ cache:
       - $HOME/.sonar/cache
 
 script:
-   - mvn -f ./pom.xml -Pjacoco clean verify sonar:sonar
+   - ./mvnw clean verify -Pjacoco sonar:sonar
