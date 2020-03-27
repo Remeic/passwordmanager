@@ -11,11 +11,7 @@ matrix:
       - jdk: openjdk8
       # only on PR
       - jdk: openjdk9
-        if: type IN (pull_request)
-      # only on PR or after merging a PR
-      - os: osx
-        osx_image: xcode10.1
-        if: type IN (pull_request) OR commit_message =~ /^Merge pull request/
+        if: type IN (pull_request)     
 
 services:
    - docker
