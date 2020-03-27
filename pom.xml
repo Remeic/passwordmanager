@@ -37,7 +37,18 @@
 			<artifactId>sonar-maven-plugin</artifactId>
 			<version>${sonar.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>3.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.fppt</groupId>
+			<artifactId>jedis-mock</artifactId>
+			<version>0.1.16</version>
+		</dependency>
 	</dependencies>
 
 	<build>
