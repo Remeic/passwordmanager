@@ -2,18 +2,20 @@ package dev.justgiulio.passwordmanager.model;
 
 public class Credential {
 
-	public Credential(String string, String string2) {
-		// TODO Auto-generated constructor stub
+	String username;
+	String password;
+	
+	public Credential(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.password;
 	}
 
-	public String getEmail() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getUsername() {
+		return this.username;
 	}
 
 	

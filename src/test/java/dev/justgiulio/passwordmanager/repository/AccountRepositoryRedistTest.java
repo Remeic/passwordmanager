@@ -66,7 +66,7 @@ public class AccountRepositoryRedistTest {
 	public String addAccountToRedisDatabase(Account account) {
 		Map<String, String> tmpMap = new HashMap<String, String>();
 		Credential tmpCredential = account.getCredential();
-		tmpMap.put(tmpCredential.getEmail(), tmpCredential.getPassword() );
+		tmpMap.put(tmpCredential.getUsername(), tmpCredential.getPassword() );
 		String result =  jedis.hmset(account.getSite(), tmpMap);
 		return result;
 	}
