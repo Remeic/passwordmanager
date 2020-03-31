@@ -2,6 +2,8 @@ package dev.justgiulio.passwordmanager.repository;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.assertj.core.api.ListAssert;
 import org.junit.After;
@@ -11,6 +13,9 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.fppt.jedismock.RedisServer;
+import com.giuliofagioli.passwordgenerator.model.Account;
+import com.giuliofagioli.passwordgenerator.model.Credential;
+
 import redis.clients.jedis.Jedis;
 
 public class AccountRepositoryRedistTest {
@@ -39,9 +44,10 @@ public class AccountRepositoryRedistTest {
 	}
 	
 	@Test
-	public void testFindByAllWhenNotFound() {
+	public void testFindAllWhenNotFound() {
 		ListAssert assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.isEmpty();
 	}
+	
 	
 }
