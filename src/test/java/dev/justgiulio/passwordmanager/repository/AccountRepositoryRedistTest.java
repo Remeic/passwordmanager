@@ -48,6 +48,10 @@ public class AccountRepositoryRedistTest {
 		ListAssert assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.isEmpty();
 	}
-	
+
+	@Test
+	public void testFindAllWhenDatabaseIsNotEmpty() {
+		
+	}
 	
 }
