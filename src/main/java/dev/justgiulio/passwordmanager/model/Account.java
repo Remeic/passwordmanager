@@ -2,14 +2,20 @@ package dev.justgiulio.passwordmanager.model;
 
 public class Account {
 
+	String site;
+	Credential credential;
+	
+	public Account(String site, Credential credential) {
+		this.site = site;
+		this.credential = credential;
+	}
+
 	public Credential getCredential() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.credential;
 	}
 
 	public String getSite() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.site;
 	}
 
 }

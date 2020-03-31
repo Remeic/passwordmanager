@@ -52,7 +52,7 @@ public class AccountRepositoryRedistTest {
 
 	@Test
 	public void testFindAllWhenDatabaseIsNotEmpty() {
-		Account accountToSave = new Account();
+		Account accountToSave = new Account("github.com", new Credential("username","password"));
 		addAccountToRedisDatabase(accountToSave);
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.containsExactly(accountToSave);
