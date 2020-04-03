@@ -44,6 +44,10 @@ public class AccountRepositoryRedistTest {
 	  server = null;
 	}
 	
+	/**
+	 * Test for findAll method
+	 */
+	
 	@Test
 	public void testFindAllWhenNotFound() {
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
@@ -54,9 +58,17 @@ public class AccountRepositoryRedistTest {
 	public void testFindAllWhenDatabaseIsNotEmpty() {
 		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
 		addAccountToRedisDatabase(accountToSave);
-		System.out.println(accountRedisRepository.findAll());
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.containsExactly(accountToSave);
+	}
+	
+	/**
+	 * Test for findByKey method
+	 */
+	@Test
+	public void testFindByKeyWhenAccountIsNotFound() {
+		String key = "github.com";
+		assertThat(accountRedisRepository.findByKey(key)).isEmpty();
 	}
 	
 	/**
@@ -72,3 +84,4 @@ public class AccountRepositoryRedistTest {
 		return result;
 	}
 }
+
