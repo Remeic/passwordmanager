@@ -29,6 +29,12 @@ public class AccountRedisRepository {
 		return accounts;
 	}
 
+	public List<Account> findByKey(String key) {
+		List<Account> accounts;
+		accounts = this.fromMapToAccounts(key,this.client.hgetAll(key));
+		return accounts;
+	}
+
 	private List<Account> fromMapToAccounts(String key, Map<String, String> jedisSavedMap) {
 		List<String> savedKeys;
 		List<Account> savedAccounts;
@@ -41,8 +47,6 @@ public class AccountRedisRepository {
 		return savedAccounts;
 	}
 
-	public List<Account> findByKey(String key) {
-		return new ArrayList<Account>();
-	}
+	
 
 }
