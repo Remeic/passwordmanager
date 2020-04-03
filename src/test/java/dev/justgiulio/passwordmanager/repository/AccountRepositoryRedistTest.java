@@ -4,7 +4,9 @@ package dev.justgiulio.passwordmanager.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.api.ListAssert;
@@ -69,6 +71,16 @@ public class AccountRepositoryRedistTest {
 	public void testFindByKeyWhenAccountIsNotFound() {
 		String key = "github.com";
 		assertThat(accountRedisRepository.findByKey(key)).isEmpty();
+	}
+	
+	
+	@Test
+	public void testFindByKeyWhenAccountIsFound() {
+		String key = "github.com";
+		addAccountToRedisDatabase(new Account("gitlab",new Credential("remeic","passremeic")));
+		addAccountToRedisDatabase(new Account(key,new Credential("giulio","passgiulio")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByKey(key));
+		assertThat.containsExactly(new Account(key,new Credential("giulio","passgiulio")));
 	}
 	
 	/**
