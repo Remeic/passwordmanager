@@ -31,8 +31,11 @@ public class AccountRedisRepository {
 	private List<Account> fromMapToAccounts(String key, Map<String, String> jedisSavedMap) {
 		List<String> savedKeys;
 		List<Account> savedAccounts;
+		List<Credential> savedCredential;
 		savedKeys = jedisSavedMap.keySet().stream().collect(Collectors.toList());
-		savedAccounts = savedKeys.stream().map(keyMap -> new Account(key,new Credential(key, jedisSavedMap.get(key))))
+		savedCredential = savedKeys.stream().map(keyMap -> new Credential(keyMap,jedisSavedMap.get(keyMap)))
+				.collect(Collectors.toList());
+		savedAccounts = savedCredential.stream().map(credential -> new Account(key, credential))
 				.collect(Collectors.toList());
 		return savedAccounts;
 	}
