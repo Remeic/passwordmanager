@@ -17,6 +17,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.version>3.7.0.1746</sonar.version>
+		<sonar.coverage.jacoco.xmlReportPaths>
+      		${project.reporting.outputDirectory}/jacoco/jacoco.xml
+    	</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
@@ -107,7 +110,6 @@
 						<excludes>
 							<exclude>**/model/*</exclude>
 						</excludes>
-						<propertyName>surefireArgLine</propertyName>
 					</configuration>
 					<executions>
 						<execution>
