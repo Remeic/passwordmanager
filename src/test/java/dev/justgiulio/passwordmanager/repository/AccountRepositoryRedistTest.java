@@ -83,6 +83,14 @@ public class AccountRepositoryRedistTest {
 		assertThat.containsExactly(new Account(key,new Credential("giulio","passgiulio")));
 	}
 	
+	/**
+	 * Test for findByUsername method
+	 */
+	@Test
+	public void testFindByUsernameWhenAccountIsNotFound() {
+		String username = "giulio";
+		assertThat(accountRedisRepository.findByUsername(username)).isEmpty();
+	}
 	
 	/**
 	 * Utility Method for Add Account to Database
