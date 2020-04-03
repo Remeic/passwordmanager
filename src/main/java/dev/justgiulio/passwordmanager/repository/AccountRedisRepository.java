@@ -3,6 +3,7 @@ package dev.justgiulio.passwordmanager.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 import dev.justgiulio.passwordmanager.model.Account;
@@ -38,6 +39,10 @@ public class AccountRedisRepository {
 		savedAccounts = savedCredential.stream().map(credential -> new Account(key, credential))
 				.collect(Collectors.toList());
 		return savedAccounts;
+	}
+
+	public List<Account> findByKey(String key) {
+		return new ArrayList<Account>();
 	}
 
 }
