@@ -58,10 +58,10 @@ public class AccountRepositoryRedistTest {
 
 	@Test
 	public void testFindAllWhenDatabaseIsNotEmpty() {
-		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
-		addAccountToRedisDatabase(accountToSave);
+		addAccountToRedisDatabase(new Account("github.com", new Credential("giulio","passgiulio")));
+		addAccountToRedisDatabase(new Account("gitlab.com", new Credential("remeic","passremeic")));
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
-		assertThat.containsExactly(accountToSave);
+		assertThat.containsExactly(new Account("github.com", new Credential("giulio","passgiulio")),new Account("gitlab.com", new Credential("remeic","passremeic")));
 	}
 	
 	/**
@@ -82,6 +82,7 @@ public class AccountRepositoryRedistTest {
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByKey(key));
 		assertThat.containsExactly(new Account(key,new Credential("giulio","passgiulio")));
 	}
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
