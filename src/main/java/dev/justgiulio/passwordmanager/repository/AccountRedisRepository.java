@@ -36,7 +36,8 @@ public class AccountRedisRepository {
 	}
 	
 	public List<Account> findByUsername(String username) {
-		return new ArrayList<Account>();
+		List<Account> allAccounts = this.findAll();
+		return allAccounts.stream().filter(account -> account.getCredential().getUsername().equals(username)).collect(Collectors.toList());
 	}
 	
 	
