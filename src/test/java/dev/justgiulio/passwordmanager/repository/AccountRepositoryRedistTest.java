@@ -52,8 +52,9 @@ public class AccountRepositoryRedistTest {
 
 	@Test
 	public void testFindAllWhenDatabaseIsNotEmpty() {
-		Account accountToSave = new Account("github.com", new Credential("username","password"));
+		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
 		addAccountToRedisDatabase(accountToSave);
+		System.out.println(accountRedisRepository.findAll());
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.containsExactly(accountToSave);
 	}
@@ -66,7 +67,7 @@ public class AccountRepositoryRedistTest {
 	public String addAccountToRedisDatabase(Account account) {
 		Map<String, String> tmpMap = new HashMap<String, String>();
 		Credential tmpCredential = account.getCredential();
-		tmpMap.put(tmpCredential.getUsername(), tmpCredential.getPassword() );
+		tmpMap.put(tmpCredential.getUsername(), tmpCredential.getPassword());
 		String result =  jedis.hmset(account.getSite(), tmpMap);
 		return result;
 	}
