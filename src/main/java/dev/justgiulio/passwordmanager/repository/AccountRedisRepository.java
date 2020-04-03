@@ -24,14 +24,14 @@ public class AccountRedisRepository {
 		keys = client.keys("*").stream().collect(Collectors.toList());
 		keys
 			.stream()
-			.map(key -> this.fromMapToAccounts(key,this.client.hgetAll(key)))
+			.map(key -> this.fromMapToAccounts(key,this.getMapFromKey(key)))
 			.forEach(account -> accounts.addAll(account));
 		return accounts;
 	}
 
 	public List<Account> findByKey(String key) {
 		List<Account> accounts;
-		accounts = this.fromMapToAccounts(key,this.client.hgetAll(key));
+		accounts = this.fromMapToAccounts(key,this.getMapFromKey(key));
 		return accounts;
 	}
 
@@ -47,6 +47,9 @@ public class AccountRedisRepository {
 		return savedAccounts;
 	}
 
+	private Map<String,String> getMapFromKey(String key){
+		return this.client.hgetAll(key);
+	}
 	
 
 }
