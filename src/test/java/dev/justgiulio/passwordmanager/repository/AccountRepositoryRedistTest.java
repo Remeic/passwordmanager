@@ -92,6 +92,15 @@ public class AccountRepositoryRedistTest {
 		assertThat(accountRedisRepository.findByUsername(username)).isEmpty();
 	}
 	
+	@Test
+	public void testFindByUsernameWhenAccountIsFound() {
+		String username = "giulio";
+		addAccountToRedisDatabase(new Account("gitlab",new Credential("remeic","passremeic")));
+		addAccountToRedisDatabase(new Account("github",new Credential("giulio","passgiulio")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByUsername(username));
+		assertThat.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
+	}
+	
 	/**
 	 * Utility Method for Add Account to Database
 	 * @param account Target Account to save on Redis Database
