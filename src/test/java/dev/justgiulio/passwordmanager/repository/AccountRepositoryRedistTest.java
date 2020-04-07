@@ -179,7 +179,7 @@ public class AccountRepositoryRedistTest {
 	@Test
 	public void testSaveAccountWhenDatabaseIsNotEmpty() {
 		Account githubAccount = new Account("github",new Credential("giulio","passgiulio"));
-		Account gitlabAccount = new Account("gitlab",new Credential("giulio","passremeic"));
+		Account gitlabAccount = new Account("gitlab",new Credential("remeic","passremeic"));
 		List<Account> savedAccounts = new ArrayList<>();
 		savedAccounts.add(githubAccount);
 		savedAccounts.add(gitlabAccount);
@@ -188,6 +188,21 @@ public class AccountRepositoryRedistTest {
 		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
 		assertThatList.containsAll(savedAccounts);
 		assertThat(result).isEqualTo("OK");
+	}
+	
+	@Test
+	public void testSaveMultipleAccountForSameSite() {
+		Account githubAccount = new Account("github",new Credential("giulio","passgiulio"));
+		Account gitlabAccount = new Account("github",new Credential("remeic","passremeic"));
+		List<Account> savedAccounts = new ArrayList<>();
+		savedAccounts.add(githubAccount);
+		savedAccounts.add(gitlabAccount);
+		String resultGithub = accountRedisRepository.save(githubAccount);
+		String resultGitlab = accountRedisRepository.save(gitlabAccount);
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.containsAll(savedAccounts);
+		assertThat(resultGithub).isEqualTo("OK");
+		assertThat(resultGitlab).isEqualTo("OK");
 	}
 	
 	
