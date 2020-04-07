@@ -20,6 +20,9 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.exclusions>
+	      **/model/*
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
