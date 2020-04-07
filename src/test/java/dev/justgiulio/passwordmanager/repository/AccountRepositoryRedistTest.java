@@ -215,6 +215,15 @@ public class AccountRepositoryRedistTest {
 		assertThat.isEmpty();
 	}
 	
+	@Test
+	public void testDeleteAccountFound() {
+		Account accountToDelete = new Account("github",new Credential("giulio","passgiulio"));
+		addAccountToRedisDatabase(accountToDelete);
+		accountRedisRepository.delete(accountToDelete);
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.isEmpty();
+	}
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
