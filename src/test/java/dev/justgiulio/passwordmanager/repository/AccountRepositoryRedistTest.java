@@ -234,6 +234,15 @@ public class AccountRepositoryRedistTest {
 		assertThatList.containsExactly(new Account("github",new Credential("remeic","passremeic")));
 	}
 	
+	@Test
+	public void testDeleteAccountNotFound() {
+		addAccountToRedisDatabase(new Account("github",new Credential("giulio","passgiulio")));
+		accountRedisRepository.delete(new Account("gitlab",new Credential("remeic","passremeic")));
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
+	}
+	
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
