@@ -41,8 +41,8 @@ public class AccountRedisRepository {
 	}
 	
 	public List<Account> findByPassword(String password) {
-		// TODO Auto-generated method stub
-		return new ArrayList<Account>();
+		List<Account> allAccounts = this.findAll();
+		return allAccounts.stream().filter(account -> account.getCredential().getPassword().equals(password)).collect(Collectors.toList());
 	}
 	
 	
