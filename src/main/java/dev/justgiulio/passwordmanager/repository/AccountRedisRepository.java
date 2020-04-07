@@ -53,8 +53,7 @@ public class AccountRedisRepository {
 	}
 	
 	public void delete(Account account) {
-		this.client.del(account.getSite());
-		
+		this.client.hdel(account.getSite(), account.getCredential().getUsername());
 	}
 	
 	
