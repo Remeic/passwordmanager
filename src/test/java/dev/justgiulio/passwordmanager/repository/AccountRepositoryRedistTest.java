@@ -170,9 +170,10 @@ public class AccountRepositoryRedistTest {
 	 */
 	@Test
 	public void testSaveAccountWhenDatabaseIsEmpty() {
-		accountRedisRepository.save(new Account("github",new Credential("giulio","passgiulio")));
-		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
-		assertThat.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
+		String result = accountRedisRepository.save(new Account("github",new Credential("giulio","passgiulio")));
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
+		assertThat(result).isEqualTo("OK");
 	}
 	
 	
