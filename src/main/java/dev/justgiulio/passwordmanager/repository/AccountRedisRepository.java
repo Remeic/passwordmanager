@@ -40,6 +40,10 @@ public class AccountRedisRepository {
 		return allAccounts.stream().filter(account -> account.getCredential().getUsername().equals(username)).collect(Collectors.toList());
 	}
 	
+	public List<Account> findByPassword(String password) {
+		// TODO Auto-generated method stub
+		return new ArrayList<Account>();
+	}
 	
 	
 	
@@ -62,6 +66,8 @@ public class AccountRedisRepository {
 	private Map<String,String> getMapFromKey(String key){
 		return this.client.hgetAll(key);
 	}
+
+	
 
 	
 	
