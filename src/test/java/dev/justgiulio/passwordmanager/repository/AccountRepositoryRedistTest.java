@@ -166,6 +166,17 @@ public class AccountRepositoryRedistTest {
 	
 	
 	/**
+	 * Test for save method
+	 */
+	@Test
+	public void testSaveAccountWhenDatabaseIsEmpty() {
+		accountRedisRepository.save(new Account("github",new Credential("giulio","passgiulio")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
+		assertThat.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
+	}
+	
+	
+	/**
 	 * Utility Method for Add Account to Database
 	 * @param account Target Account to save on Redis Database
 	 * @return Result of save operation
