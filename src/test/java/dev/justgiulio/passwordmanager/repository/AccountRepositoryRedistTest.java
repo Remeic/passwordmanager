@@ -4,6 +4,7 @@ package dev.justgiulio.passwordmanager.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,17 @@ public class AccountRepositoryRedistTest {
 		addAccountToRedisDatabase(new Account("gitlab.com", new Credential("remeic","passremeic")));
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
 		assertThat.containsExactly(new Account("github.com", new Credential("giulio","passgiulio")),new Account("gitlab.com", new Credential("remeic","passremeic")));
+	}
+	
+	@Test
+	public void testFindAllWhenExistMultipleAccountForSameSite() {
+		addAccountToRedisDatabase(new Account("github.com", new Credential("giulio","passgiulio")));
+		addAccountToRedisDatabase(new Account("github.com", new Credential("remeic","passremeic")));
+		List<Account> savedAccounts = new ArrayList<>();
+		savedAccounts.add(new Account("github.com", new Credential("giulio","passgiulio")));
+		savedAccounts.add(new Account("github.com", new Credential("remeic","passremeic")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
+		assertThat.containsAll(savedAccounts);
 	}
 	
 	/**
