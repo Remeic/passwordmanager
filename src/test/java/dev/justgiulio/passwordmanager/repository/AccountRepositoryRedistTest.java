@@ -113,6 +113,22 @@ public class AccountRepositoryRedistTest {
 		assertThat.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
 	}
 	
+	@Test
+	public void testFindByUsernameWhenUsernameIsUsedInMultipleAccounts() {
+		String username = "giulio";
+		Account githubAccount = new Account("github",new Credential("giulio","passgiulio"));
+		Account gitlabAccount = new Account("gitlab",new Credential("giulio","passremeic"));
+		Account bitbucketAccount = new Account("bitbucket",new Credential("remegiulio","passremegiulio"));
+		addAccountToRedisDatabase(githubAccount);
+		addAccountToRedisDatabase(gitlabAccount);
+		addAccountToRedisDatabase(bitbucketAccount);
+		List<Account> savedAccounts = new ArrayList<>();
+		savedAccounts.add(githubAccount);
+		savedAccounts.add(gitlabAccount);
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByUsername(username));
+		assertThat.containsAll(savedAccounts);
+	}
+	
 	/**
 	 * Utility Method for Add Account to Database
 	 * @param account Target Account to save on Redis Database
