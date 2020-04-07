@@ -1,6 +1,7 @@
 package dev.justgiulio.passwordmanager.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntPredicate;
@@ -43,6 +44,12 @@ public class AccountRedisRepository {
 	public List<Account> findByPassword(String password) {
 		List<Account> allAccounts = this.findAll();
 		return allAccounts.stream().filter(account -> account.getCredential().getPassword().equals(password)).collect(Collectors.toList());
+	}
+	
+	public String save(Account accountToSave) {
+		Map<String, String> mapToSave = new HashMap<String, String>();
+		mapToSave.put(accountToSave.getCredential().getUsername(), accountToSave.getCredential().getPassword());
+		return this.client.hmset(accountToSave.getSite(), mapToSave);
 	}
 	
 	
