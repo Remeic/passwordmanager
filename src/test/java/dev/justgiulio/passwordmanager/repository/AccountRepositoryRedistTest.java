@@ -205,6 +205,16 @@ public class AccountRepositoryRedistTest {
 		assertThat(resultGitlab).isEqualTo("OK");
 	}
 	
+	/**
+	 * Test for delete method
+	 */
+	@Test
+	public void testDeleteWhenDatabaseIsEmpty() {
+		accountRedisRepository.delete(new Account("github",new Credential("giulio","passgiulio")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
+		assertThat.isEmpty();
+	}
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
