@@ -52,6 +52,12 @@ public class AccountRedisRepository {
 		return this.client.hmset(accountToSave.getSite(), mapToSave);
 	}
 	
+	public void delete(Account account) {
+		this.client.del(account.getSite());
+		
+	}
+	
+	
 	
 	
 	/** Private Methods */
@@ -73,6 +79,8 @@ public class AccountRedisRepository {
 	private Map<String,String> getMapFromKey(String key){
 		return this.client.hgetAll(key);
 	}
+
+	
 
 	
 
