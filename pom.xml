@@ -17,6 +17,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.version>3.7.0.1746</sonar.version>
+		<sonar.coverage.exclusions>
+	      **/model/*
+	    </sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
