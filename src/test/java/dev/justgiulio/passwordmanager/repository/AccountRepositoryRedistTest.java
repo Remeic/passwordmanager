@@ -24,7 +24,7 @@ import redis.clients.jedis.Jedis;
 
 public class AccountRepositoryRedistTest {
 	
-	private static AccountRedisRepository accountRedisRepository;
+	private static AccountRepository accountRedisRepository;
 	private static Jedis jedis;
 	private static RedisServer server = null;
 

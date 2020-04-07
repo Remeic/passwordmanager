@@ -11,7 +11,7 @@ import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import redis.clients.jedis.Jedis;
 
-public class AccountRedisRepository {
+public class AccountRedisRepository implements AccountRepository {
 
 	Jedis client;
 
@@ -19,6 +19,7 @@ public class AccountRedisRepository {
 		this.client = client;
 	}
 
+	@Override
 	public List<Account> findAll() {
 		List<String> keys;
 		List<Account> accounts = new ArrayList<>();
@@ -30,28 +31,33 @@ public class AccountRedisRepository {
 		return accounts;
 	}
 
+	@Override
 	public List<Account> findByKey(String key) {
 		List<Account> accounts;
 		accounts = this.fromMapToAccounts(key,this.getMapFromKey(key));
 		return accounts;
 	}
 	
+	@Override
 	public List<Account> findByUsername(String username) {
 		List<Account> allAccounts = this.findAll();
 		return allAccounts.stream().filter(account -> account.getCredential().getUsername().equals(username)).collect(Collectors.toList());
 	}
 	
+	@Override
 	public List<Account> findByPassword(String password) {
 		List<Account> allAccounts = this.findAll();
 		return allAccounts.stream().filter(account -> account.getCredential().getPassword().equals(password)).collect(Collectors.toList());
 	}
 	
+	@Override
 	public String save(Account accountToSave) {
 		Map<String, String> mapToSave = new HashMap<String, String>();
 		mapToSave.put(accountToSave.getCredential().getUsername(), accountToSave.getCredential().getPassword());
 		return this.client.hmset(accountToSave.getSite(), mapToSave);
 	}
 	
+	@Override
 	public void delete(Account account) {
 		this.client.hdel(account.getSite(), account.getCredential().getUsername());
 	}
