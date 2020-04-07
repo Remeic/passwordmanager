@@ -98,6 +98,7 @@ public class AccountRepositoryRedistTest {
 	/**
 	 * Test for findByUsername method
 	 */
+	
 	@Test
 	public void testFindByUsernameWhenAccountIsNotFound() {
 		String username = "giulio";
@@ -127,6 +128,15 @@ public class AccountRepositoryRedistTest {
 		savedAccounts.add(gitlabAccount);
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByUsername(username));
 		assertThat.containsAll(savedAccounts);
+	}
+	
+	/**
+	 * Test for findByPassword method
+	 */
+	@Test
+	public void testFindByPasswordWhenAccountIsNotFound() {
+		String password = "passgiulio";
+		assertThat(accountRedisRepository.findByPassword(password)).isEmpty();
 	}
 	
 	/**
