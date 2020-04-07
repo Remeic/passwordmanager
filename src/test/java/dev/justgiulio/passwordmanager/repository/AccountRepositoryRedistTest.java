@@ -176,6 +176,20 @@ public class AccountRepositoryRedistTest {
 		assertThat(result).isEqualTo("OK");
 	}
 	
+	@Test
+	public void testSaveAccountWhenDatabaseIsNotEmpty() {
+		Account githubAccount = new Account("github",new Credential("giulio","passgiulio"));
+		Account gitlabAccount = new Account("gitlab",new Credential("giulio","passremeic"));
+		List<Account> savedAccounts = new ArrayList<>();
+		savedAccounts.add(githubAccount);
+		savedAccounts.add(gitlabAccount);
+		addAccountToRedisDatabase(githubAccount);
+		String result = accountRedisRepository.save(gitlabAccount);
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.containsAll(savedAccounts);
+		assertThat(result).isEqualTo("OK");
+	}
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
