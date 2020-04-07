@@ -224,6 +224,16 @@ public class AccountRepositoryRedistTest {
 		assertThatList.isEmpty();
 	}
 	
+	@Test
+	public void testDeleteAccountForSiteWithMultipleAccount() {
+		Account accountToDelete = new Account("github",new Credential("giulio","passgiulio"));
+		addAccountToRedisDatabase(accountToDelete);
+		addAccountToRedisDatabase(new Account("github",new Credential("remeic","passremeic")));
+		accountRedisRepository.delete(accountToDelete);
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
+		assertThatList.containsExactly(new Account("github",new Credential("remeic","passremeic")));
+	}
+	
 	
 	/**
 	 * Utility Method for Add Account to Database
