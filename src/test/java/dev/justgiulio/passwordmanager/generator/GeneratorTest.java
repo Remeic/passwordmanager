@@ -26,15 +26,12 @@ public class GeneratorTest {
 		});
 	}
 	
+	
 	@Test
-	public void testGenerateWithStrengthValueLowerThanZeroThrowException() {
+	public void testGenerateWithInvalidBoundaryStrengthValuesThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			generator.generate(1,-1);
 		});
-	}
-	
-	@Test
-	public void testGenerateWithInvalidMaxBoundaryStrengthValueThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			generator.generate(1,3);
 		});
