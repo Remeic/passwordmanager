@@ -26,4 +26,11 @@ public class GeneratorTest {
 		});
 	}
 	
+	@Test
+	public void testGenerateWithStrengthValueLowerThanZeroThrowException() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			generator.generate(1,-1);
+		});
+	}
+	
 }
