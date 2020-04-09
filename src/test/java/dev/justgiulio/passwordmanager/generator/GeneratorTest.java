@@ -33,4 +33,11 @@ public class GeneratorTest {
 		});
 	}
 	
+	@Test
+	public void testGenerateWithInvalidMaxBoundaryStrengthValueThrowException() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			generator.generate(1,3);
+		});
+	}
+	
 }
