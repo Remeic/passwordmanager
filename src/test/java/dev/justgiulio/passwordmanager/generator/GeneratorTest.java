@@ -1,7 +1,7 @@
 package dev.justgiulio.passwordmanager.generator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,11 @@ public class GeneratorTest {
 		generator =  new Generator();
 	}
 
+	
+	/**
+	 *  Boundary Test
+	 */
+	
 	@Test
 	public void testGenerateWithInvalidBoundaryLengthValuesThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
@@ -38,6 +43,17 @@ public class GeneratorTest {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			generator.generate(1,3);
 		});
+	}
+	
+	/**
+	 * Fixed Length Test
+	 */
+	
+	@Test
+	public void testGeneratePasswordWithFixedLength() {
+		final int length = 14;
+		final int strength = 0;
+		assertThat(generator.generate(length, strength)).hasSize(length);
 	}
 	
 }
