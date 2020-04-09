@@ -17,17 +17,13 @@ public class GeneratorTest {
 	}
 
 	@Test
-	public void testGenerateWithLengthLowerThanOneThrowException() {
+	public void testGenerateWithInvalidBoundaryLengthValuesThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			generator.generate(0);
 		});
-	}
-	
-	@Test
-	public void testGenerateWithMaxBounderLenghtThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 			generator.generate(33);
 		});
 	}
-
+	
 }
