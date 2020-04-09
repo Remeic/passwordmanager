@@ -22,5 +22,12 @@ public class GeneratorTest {
 			generator.generate(0);
 		});
 	}
+	
+	@Test
+	public void testGenerateWithMaxBounderLenghtThrowException() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+			generator.generate(33);
+		});
+	}
 
 }
