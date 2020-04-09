@@ -19,10 +19,10 @@ public class GeneratorTest {
 	@Test
 	public void testGenerateWithInvalidBoundaryLengthValuesThrowException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			generator.generate(0);
+			generator.generate(0,0);
 		});
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			generator.generate(33);
+			generator.generate(33,0);
 		});
 	}
 	
