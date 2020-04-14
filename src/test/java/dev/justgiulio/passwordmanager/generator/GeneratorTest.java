@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
+import java.security.SecureRandom;
+import java.util.stream.Stream;
 
 public class GeneratorTest {
 
@@ -53,7 +56,25 @@ public class GeneratorTest {
 	public void testGeneratePasswordWithFixedLength() {
 		final int length = 14;
 		final int strength = 0;
-		assertThat(generator.generate(length, strength)).hasSize(length);
+		String generatedPassword = generator.generate(length, strength);
+		assertThat(generatedPassword).hasSize(length);
 	}
+	
+	/**
+	 * Test with dictionary
+	 */
+	
+	@Test
+	public void testGeneratePasswordWithDictionary() {
+		final int length = 14;
+		final int strength = 0;
+		final String dictionary = "abcdefghijklmnopqrstuvwxyz";
+		String generatedPassword = generator.generate(length, strength);
+		Stream.of(generatedPassword.toCharArray())
+	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
+
+	}
+	
+	
 	
 }
