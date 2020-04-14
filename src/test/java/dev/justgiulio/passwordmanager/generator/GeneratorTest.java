@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
 import static org.mockito.Mockito.*;
 
 import java.security.SecureRandom;
@@ -66,9 +68,12 @@ public class GeneratorTest {
 	
 	@Test
 	public void testGeneratePasswordWithDictionary() {
-		final int length = 14;
+		final int length = 4;
 		final int strength = 0;
 		final String dictionary = "abcdefghijklmnopqrstuvwxyz";
+		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
+		generator.setRandomizer(randomizer);
+		when(randomizer.nextInt()).thenReturn(1,3,4,10);
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
