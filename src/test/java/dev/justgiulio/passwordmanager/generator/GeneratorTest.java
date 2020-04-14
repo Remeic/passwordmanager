@@ -2,15 +2,14 @@ package dev.justgiulio.passwordmanager.generator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
+
+import java.security.SecureRandom;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
-
-import java.security.SecureRandom;
-import java.util.stream.Stream;
 
 public class GeneratorTest {
 
@@ -73,12 +72,30 @@ public class GeneratorTest {
 		final String dictionary = "abcdefghijklmnopqrstuvwxyz";
 		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
 		generator.setRandomizer(randomizer);
-		when(randomizer.nextInt()).thenReturn(1,3,4,10);
+		when(randomizer.nextInt(dictionary.length())).thenReturn(1,3,4,10);
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
 
 	}
+	
+	@Test
+	public void testGeneratePasswordWithMediumDictionary() {
+		final int length = 4;
+		final int strength = 1;
+		final String letters = "abcdefghijklmnopqrstuvwxyz";
+		final String numbers = "0123456789";
+		final String dictionary = letters + numbers;
+		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
+		generator.setRandomizer(randomizer);
+		when(randomizer.nextInt(dictionary.length())).thenReturn(1,letters.length(),letters.length() + numbers.length()/2,10);
+		String generatedPassword = generator.generate(length, strength);
+		Stream.of(generatedPassword.toCharArray())
+	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
+
+	}
+	
+	
 	
 	
 	
