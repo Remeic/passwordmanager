@@ -49,6 +49,18 @@ public class GeneratorTest {
 		});
 	}
 	
+	@Test
+	public void testGenerateWithBoundaryValidValues() {
+		/**
+		 * Kill survived mutant
+		 */
+		final int strength = 0;
+		assertThat(generator.generate(32, strength)).hasSize(32);
+		assertThat(generator.generate(1, strength)).hasSize(1);
+	}
+	
+	
+	
 	/**
 	 * Fixed Length Test
 	 */
