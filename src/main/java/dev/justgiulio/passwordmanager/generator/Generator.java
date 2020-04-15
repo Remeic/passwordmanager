@@ -19,19 +19,14 @@ public class Generator {
 	
 
 	public String generate(int length, int strength) {
-		String choosedDictionary = this.dictionaryLetters;
+		
 		if(length < 1 || length > 32) {
 			throw new IllegalArgumentException("Length value must be beetween than 1 and 32");
 		}
 		if(strength < 0 || strength > 2) {
 			throw new IllegalArgumentException("Length value must be beetween than 0 and 2");
 		}
-		if(strength == 1) {
-			choosedDictionary += this.dictionaryNumbers;
-		}else if(strength == 2) {
-			choosedDictionary += this.dictionaryNumbers + this.dictionarySymbols;
-		}
-		
+		String choosedDictionary = this.getDictionary(strength);
 		StringBuilder result = new StringBuilder(length);
 		int randomCharPosition;
 		for (int i = 0; i < length; i++) {
@@ -48,6 +43,20 @@ public class Generator {
 	}
 	
 	
+	/**
+	 * Private methods
+	 */
+	
+	private String getDictionary(int strength) {
+		String resultDictionary = this.dictionaryLetters;
+		if(strength == 1 ) {
+			resultDictionary += this.dictionaryNumbers;
+		}
+		else if(strength == 2) {
+			resultDictionary += this.dictionaryNumbers + this.dictionarySymbols;
+		}
+		return resultDictionary;
+	}
 
 
 }
