@@ -48,12 +48,20 @@ public class Generator {
 	 */
 	
 	private String getDictionary(int strength) {
-		String resultDictionary = this.dictionaryLetters;
-		if(strength == 1 ) {
-			resultDictionary += this.dictionaryNumbers;
-		}
-		else if(strength == 2) {
-			resultDictionary += this.dictionaryNumbers + this.dictionarySymbols;
+		String resultDictionary;
+		switch (strength) {
+		case 0:
+			resultDictionary = this.dictionaryLetters;
+			break;
+		case 1:
+			resultDictionary = this.dictionaryLetters + this.dictionaryNumbers;
+			break;
+		case 2:
+			resultDictionary = this.dictionaryLetters + this.dictionaryNumbers + this.dictionarySymbols;;
+			break;
+		default:
+			resultDictionary = this.dictionaryLetters;
+			break;
 		}
 		return resultDictionary;
 	}
