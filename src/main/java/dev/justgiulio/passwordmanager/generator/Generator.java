@@ -6,12 +6,14 @@ public class Generator {
 	
 	private String dictionaryLetters;
 	private String dictionaryNumbers;
+	private String dictionarySymbols;
 	private SecureRandom randomizer;
 	
 	public Generator() {
 		super();
 		this.dictionaryLetters = "abcdefghijklmnopqrstuvwxyz";
 		this.dictionaryNumbers = "0123456789";
+		this.dictionarySymbols = "!@#$%&*()_+-=[]?{};:_-<>";
 		setRandomizer(new SecureRandom());
 	}
 	
@@ -26,7 +28,10 @@ public class Generator {
 		}
 		if(strength == 1) {
 			choosedDictionary += this.dictionaryNumbers;
+		}else if(strength == 2) {
+			choosedDictionary += this.dictionaryNumbers + this.dictionarySymbols;
 		}
+		
 		StringBuilder result = new StringBuilder(length);
 		int randomCharPosition;
 		for (int i = 0; i < length; i++) {
