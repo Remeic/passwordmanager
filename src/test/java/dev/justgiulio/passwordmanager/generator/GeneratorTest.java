@@ -95,6 +95,24 @@ public class GeneratorTest {
 
 	}
 	
+	@Test
+	public void testGeneratePasswordWithHighDictionary() {
+		final int length = 4;
+		final int strength = 2;
+		final String letters = "abcdefghijklmnopqrstuvwxyz";
+		final String numbers = "0123456789";
+		final String symbols = "!@#$%&*()_+-=[]?{};:_-<>";
+		final String dictionary = letters + numbers + symbols;
+		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
+		generator.setRandomizer(randomizer);
+		when(randomizer.nextInt(dictionary.length()))
+			.thenReturn(1,letters.length(),letters.length() + numbers.length()/2,letters.length() + numbers.length() + symbols.length()/2);
+		String generatedPassword = generator.generate(length, strength);
+		Stream.of(generatedPassword.toCharArray())
+	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
+
+	}
+	
 	
 	
 	
