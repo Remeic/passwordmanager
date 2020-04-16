@@ -2,14 +2,11 @@ package dev.justgiulio.passwordmanager.generator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
 
-import java.security.SecureRandom;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class GeneratorTest {
 
@@ -82,9 +79,6 @@ public class GeneratorTest {
 		final int length = 4;
 		final int strength = 0;
 		final String dictionary = "abcdefghijklmnopqrstuvwxyz";
-		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
-		generator.setRandomizer(randomizer);
-		when(randomizer.nextInt(dictionary.length())).thenReturn(1,3,4,10);
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
@@ -98,9 +92,6 @@ public class GeneratorTest {
 		final String letters = "abcdefghijklmnopqrstuvwxyz";
 		final String numbers = "0123456789";
 		final String dictionary = letters + numbers;
-		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
-		generator.setRandomizer(randomizer);
-		when(randomizer.nextInt(dictionary.length())).thenReturn(1,letters.length(),letters.length() + numbers.length()/2,10);
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
@@ -115,10 +106,6 @@ public class GeneratorTest {
 		final String numbers = "0123456789";
 		final String symbols = "!@#$%&*()_+-=[]?{};:_-<>";
 		final String dictionary = letters + numbers + symbols;
-		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
-		generator.setRandomizer(randomizer);
-		when(randomizer.nextInt(dictionary.length()))
-			.thenReturn(1,letters.length(),letters.length() + numbers.length()/2,letters.length() + numbers.length() + symbols.length()/2);
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
