@@ -54,6 +54,7 @@ public class GeneratorTest {
 		final int strength = 0;
 		assertThat(generator.generate(32, strength)).hasSize(32);
 		assertThat(generator.generate(1, strength)).hasSize(1);
+		
 	}
 	
 	

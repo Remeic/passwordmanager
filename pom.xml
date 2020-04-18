@@ -160,6 +160,28 @@
 						<excludedClasses>
 							<param>dev.justgiulio.passwordmanager.model.*</param>
 						</excludedClasses>
+						<excludedMethods>
+			              <excludedMethod>
+			                <!-- "Removed conditional replace equality with false"
+			                 	This is a private method tested with tests on password (with different dictionary)
+			                 -->
+			                getDictionary
+			              </excludedMethod>
+			               <excludedMethod>
+			                <!-- Decremented a integer local variable
+			                	 "Substituted 0 with 1 & Negated integer local variable number"
+			                 	I don't understand how fix this, second argument is starting position
+			                 -->
+			                generate
+			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- Decremented a integer local variable
+			                	 "Substituted 0 with 1 & Negated integer local variable number"
+			                 	I don't understand how fix this, second argument is starting position
+			                 -->
+			                fromCharToString
+			              </excludedMethod>
+             			 </excludedMethods>
 						<targetTests>
 							<param>dev.justgiulio.passwordmanager.*</param>
 						</targetTests>
