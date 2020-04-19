@@ -96,7 +96,7 @@ public class GeneratorTest {
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
-
+		assertThat(generatedPassword.toCharArray()).containsAnyOf(numbers.toCharArray());
 	}
 	
 	@Test
@@ -110,6 +110,7 @@ public class GeneratorTest {
 		String generatedPassword = generator.generate(length, strength);
 		Stream.of(generatedPassword.toCharArray())
 	      .forEach(character -> assertThat(dictionary.toCharArray()).contains(character));
+		assertThat(generatedPassword.toCharArray()).containsAnyOf((numbers + symbols).toCharArray());
 
 	}
 	
