@@ -164,22 +164,23 @@
 			              <excludedMethod>
 			                <!-- "Removed conditional replace equality with false"
 			                 	This is a private method tested with tests on password (with different dictionary)
+			                 	And the generation of password is random so, a valid password ( medium strength ) can contains only letters 
 			                 -->
 			                getDictionary
 			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- 
+			                	 "Decremented a integer local variable number & Replace 0 with 1  "
+			                 	I don't understand how fix this, for replace 0 with 1 the choice of char is random, i can't fix the start position
+			                 -->
+			                getPassword
+			              </excludedMethod>
 			               <excludedMethod>
-			                <!-- Decremented a integer local variable
-			                	 "Substituted 0 with 1 & Negated integer local variable number"
-			                 	I don't understand how fix this, second argument is starting position
+			                <!-- 
+			                	 "Decremented a integer local variable number 2 & Negated integer local variable number"
+			                 	I don't understand how fix this, there isn't a variable
 			                 -->
 			                generate
-			              </excludedMethod>
-			              <excludedMethod>
-			                <!-- Decremented a integer local variable
-			                	 "Substituted 0 with 1 & Negated integer local variable number"
-			                 	I don't understand how fix this, second argument is starting position
-			                 -->
-			                fromCharToString
 			              </excludedMethod>
              			 </excludedMethods>
 						<targetTests>
