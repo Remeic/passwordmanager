@@ -1,11 +1,7 @@
 package dev.justgiulio.passwordmanager.generator;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Generator {
 
@@ -31,11 +27,7 @@ public class Generator {
 		if (strength < 0 || strength > 2) {
 			throw new IllegalArgumentException("Length value must be beetween than 0 and 2");
 		}
-		String password;
-		do {
-			password = getPassword(length, this.getDictionary(strength));
-		} while (!isValidPassword(password,strength));
-		return password;
+		return getPassword(length, this.getDictionary(strength));
 
 	}
 
@@ -48,33 +40,8 @@ public class Generator {
 	 * Private methods
 	 */
 	
-	private boolean isValidPassword(String password, int strength) {
-		boolean result = false;
-		if(strength == LOW_STRENGTH) {
-			result = true;
-		}
-		else if(strength == MEDIUM_STRENGTH) {
-			result = isCharContained(password, DICTIONARY_LETTERS) && isCharContained(password,DICTIONARY_NUMBERS);
-		}
-		else if(strength == HIGH_STRENGTH) {
-			result = isCharContained(password, DICTIONARY_LETTERS) && isCharContained(password,DICTIONARY_NUMBERS) && isCharContained(password,DICTIONARY_SYMBOLS);
-		}
-		return result;
-	}
-	
-	private boolean isCharContained(String password, String dictionary) {
-		boolean result  = false;
-		for(char character:dictionary.toCharArray()) {
-			if(password.indexOf(character) != -1) {
-				result = true;
-			}
-		}
-		return result;
-	}
-
-	
 	private String getPassword(int length, String dictionary) {
-		IntStream intStream =  randomizer.ints(length, 14, dictionary.length());
+		IntStream intStream =  randomizer.ints(length, 0, dictionary.length());
 		StringBuilder result = new StringBuilder();
 		for(int charPosition:intStream.toArray()) {
 			result.append(Character.toString(dictionary.charAt(charPosition)));
