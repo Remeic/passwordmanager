@@ -5,10 +5,9 @@ import java.util.stream.IntStream;
 
 public class Generator {
 
-	private static final String DICTIONARY_LETTERS = "abcdefghijklmnopqrstuvwxyz";;
+	private static final String DICTIONARY_LETTERS = "abcdefghijklmnopqrstuvwxyz";
 	private static final String DICTIONARY_NUMBERS = "0123456789";
 	private static final String DICTIONARY_SYMBOLS = "!@#$%&*()_+-=[]?{};:_-<>";
-	private static final int LOW_STRENGTH = 0;
 	private static final int MEDIUM_STRENGTH = 1;
 	private static final int HIGH_STRENGTH = 2;
 	
