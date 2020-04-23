@@ -105,7 +105,6 @@ public class GeneratorTest {
 		final String numbers = "0123456789";
 		final String symbols = "!@#$%&*()_+-=[]?{};:_-<>";
 		String generatedPassword = generator.generate(length, strength);
-		System.out.println(generatedPassword);
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(letters.toCharArray());
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(numbers.toCharArray());
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(symbols.toCharArray());

@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -71,7 +72,7 @@ public class SecureRandomGenerator implements Generator {
 		}
 		Collections.shuffle(splittedPassword);
 		return splittedPassword.stream().map(n -> String.valueOf(n))
-	      .collect(Collectors.joining());
+				.collect(Collectors.joining());
 	}
 	
 	private String getCharsFromDictionary(int numbersOfChar, String dictionary) {

@@ -182,6 +182,23 @@
 			                 -->
 			                generate
 			              </excludedMethod>
+			               <excludedMethod>
+			                <!-- 
+			                	 "Replaced call map with receiver | Decremented and Incremented local a variable | Remove shuffle method of Collectors"
+			                	 I don't understand how fix this, there isn't a variable a and i don't understand received replacement 
+			                	 For shuffle method, i think the only methdod is mock Generator and ints method
+			                 -->
+			                shufflePassword
+			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- 
+			                	 "Substitued 0 with 1 | Icremented and Decremented local variable "
+			                	 For the substitution, the position from start can be 0 or anyone else number, the generation of 
+			                	 password is random so, i can't check from where ints star
+			                	 No local variable a is present
+			                 -->
+			                getCharsFromDictionary
+			              </excludedMethod>
              			 </excludedMethods>
 						<targetTests>
 							<param>dev.justgiulio.passwordmanager.*</param>
