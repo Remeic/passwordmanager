@@ -3,13 +3,10 @@ package dev.justgiulio.passwordmanager.generator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import java.security.SecureRandom;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class GeneratorTest {
 
@@ -17,7 +14,7 @@ public class GeneratorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		generator =  new Generator();
+		generator =  new SecureRandomGenerator();
 	}
 
 	
@@ -95,37 +92,24 @@ public class GeneratorTest {
 		final int strength = 1;
 		final String letters = "abcdefghijklmnopqrstuvwxyz";
 		final String numbers = "0123456789";
-		final String dictionary = letters + numbers;
-		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
-		generator.setRandomizer(randomizer);
-		Mockito.when(randomizer.ints(4,0,dictionary.length())).thenReturn(IntStream.of(1, 2, letters.length()+1, 4));
 		String generatedPassword = generator.generate(length, strength);
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(letters.toCharArray());
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(numbers.toCharArray());
-
-		
 	}
 	
 	@Test
 	public void testGeneratePasswordWithHighDictionary() {
-		final int length = 4;
+		final int length = 32;
 		final int strength = 2;
 		final String letters = "abcdefghijklmnopqrstuvwxyz";
 		final String numbers = "0123456789";
 		final String symbols = "!@#$%&*()_+-=[]?{};:_-<>";
-		final String dictionary = letters + numbers + symbols;
-		SecureRandom randomizer = Mockito.mock(SecureRandom.class);
-		generator.setRandomizer(randomizer);
-		Mockito.when(randomizer.ints(4,0,dictionary.length())).thenReturn(IntStream.of(1, (letters + numbers).length()+1, letters.length()+1, 4));
 		String generatedPassword = generator.generate(length, strength);
+		System.out.println(generatedPassword);
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(letters.toCharArray());
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(numbers.toCharArray());
 		assertThat(generatedPassword.toCharArray()).containsAnyOf(symbols.toCharArray());
 
 	}
-	
-	
-	
-	
 	
 }
