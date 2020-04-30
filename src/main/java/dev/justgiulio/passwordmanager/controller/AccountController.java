@@ -31,7 +31,7 @@ public class AccountController {
 
 
 	public void findByPassword(String password) {
-		// TODO Auto-generated method stub
+		accountView.showAccounts(accountRepository.findByPassword(password));
 		
 	}
 
