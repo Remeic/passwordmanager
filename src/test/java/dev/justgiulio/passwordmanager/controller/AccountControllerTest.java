@@ -73,5 +73,14 @@ public class AccountControllerTest {
 		verify(accountView).showAccounts(accounts);
 	}
 	
+	@Test
+	public void saveAccountTest() {
+		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
+		InOrder inOrder = inOrder(passwordRepository,accountView);
+		controller.saveAccount(accountToSave);
+		inOrder.verify(passwordRepository).save(accountToSave);
+		inOrder.verify(accountView).accountIsAdded();
+	}
+	
 	
 }
