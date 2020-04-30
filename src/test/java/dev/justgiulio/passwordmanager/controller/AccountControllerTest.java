@@ -47,7 +47,7 @@ public class AccountControllerTest {
 	}
 	
 	@Test
-	public void findAllAccountBySite() {
+	public void findAccountBySite() {
 		String site = "github";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","giulio")));
 		when(passwordRepository.findByKey(site)).thenReturn(accounts);
