@@ -17,12 +17,12 @@ public class AccountController {
 
 
 	public void findAll() {
-		accountView.showAllAccounts(accountRepository.findAll());
+		accountView.showAccounts(accountRepository.findAll());
 	}
 
 
 	public void findByKey(String site) {
-		accountView.showAccountBySite(accountRepository.findByKey(site));
+		accountView.showAccounts(accountRepository.findByKey(site));
 	}
 
 }

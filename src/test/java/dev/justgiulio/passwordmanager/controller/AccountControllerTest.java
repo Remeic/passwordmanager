@@ -43,16 +43,16 @@ public class AccountControllerTest {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","giulio")));
 		when(passwordRepository.findAll()).thenReturn(accounts);
 		controller.findAll();
-		verify(accountView).showAllAccounts(accounts);
+		verify(accountView).showAccounts(accounts);
 	}
 	
 	@Test
-	public void findAccountBySite() {
+	public void findAccountsBySite() {
 		String site = "github";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","giulio")));
 		when(passwordRepository.findByKey(site)).thenReturn(accounts);
 		controller.findByKey(site);
-		verify(accountView).showAccountBySite(accounts);
+		verify(accountView).showAccounts(accounts);
 	}
-
+	
 }

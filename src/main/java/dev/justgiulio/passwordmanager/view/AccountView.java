@@ -3,7 +3,5 @@ import dev.justgiulio.passwordmanager.model.Account;
 import java.util.List;
 
 public interface AccountView {
-	void showAllAccounts(List<Account> accounts);
-
-	void showAccountBySite(List<Account> accounts);
+	void showAccounts(List<Account> accounts);
 }
