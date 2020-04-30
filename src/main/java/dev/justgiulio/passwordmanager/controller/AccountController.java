@@ -24,5 +24,9 @@ public class AccountController {
 	public void findByKey(String site) {
 		accountView.showAccounts(accountRepository.findByKey(site));
 	}
+	
+	public void findByUsername(String username) {
+		accountView.showAccounts(accountRepository.findByUsername(username));
+	}
 
 }
