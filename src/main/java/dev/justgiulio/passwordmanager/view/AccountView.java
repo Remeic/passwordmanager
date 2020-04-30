@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface AccountView {
 	void showAccounts(List<Account> accounts);
+
+	void accountIsAdded();
 }

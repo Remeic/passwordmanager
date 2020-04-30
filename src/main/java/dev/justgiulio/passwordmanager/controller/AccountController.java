@@ -1,5 +1,6 @@
 package dev.justgiulio.passwordmanager.controller;
 
+import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;
 import dev.justgiulio.passwordmanager.view.AccountView;
 
@@ -32,6 +33,13 @@ public class AccountController {
 
 	public void findAccountsByPassword(String password) {
 		accountView.showAccounts(accountRepository.findByPassword(password));
+		
+	}
+
+
+	public void saveAccount(Account accountToSave) {
+		accountRepository.save(accountToSave);
+		accountView.accountIsAdded();
 		
 	}
 
