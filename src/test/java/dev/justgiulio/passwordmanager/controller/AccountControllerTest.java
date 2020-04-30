@@ -24,7 +24,7 @@ import dev.justgiulio.passwordmanager.view.AccountView;
 public class AccountControllerTest {
 
 	@Mock
-	private AccountRepository passwordRepository;
+	private AccountRepository accountRepository;
 	
 	@Mock
 	private AccountView accountView;
@@ -41,7 +41,7 @@ public class AccountControllerTest {
 	@Test
 	public void findAllAccountTest() {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
-		when(passwordRepository.findAll()).thenReturn(accounts);
+		when(accountRepository.findAll()).thenReturn(accounts);
 		controller.findAllAccounts();
 		verify(accountView).showAccounts(accounts);
 	}
@@ -50,7 +50,7 @@ public class AccountControllerTest {
 	public void findAccountsBySiteTest() {
 		String site = "github";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
-		when(passwordRepository.findByKey(site)).thenReturn(accounts);
+		when(accountRepository.findByKey(site)).thenReturn(accounts);
 		controller.findAccountsByKey(site);
 		verify(accountView).showAccounts(accounts);
 	}
@@ -59,7 +59,7 @@ public class AccountControllerTest {
 	public void findAccountsByUsernameTest() {
 		String username = "giulio";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
-		when(passwordRepository.findByUsername(username)).thenReturn(accounts);
+		when(accountRepository.findByUsername(username)).thenReturn(accounts);
 		controller.findAccountsByUsername(username);
 		verify(accountView).showAccounts(accounts);
 	}
@@ -68,7 +68,7 @@ public class AccountControllerTest {
 	public void findAccountsByPasswordTest() {
 		String password = "passgiulio";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
-		when(passwordRepository.findByPassword(password)).thenReturn(accounts);
+		when(accountRepository.findByPassword(password)).thenReturn(accounts);
 		controller.findAccountsByPassword(password);
 		verify(accountView).showAccounts(accounts);
 	}
@@ -76,9 +76,9 @@ public class AccountControllerTest {
 	@Test
 	public void saveAccountTest() {
 		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
-		InOrder inOrder = inOrder(passwordRepository,accountView);
+		InOrder inOrder = inOrder(accountRepository,accountView);
 		controller.saveAccount(accountToSave);
-		inOrder.verify(passwordRepository).save(accountToSave);
+		inOrder.verify(accountRepository).save(accountToSave);
 		inOrder.verify(accountView).accountIsAdded();
 	}
 	
