@@ -55,4 +55,13 @@ public class AccountControllerTest {
 		verify(accountView).showAccounts(accounts);
 	}
 	
+	@Test
+	public void findAccountsByUsername() {
+		String username = "giulio";
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","giulio")));
+		when(passwordRepository.findByUsername(username)).thenReturn(accounts);
+		controller.findByUsername(username);
+		verify(accountView).showAccounts(accounts);
+	}
+	
 }
