@@ -29,4 +29,10 @@ public class AccountController {
 		accountView.showAccounts(accountRepository.findByUsername(username));
 	}
 
+
+	public void findByPassword(String password) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
