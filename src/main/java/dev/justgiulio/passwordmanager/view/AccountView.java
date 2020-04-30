@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface AccountView {
 	void showAllAccounts(List<Account> accounts);
+
+	void showAccountBySite(List<Account> accounts);
 }

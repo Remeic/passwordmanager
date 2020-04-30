@@ -20,4 +20,9 @@ public class AccountController {
 		accountView.showAllAccounts(accountRepository.findAll());
 	}
 
+
+	public void findByKey(String site) {
+		accountView.showAccountBySite(accountRepository.findByKey(site));
+	}
+
 }
