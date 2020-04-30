@@ -42,7 +42,7 @@ public class AccountControllerTest {
 	public void findAllAccountTest() {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		when(passwordRepository.findAll()).thenReturn(accounts);
-		controller.findAll();
+		controller.findAllAccounts();
 		verify(accountView).showAccounts(accounts);
 	}
 	
@@ -51,7 +51,7 @@ public class AccountControllerTest {
 		String site = "github";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		when(passwordRepository.findByKey(site)).thenReturn(accounts);
-		controller.findByKey(site);
+		controller.findAccountsByKey(site);
 		verify(accountView).showAccounts(accounts);
 	}
 	
@@ -60,7 +60,7 @@ public class AccountControllerTest {
 		String username = "giulio";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		when(passwordRepository.findByUsername(username)).thenReturn(accounts);
-		controller.findByUsername(username);
+		controller.findAccountsByUsername(username);
 		verify(accountView).showAccounts(accounts);
 	}
 	
@@ -69,7 +69,7 @@ public class AccountControllerTest {
 		String password = "passgiulio";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		when(passwordRepository.findByPassword(password)).thenReturn(accounts);
-		controller.findByPassword(password);
+		controller.findAccountsByPassword(password);
 		verify(accountView).showAccounts(accounts);
 	}
 	

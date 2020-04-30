@@ -16,21 +16,21 @@ public class AccountController {
 	}
 
 
-	public void findAll() {
+	public void findAllAccounts() {
 		accountView.showAccounts(accountRepository.findAll());
 	}
 
 
-	public void findByKey(String site) {
+	public void findAccountsByKey(String site) {
 		accountView.showAccounts(accountRepository.findByKey(site));
 	}
 	
-	public void findByUsername(String username) {
+	public void findAccountsByUsername(String username) {
 		accountView.showAccounts(accountRepository.findByUsername(username));
 	}
 
 
-	public void findByPassword(String password) {
+	public void findAccountsByPassword(String password) {
 		accountView.showAccounts(accountRepository.findByPassword(password));
 		
 	}
