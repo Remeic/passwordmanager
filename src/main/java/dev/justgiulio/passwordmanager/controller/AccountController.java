@@ -1,5 +1,8 @@
 package dev.justgiulio.passwordmanager.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;
 import dev.justgiulio.passwordmanager.view.AccountView;
@@ -38,9 +41,16 @@ public class AccountController {
 
 
 	public void saveAccount(Account accountToSave) {
+		boolean alreadyExistingAccount = accountRepository.findByKey(accountToSave.getSite())
+				.stream()
+				.anyMatch(x -> x.getCredential().getUsername().equals(accountToSave.getCredential().getUsername()));
+		if(alreadyExistingAccount) {
+			accountView.showError("Already existing credential for the same site with the same username", accountToSave);
+			return;
+		}
 		accountRepository.save(accountToSave);
 		accountView.accountIsAdded();
-		
 	}
+
 
 }
