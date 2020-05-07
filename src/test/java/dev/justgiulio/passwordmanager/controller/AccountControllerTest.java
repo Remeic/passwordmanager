@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import static java.util.Arrays.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,13 +75,49 @@ public class AccountControllerTest {
 	}
 	
 	@Test
-	public void saveAccountTest() {
+	public void saveAccountWhenIsDatabaseIsEmptyTest() {
 		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
 		InOrder inOrder = inOrder(accountRepository,accountView);
 		controller.saveAccount(accountToSave);
 		inOrder.verify(accountRepository).save(accountToSave);
 		inOrder.verify(accountView).accountIsAdded();
 	}
+	
+	@Test
+	public void saveAccountAlreadyExistsTest() {
+		String site = "github.com";
+		Account accountToSave = new Account("github.com", new Credential("giulio","passgiulio"));
+		Account accountAlreadySaved = new Account("github.com", new Credential("giulio","passgiulio"));
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(accountToSave, new Account("github.com",new Credential("remeic","passremeic"))));
+		controller.saveAccount(accountToSave);
+		verify(accountView).showError("Already existing credential for the same site with the same username", accountAlreadySaved);
+		verifyNoMoreInteractions(ignoreStubs(accountRepository));
+	}
+	
+	@Test
+	public void saveAccountWhenDatabaseIsNotEmptyTest() {
+		String site = "github.com";
+		Account accountToSave = new Account("github.com", new Credential("giulio","passgitlab"));
+		InOrder inOrder = inOrder(accountRepository,accountView);
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com",new Credential("remeic","passremeic"))));
+		controller.saveAccount(accountToSave);
+		inOrder.verify(accountRepository).save(accountToSave);
+		inOrder.verify(accountView).accountIsAdded();
+	}
+	
+	
+	@Test
+	public void modifyAccountPasswordTest() {
+		String site = "github.com";
+		Account accountToModified = new Account("github.com", new Credential("giulio","passMoreSecure123"));
+		InOrder inOrder = inOrder(accountRepository,accountView);
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com",new Credential("giulio","passgiulio"))));
+		controller.modify(accountToModified);
+		inOrder.verify(accountRepository).modify(accountToModified);
+		inOrder.verify(accountView).accountIsModified();
+	}
+	
+	
 	
 	
 }
