@@ -105,16 +105,49 @@ public class AccountControllerTest {
 		inOrder.verify(accountView).accountIsAdded();
 	}
 	
-	
 	@Test
 	public void modifyAccountPasswordTest() {
 		String site = "github.com";
-		Account accountToModified = new Account("github.com", new Credential("giulio","passMoreSecure123"));
+		String newCredentialPassword = "passMoreSecure123";
+		Account alreadySavedAccount = new Account("github.com", new Credential("giulio","passgiulio"));
 		InOrder inOrder = inOrder(accountRepository,accountView);
-		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com",new Credential("giulio","passgiulio"))));
-		controller.modify(accountToModified);
-		inOrder.verify(accountRepository).modify(accountToModified);
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(alreadySavedAccount));
+		controller.modifyPassword(alreadySavedAccount, newCredentialPassword);
+		inOrder.verify(accountRepository).save(new Account("github.com", new Credential("giulio",newCredentialPassword)));
 		inOrder.verify(accountView).accountIsModified();
+	}
+	
+	@Test
+	public void modifyAccountUsernameTest() {
+		String site = "github.com";
+		String newCredentialUsername = "remeic";
+		Account alreadySavedAccount = new Account("github.com",new Credential("giulio","passgiulio"));
+		InOrder inOrder = inOrder(accountRepository,accountView);
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(alreadySavedAccount));
+		controller.modifyUsername(alreadySavedAccount,newCredentialUsername);
+		inOrder.verify(accountRepository).delete(alreadySavedAccount);
+		inOrder.verify(accountRepository).save( new Account("github.com",new Credential(newCredentialUsername,"passgiulio")));
+		inOrder.verify(accountView).accountIsModified();
+	}
+	
+	@Test
+	public void modifyAccountPasswordWhenAccountDoesntExistsNotOperationPerfomedTest() {
+		String site = "github.com";
+		String newCredentialPassword = "passMoreSecure123";
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com", new Credential("remegiulio","remepassword"))));
+		controller.modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), newCredentialPassword);
+		verify(accountView).showError("Can't find any account for selected site with specified username");
+		verifyNoMoreInteractions(ignoreStubs(accountRepository));
+	}
+	
+	@Test
+	public void modifyAccountUsernameWhenAccountDoesntExistsNotOperationPerfomedTest() {
+		String site = "github.com";
+		String newCredentialUsername = "remeic";
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com", new Credential("remegiulio","remepassword"))));
+		controller.modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), newCredentialUsername);
+		verify(accountView).showError("Can't find any account for selected site with specified username");
+		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
 	
