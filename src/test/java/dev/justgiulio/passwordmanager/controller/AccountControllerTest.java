@@ -161,6 +161,16 @@ public class AccountControllerTest {
 		inOrder.verify(accountView).accountIsDeleted();
 	}
 	
+	@Test
+	public void deleteAccountNotExistsNoPerformOperationTest() {
+		String site = "github.com";
+		Account accountToDelete = new Account("github.com", new Credential("remegiulio","remepassword"));
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(accountToDelete));
+		controller.delete( new Account("github.com", new Credential("giulio","remepassword")));
+		verify(accountView).showError("Can't find any account for selected site");
+		verifyNoMoreInteractions(ignoreStubs(accountRepository));
+	}
+	
 	
 	
 	

@@ -74,6 +74,17 @@ public class AccountController {
 		
 	}
 	
+	public void delete(Account accountToDelete) {
+		if(checkIfAccountAlreadyExists(accountToDelete)) {
+			accountRepository.delete(accountToDelete);
+			accountView.accountIsDeleted();
+		}else {
+			accountView.showError("Can't find any account for selected site");
+		}
+
+	}
+	
+	
 	private boolean checkIfAccountAlreadyExists(Account account) {
 		return accountRepository.findByKey(account.getSite())
 				.stream()
@@ -81,11 +92,7 @@ public class AccountController {
 	}
 
 
-	public void delete(Account accountToDelete) {
-		accountRepository.delete(accountToDelete);
-		accountView.accountIsDeleted();
-
-	}
+	
 
 	
 
