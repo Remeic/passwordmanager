@@ -150,6 +150,17 @@ public class AccountControllerTest {
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
+	@Test
+	public void deleteAccountTest() {
+		String site = "github.com";
+		Account accountToDelete = new Account("github.com", new Credential("remegiulio","remepassword"));
+		InOrder inOrder = inOrder(accountRepository,accountView);
+		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(accountToDelete));
+		controller.delete(accountToDelete);
+		inOrder.verify(accountRepository).delete(accountToDelete);
+		inOrder.verify(accountView).accountIsDeleted();
+	}
+	
 	
 	
 	
