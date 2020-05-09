@@ -80,6 +80,13 @@ public class AccountController {
 				.anyMatch(x -> x.getCredential().getUsername().equals(account.getCredential().getUsername()));
 	}
 
+
+	public void delete(Account accountToDelete) {
+		accountRepository.delete(accountToDelete);
+		accountView.accountIsDeleted();
+
+	}
+
 	
 
 }

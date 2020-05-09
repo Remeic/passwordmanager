@@ -13,4 +13,6 @@ public interface AccountView {
 
 	void accountIsModified();
 
+	void accountIsDeleted();
+
 }
