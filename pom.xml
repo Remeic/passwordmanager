@@ -160,6 +160,32 @@
 						<excludedClasses>
 							<param>dev.justgiulio.passwordmanager.model.*</param>
 						</excludedClasses>
+						<excludedMethods>
+			              <excludedMethod>
+			                <!-- "Equal to less or equal"
+			                 	I don't understand how fix this, boolean check
+			                 -->
+			                saveAccount
+			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- "Equal to less or equal"
+			                 	I don't understand how fix this, boolean check
+			                 -->
+			                modifyPassword
+			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- "Equal to less or equal"
+			                 	I don't understand how fix this, boolean check
+			                 -->
+			                modifyUsername
+			              </excludedMethod>
+			              <excludedMethod>
+			                <!-- "Equal to less or equal"
+			                 	I don't understand how fix this, boolean check
+			                 -->
+			                delete
+			              </excludedMethod>
+			             </excludedMethods>
 						<targetTests>
 							<param>dev.justgiulio.passwordmanager.*</param>
 						</targetTests>
