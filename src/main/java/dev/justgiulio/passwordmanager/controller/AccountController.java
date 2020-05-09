@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import dev.justgiulio.passwordmanager.model.Account;
+import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;
 import dev.justgiulio.passwordmanager.view.AccountView;
 
@@ -41,16 +42,44 @@ public class AccountController {
 
 
 	public void saveAccount(Account accountToSave) {
-		boolean alreadyExistingAccount = accountRepository.findByKey(accountToSave.getSite())
-				.stream()
-				.anyMatch(x -> x.getCredential().getUsername().equals(accountToSave.getCredential().getUsername()));
-		if(alreadyExistingAccount) {
+		if(checkIfAccountAlreadyExists(accountToSave)) {
 			accountView.showError("Already existing credential for the same site with the same username", accountToSave);
-			return;
+		}else {
+			accountRepository.save(accountToSave);
+			accountView.accountIsAdded();
 		}
-		accountRepository.save(accountToSave);
-		accountView.accountIsAdded();
+		
 	}
 
+
+	public void modifyPassword(Account alreadySavedAccount, String newCredentialPassword) {
+		if(checkIfAccountAlreadyExists(alreadySavedAccount)) {
+			accountRepository.save(new Account(alreadySavedAccount.getSite(), new Credential(alreadySavedAccount.getCredential().getUsername(), newCredentialPassword)));
+			accountView.accountIsModified();
+		}else {
+			accountView.showError("Can't find any account for selected site with specified username");
+		}
+		
+	}
+	
+
+	public void modifyUsername(Account alreadySavedAccount, String newCredentialUsername) {
+		if(checkIfAccountAlreadyExists(alreadySavedAccount)) {
+			accountRepository.delete(alreadySavedAccount);
+			accountRepository.save(new Account(alreadySavedAccount.getSite(), new Credential(newCredentialUsername,alreadySavedAccount.getCredential().getPassword())));
+			accountView.accountIsModified();
+		}else {
+			accountView.showError("Can't find any account for selected site with specified username");
+		}
+		
+	}
+	
+	private boolean checkIfAccountAlreadyExists(Account account) {
+		return accountRepository.findByKey(account.getSite())
+				.stream()
+				.anyMatch(x -> x.getCredential().getUsername().equals(account.getCredential().getUsername()));
+	}
+
+	
 
 }
