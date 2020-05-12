@@ -93,6 +93,7 @@ public class AccountRepositoryRedistTest {
 		addAccountToRedisDatabase(new Account(key,new Credential("giulio","passgiulio")));
 		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByKey(key));
 		assertThat.containsExactly(new Account(key,new Credential("giulio","passgiulio")));
+		addAccountToRedisDatabase(new Account(key,new Credential("giulio","passgiulio2")));
 	}
 	
 	/**
@@ -203,6 +204,18 @@ public class AccountRepositoryRedistTest {
 		assertThatList.containsAll(savedAccounts);
 		assertThat(resultGithub).isEqualTo("OK");
 		assertThat(resultGitlab).isEqualTo("OK");
+	}
+	
+	@Test
+	public void testModifyExistingAccountUsingSaveUpdateValue() {
+		Account githubAccount = new Account("github",new Credential("giulio","passgiulio"));
+		Account accountToSaveAsModify = new Account("github",new Credential("giulio","passMoreSecure123"));
+		List<Account> savedAccounts = new ArrayList<>();
+		savedAccounts.add(githubAccount);
+		accountRedisRepository.save(githubAccount);
+		accountRedisRepository.save(accountToSaveAsModify);
+		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findByKey(githubAccount.getSite()));
+		assertThatList.containsExactly(accountToSaveAsModify);
 	}
 	
 	/**
