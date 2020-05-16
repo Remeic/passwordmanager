@@ -1,5 +1,7 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import dev.justgiulio.passwordmanager.model.Account;
@@ -28,6 +30,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         textFieldSiteName = new javax.swing.JTextField();
+        textFieldSiteName.setToolTipText("");
         textFieldSiteName.setName("textFieldSiteName");
         jLabel4 = new javax.swing.JLabel();
         textFieldUsername = new javax.swing.JTextField();
@@ -88,20 +91,14 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
         jLabel3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel3.setText("Site");
-
-        textFieldSiteName.setText("Site Name");
       
 
         jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel4.setText("Username");
-
-        textFieldUsername.setText("Your Username");
         
 
         jLabel5.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel5.setText("Password");
-
-        textFieldPassword.setText("Your Password");
         
 
         buttonSaveAccount.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
@@ -278,16 +275,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         ));
         jScrollPane1.setViewportView(tableDisplayedAccounts);
 
-        textFieldSearchText.setText("Add some text");
-
         jLabel10.setText("Text to FInd");
 
         buttonFindAllAccounts.setText("Find All");
-        buttonFindAllAccounts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonFindAllAccountsActionPerformed(evt);
-            }
-        });
+       
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -401,7 +392,21 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         );
 
         tabbedPanel.getAccessibleContext().setAccessibleName("Save Account");
-
+        
+        final KeyAdapter btnSaveEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(textFieldSiteName.getText().length() != 0 && textFieldUsername.getText().length() != 0 && textFieldPassword.getText().length() != 0)
+					buttonSaveAccount.setEnabled(true);
+	            else
+	            {
+	            	buttonSaveAccount.setEnabled(false);
+	            }
+			}
+		};
+		textFieldSiteName.addKeyListener(btnSaveEnabler);
+		textFieldUsername.addKeyListener(btnSaveEnabler);
+		textFieldPassword.addKeyListener(btnSaveEnabler);
         pack();
     }// </editor-fold>                        
 
