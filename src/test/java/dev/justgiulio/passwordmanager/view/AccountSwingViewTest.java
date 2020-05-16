@@ -62,5 +62,14 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonModifyPassword").requireDisabled();
 	}
 	
+	
+	@Test @GUITest
+	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
+		window.textBox("textFieldSiteName").enterText("github.com");
+		window.textBox("textFieldUsername").enterText("remeic");
+		window.textBox("textFieldPassword").enterText("passgiulio");
+		window.button("buttonSaveAccount").requireEnabled();
+	}
+	
 
 }
