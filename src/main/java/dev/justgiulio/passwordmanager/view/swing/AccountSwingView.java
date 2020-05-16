@@ -4,6 +4,10 @@ import java.util.List;
 
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.view.AccountView;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
 
 public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
@@ -32,6 +36,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         textFieldPassword = new javax.swing.JTextField();
         textFieldPassword.setName("textFieldPassword");
         buttonSaveAccount = new javax.swing.JButton();
+        buttonSaveAccount.setEnabled(false);
         buttonSaveAccount.setName("buttonSaveAccount");
         labelErrorMessage = new javax.swing.JLabel();
         labelErrorMessage.setName("labelErrorMessage");
@@ -51,6 +56,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonGeneratePassword = new javax.swing.JButton();
         buttonGeneratePassword.setName("buttonGeneratePassword");
         textFieldGeneratedPassword = new javax.swing.JTextField();
+        textFieldGeneratedPassword.setEditable(false);
         textFieldGeneratedPassword.setName("textFieldGeneratedPassword");
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -65,10 +71,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonFindAllAccounts.setName("buttonFindAllAccounts");
         jSeparator1 = new javax.swing.JSeparator();
         buttonFindBySiteAccounts = new javax.swing.JButton();
+        buttonFindBySiteAccounts.setEnabled(false);
         buttonFindBySiteAccounts.setName("buttonFindBySiteAccounts");
         buttonFindByUsernameAccounts = new javax.swing.JButton();
+        buttonFindByUsernameAccounts.setEnabled(false);
         buttonFindByUsernameAccounts.setName("buttonFindByUsernameAccounts");
         buttonFindByPasswordAccounts = new javax.swing.JButton();
+        buttonFindByPasswordAccounts.setEnabled(false);
         buttonFindByPasswordAccounts.setName("buttonFindByPasswordAccounts");
         jLabel11 = new javax.swing.JLabel();
 
@@ -92,13 +101,11 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         jLabel5.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel5.setText("Password");
 
-        textFieldPassword.setText("Your Passoword");
+        textFieldPassword.setText("Your Password");
         
 
         buttonSaveAccount.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         buttonSaveAccount.setText("Save");
-
-        labelErrorMessage.setText("Error Label");
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -289,59 +296,82 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonFindByUsernameAccounts.setText("Find By Username");
 
         buttonFindByPasswordAccounts.setText("Find By Password");
+        
+        JButton buttonDeleteAccount = new JButton("Delete");
+        buttonDeleteAccount.setName("buttonDeleteAccount");
+        buttonDeleteAccount.setEnabled(false);
+        
+        JButton buttonModifyUsername = new JButton("Modify Username");
+        buttonModifyUsername.setName("buttonModifyUsername");
+        buttonModifyUsername.setEnabled(false);
+        
+        JButton buttonModifyPassword = new JButton("Modify Password");
+        buttonModifyPassword.setName("buttonModifyPassword");
+        buttonModifyPassword.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(buttonFindAllAccounts)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(textFieldSearchText, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonFindBySiteAccounts)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonFindByUsernameAccounts)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonFindByPasswordAccounts)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+        	jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jLabel9)
+        						.addGroup(jPanel2Layout.createSequentialGroup()
+        							.addComponent(buttonFindAllAccounts)
+        							.addGap(18)
+        							.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jLabel10)
+        						.addGroup(jPanel2Layout.createSequentialGroup()
+        							.addComponent(textFieldSearchText, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+        							.addGap(18)
+        							.addComponent(buttonFindBySiteAccounts)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(buttonFindByUsernameAccounts)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(buttonFindByPasswordAccounts)))
+        					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        				.addComponent(jScrollPane1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addComponent(buttonDeleteAccount)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(buttonModifyUsername)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(buttonModifyPassword)
+        					.addContainerGap(426, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonFindAllAccounts)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFieldSearchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonFindBySiteAccounts)
-                            .addComponent(buttonFindByUsernameAccounts)
-                            .addComponent(buttonFindByPasswordAccounts))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+        	jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addGap(17)
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addComponent(jLabel9)
+        					.addGap(12)
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(buttonFindAllAccounts)
+        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addComponent(jLabel10)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(textFieldSearchText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(buttonFindBySiteAccounts)
+        						.addComponent(buttonFindByUsernameAccounts)
+        						.addComponent(buttonFindByPasswordAccounts))))
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(buttonDeleteAccount)
+        				.addComponent(buttonModifyUsername)
+        				.addComponent(buttonModifyPassword))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        jPanel2.setLayout(jPanel2Layout);
 
         tabbedPanel.addTab("Saved Password", jPanel2);
 
