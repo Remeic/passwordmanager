@@ -36,27 +36,30 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	public void testControlsInitialStates() {
 
 		//Verify Components on first panel of tabbedPanel
-		window.label("labelErrorMessage");
-		window.button("buttonGeneratePassword").isEnabled();
-		window.button("buttonSaveAccount").isEnabled();
+		window.label("labelErrorMessage").requireText("");
+		window.button("buttonGeneratePassword").requireEnabled();
+		window.button("buttonSaveAccount").requireDisabled();
 		window.tabbedPane("tabbedPanel").requireVisible();
 		window.radioButton("radioButtonHighStrength");
 		window.radioButton("radioButtonLowStrength");
 		window.radioButton("radioButtonMediumStrength").check(true);
 		window.slider("sliderPasswordLength");
-		window.textBox("textFieldGeneratedPassword");
-		window.textBox("textFieldPassword");
-		window.textBox("textFieldSiteName");
-		window.textBox("textFieldUsername");
+		window.textBox("textFieldGeneratedPassword").requireText("");
+		window.textBox("textFieldGeneratedPassword").requireNotEditable();
+		window.textBox("textFieldPassword").requireText("Your Password");
+		window.textBox("textFieldSiteName").requireText("Site Name");
+		window.textBox("textFieldUsername").requireText("Your Username");
 		//Verify Components on second panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.button("buttonFindAllAccounts");
-		window.button("buttonFindByPasswordAccounts").isEnabled();
-		window.button("buttonFindBySiteAccounts").isEnabled();
-		window.button("buttonFindByUsernameAccounts").isEnabled();
+		window.button("buttonFindAllAccounts").requireEnabled();
+		window.button("buttonFindByPasswordAccounts").requireDisabled();
+		window.button("buttonFindBySiteAccounts").requireDisabled();
+		window.button("buttonFindByUsernameAccounts").requireDisabled();
 		window.table("tableDisplayedAccounts");
-		window.textBox("textFieldSearchText");
-
+		window.textBox("textFieldSearchText").requireText("Add some text");
+		window.button("buttonDeleteAccount").requireDisabled();
+//		window.button("buttonModifyUsername").requireDisabled();
+//		window.button("buttonModifyPassword").requireDisabled();
 	}
 	
 
