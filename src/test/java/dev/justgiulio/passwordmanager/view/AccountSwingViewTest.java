@@ -46,9 +46,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.slider("sliderPasswordLength");
 		window.textBox("textFieldGeneratedPassword").requireText("");
 		window.textBox("textFieldGeneratedPassword").requireNotEditable();
-		window.textBox("textFieldPassword").requireText("Your Password");
-		window.textBox("textFieldSiteName").requireText("Site Name");
-		window.textBox("textFieldUsername").requireText("Your Username");
+		window.textBox("textFieldPassword").requireText("");
+		window.textBox("textFieldSiteName").requireText("");
+		window.textBox("textFieldUsername").requireText("");
 		//Verify Components on second panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").requireEnabled();
@@ -56,10 +56,10 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonFindBySiteAccounts").requireDisabled();
 		window.button("buttonFindByUsernameAccounts").requireDisabled();
 		window.table("tableDisplayedAccounts");
-		window.textBox("textFieldSearchText").requireText("Add some text");
+		window.textBox("textFieldSearchText").requireText("");
 		window.button("buttonDeleteAccount").requireDisabled();
-//		window.button("buttonModifyUsername").requireDisabled();
-//		window.button("buttonModifyPassword").requireDisabled();
+		window.button("buttonModifyUsername").requireDisabled();
+		window.button("buttonModifyPassword").requireDisabled();
 	}
 	
 
