@@ -36,6 +36,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	public void testControlsInitialStates() {
 
 		//Verify Components on first panel of tabbedPanel
+		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.label("labelErrorMessage").requireText("");
 		window.button("buttonGeneratePassword").requireEnabled();
 		window.button("buttonSaveAccount").requireDisabled();
@@ -66,9 +67,51 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
 		window.textBox("textFieldSiteName").enterText("github.com");
+		window.textBox("textFieldUsername").enterText("");
+		window.textBox("textFieldPassword").enterText("");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("");
+		window.textBox("textFieldUsername").enterText("remeic");
+		window.textBox("textFieldPassword").enterText("");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("");
+		window.textBox("textFieldUsername").enterText("");
+		window.textBox("textFieldPassword").enterText("passgiulio");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("github.com");
+		window.textBox("textFieldUsername").enterText("remeic");
+		window.textBox("textFieldPassword").enterText("");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("");
+		window.textBox("textFieldUsername").enterText("remeic");
+		window.textBox("textFieldPassword").enterText("passgiulio");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("github.com");
+		window.textBox("textFieldUsername").enterText("");
+		window.textBox("textFieldPassword").enterText("passgiulio");
+		window.button("buttonSaveAccount").requireDisabled();
+		resetInputTextAccountCredential();
+		
+		window.textBox("textFieldSiteName").enterText("github.com");
 		window.textBox("textFieldUsername").enterText("remeic");
 		window.textBox("textFieldPassword").enterText("passgiulio");
 		window.button("buttonSaveAccount").requireEnabled();
+	}
+	
+	private void resetInputTextAccountCredential() {
+		window.textBox("textFieldSiteName").setText("");
+		window.textBox("textFieldUsername").setText("");
+		window.textBox("textFieldPassword").setText("");
 	}
 	
 

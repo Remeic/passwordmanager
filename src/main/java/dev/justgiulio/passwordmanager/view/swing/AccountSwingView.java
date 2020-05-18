@@ -396,11 +396,11 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         final KeyAdapter btnSaveEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(textFieldSiteName.getText().length() != 0 && textFieldUsername.getText().length() != 0 && textFieldPassword.getText().length() != 0)
-					buttonSaveAccount.setEnabled(true);
+				if(textFieldSiteName.getText().trim().isEmpty() || textFieldUsername.getText().trim().isEmpty() || textFieldPassword.getText().trim().isEmpty())
+					buttonSaveAccount.setEnabled(false);
 	            else
 	            {
-	            	buttonSaveAccount.setEnabled(false);
+	            	buttonSaveAccount.setEnabled(true);
 	            }
 			}
 		};
