@@ -2,6 +2,7 @@ package dev.justgiulio.passwordmanager.view.swing;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Hashtable;
 import java.util.List;
 
 import dev.justgiulio.passwordmanager.model.Account;
@@ -10,6 +11,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
@@ -21,7 +23,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
                  
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+    	radioButtonGroupPasswordStrength = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         tabbedPanel = new javax.swing.JTabbedPane();
         tabbedPanel.setName("tabbedPanel");
@@ -407,6 +409,19 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 		textFieldSiteName.addKeyListener(btnSaveEnabler);
 		textFieldUsername.addKeyListener(btnSaveEnabler);
 		textFieldPassword.addKeyListener(btnSaveEnabler);
+		
+		radioButtonGroupPasswordStrength.add(radioButtonLowStrength);
+		radioButtonGroupPasswordStrength.add(radioButtonMediumStrength);
+		radioButtonGroupPasswordStrength.add(radioButtonHighStrength);
+		
+		 sliderLengthPasswordLabel = new Hashtable<>();
+		 sliderLengthPasswordLabel.put(1, new JLabel("1"));
+		 sliderLengthPasswordLabel.put(16, new JLabel("15"));
+		 sliderLengthPasswordLabel.put(32, new JLabel("32"));
+        sliderPasswordLength.setLabelTable(sliderLengthPasswordLabel);
+        sliderPasswordLength.setPaintLabels(true);
+	        
+	        
         pack();
     }// </editor-fold>                        
 
@@ -418,7 +433,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private javax.swing.JButton buttonFindBySiteAccounts;
     private javax.swing.JButton buttonFindByUsernameAccounts;
     private javax.swing.JButton buttonGeneratePassword;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup radioButtonGroupPasswordStrength;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton buttonSaveAccount;
     private javax.swing.JLabel jLabel1;
@@ -451,6 +466,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private javax.swing.JTextField textFieldSearchText;
     private javax.swing.JTextField textFieldSiteName;
     private javax.swing.JTextField textFieldUsername;
+    private Hashtable<Integer, JLabel> sliderLengthPasswordLabel;
     
 	@Override
 	public void showAccounts(List<Account> accounts) {
