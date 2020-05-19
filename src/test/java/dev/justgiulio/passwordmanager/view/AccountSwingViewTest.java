@@ -108,6 +108,21 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonSaveAccount").requireEnabled();
 	}
 	
+	
+	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.textBox("textFieldSearchText").enterText("github.com");
+		window.button("buttonFindByPasswordAccounts").requireEnabled();
+		window.button("buttonFindBySiteAccounts").requireEnabled();
+		window.button("buttonFindByUsernameAccounts").requireEnabled();
+		
+		window.textBox("textFieldSearchText").setText("");
+		window.button("buttonFindByPasswordAccounts").requireDisabled();
+		window.button("buttonFindBySiteAccounts").requireDisabled();
+		window.button("buttonFindByUsernameAccounts").requireDisabled();
+
+	}
+	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").setText("");
 		window.textBox("textFieldUsername").setText("");
