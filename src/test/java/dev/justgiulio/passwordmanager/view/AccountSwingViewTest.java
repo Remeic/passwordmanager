@@ -1,5 +1,8 @@
 package dev.justgiulio.passwordmanager.view;
 
+
+import static org.mockito.Mockito.verify;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,19 +15,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import dev.justgiulio.passwordmanager.controller.AccountController;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
+
+import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 @RunWith(GUITestRunner.class)
 public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	private FrameFixture window;
 	private AccountSwingView accountSwingView;
 	
+	@Mock
+	private AccountController accountController;
+	
 	@Before
 	public void onSetUp() {
+		MockitoAnnotations.initMocks(this);
 		GuiActionRunner.execute(() -> {
 			accountSwingView = new AccountSwingView();
+			accountSwingView.setAccountController(accountController);
 			return accountSwingView;
 		});
 		window = new FrameFixture(robot(), accountSwingView);
@@ -62,8 +75,8 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonDeleteAccount").requireDisabled();
 		window.button("buttonModifyUsername").requireDisabled();
 		window.button("buttonModifyPassword").requireDisabled();
+		window.textBox("textFieldUpdateCell").requireDisabled();
 		window.textBox("textFieldUpdateCell").requireText("");
-		window.button("buttonUpdateCell").requireDisabled();
 
 	}
 	
@@ -134,6 +147,8 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
 		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").requireText("");
+		window.textBox("textFieldUpdateCell").requireEnabled();
 		window.button("buttonDeleteAccount").requireEnabled();
 		window.button("buttonModifyUsername").requireEnabled();
 		window.button("buttonModifyPassword").requireEnabled();
@@ -144,6 +159,53 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonModifyPassword").requireDisabled();
 		
 		
+	}
+	
+	@Test @GUITest
+	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndUserClickModifyButtonsCellUpdateComponentsAreEnable() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonModifyUsername").click();
+		window.textBox("textFieldUpdateCell").requireText("");
+		
+		window.table("tableDisplayedAccounts").unselectRows(0);
+		window.textBox("textFieldUpdateCell").requireText("");
+		
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonModifyPassword").click();
+		window.textBox("textFieldUpdateCell").requireEnabled();
+		window.textBox("textFieldUpdateCell").requireText("");
+		
+	}
+	
+	@Test
+	public void testModifyUsernameButtonsDelegateToController() {
+		final String UPDATED_USERNAME = "newUsername";
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		accountSwingView.setListAccountTableData(accounts);
+
+		//Verify modifyUsername called when action performed on Modify Username Button
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
+		window.button("buttonModifyUsername").click();
+		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_USERNAME);		
+	}
+	
+	@Test
+	public void testModifyPasswordButtonDelegateToController() {
+		final String UPDATED_PASSWORD = "newPassword";
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		accountSwingView.setListAccountTableData(accounts);
+		//Verify modifyUsername called when action performed on Modify Password Button
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
+		window.button("buttonModifyPassword").click();
+		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_PASSWORD);
+
 	}
 	
 	private void resetInputTextAccountCredential() {
