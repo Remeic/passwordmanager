@@ -62,6 +62,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonDeleteAccount").requireDisabled();
 		window.button("buttonModifyUsername").requireDisabled();
 		window.button("buttonModifyPassword").requireDisabled();
+		window.textBox("textFieldUpdateCell").requireText("");
+		window.button("buttonUpdateCell").requireDisabled();
+
 	}
 	
 	

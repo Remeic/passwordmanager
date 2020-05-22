@@ -19,6 +19,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
@@ -302,6 +307,22 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         JButton buttonModifyPassword = new JButton("Modify Password");
         buttonModifyPassword.setName("buttonModifyPassword");
         buttonModifyPassword.setEnabled(false);
+        
+        textFieldUpdateCell = new JTextField();
+        textFieldUpdateCell.setName("textFieldUpdateCell");
+        textFieldUpdateCell.setEnabled(false);
+        textFieldUpdateCell.setColumns(10);
+        
+        JSeparator separator = new JSeparator();
+        separator.setOrientation(SwingConstants.VERTICAL);
+        
+        JButton buttonUpdateCell = new JButton("Update");
+        buttonUpdateCell.setName("buttonUpdateCell");
+        buttonUpdateCell.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        buttonUpdateCell.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2Layout.setHorizontalGroup(
@@ -327,15 +348,21 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         							.addComponent(buttonFindByUsernameAccounts)
         							.addPreferredGap(ComponentPlacement.UNRELATED)
         							.addComponent(buttonFindByPasswordAccounts)))
-        					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        				.addComponent(scrollPaneAccountsTable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+        					.addContainerGap(209, Short.MAX_VALUE))
+        				.addComponent(scrollPaneAccountsTable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
         				.addGroup(jPanel2Layout.createSequentialGroup()
         					.addComponent(buttonDeleteAccount)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
         					.addComponent(buttonModifyUsername)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
         					.addComponent(buttonModifyPassword)
-        					.addContainerGap(426, Short.MAX_VALUE))))
+        					.addGap(13)
+        					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addGap(13)
+        					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(buttonUpdateCell)
+        					.addGap(257))))
         );
         jPanel2Layout.setVerticalGroup(
         	jPanel2Layout.createParallelGroup(Alignment.LEADING)
@@ -359,11 +386,18 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         			.addGap(18)
         			.addComponent(scrollPaneAccountsTable, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(buttonDeleteAccount)
-        				.addComponent(buttonModifyUsername)
-        				.addComponent(buttonModifyPassword))
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(buttonDeleteAccount)
+        						.addComponent(buttonModifyUsername)
+        						.addComponent(buttonModifyPassword)
+        						.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(buttonUpdateCell))
+        					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+        					.addGap(15))))
         );
         jPanel2.setLayout(jPanel2Layout);
 
@@ -509,6 +543,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private Hashtable<Integer, JLabel> sliderLengthPasswordLabel;
     private List<Account> displayedAccounts;
     private DisplayedAccountsTableModel modelDisplayedAccounts;
+    private JTextField textFieldUpdateCell;
 
     
     public void setListAccountTableData(List<Account> displayedAccounts){
