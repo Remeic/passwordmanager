@@ -472,11 +472,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
 				if(tableDisplayedAccounts.getSelectedRowCount() > 0) {
-					buttonDeleteAccount.setEnabled(true);
-					buttonModifyPassword.setEnabled(true);
-					buttonModifyUsername.setEnabled(true);
 					textFieldUpdateCell.setEnabled(true);
 					textFieldUpdateCell.setText("");
+					buttonDeleteAccount.setEnabled(true);
 				}
 				else {
 					buttonDeleteAccount.setEnabled(false);
@@ -487,6 +485,22 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 				
 			}
         };
+        
+        final KeyAdapter modifyButtonsEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(textFieldUpdateCell.getText().trim().isEmpty()) {
+					buttonModifyPassword.setEnabled(false);
+					buttonModifyUsername.setEnabled(false);
+				}else
+	            {
+					buttonModifyPassword.setEnabled(true);
+					buttonModifyUsername.setEnabled(true);
+	            }
+			}
+		};
+		
+		textFieldUpdateCell.addKeyListener(modifyButtonsEnabler);
         
         tableDisplayedAccounts.getSelectionModel().addListSelectionListener(accountsButtonEnabler);
         ActionListener updateCellComponentsEnabler = new ActionListener() {

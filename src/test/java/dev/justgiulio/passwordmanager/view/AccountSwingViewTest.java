@@ -142,7 +142,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	}
 	
 	@Test @GUITest
-	public void testWhenAccountIsSelectedOnDisplayedAccountsTableMofidyButtonsAreEnable() {
+	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndFieldCellUpdateIsNotEmptyMofidyButtonsAreEnable() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
@@ -150,14 +150,13 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldUpdateCell").requireText("");
 		window.textBox("textFieldUpdateCell").requireEnabled();
 		window.button("buttonDeleteAccount").requireEnabled();
-		window.button("buttonModifyUsername").requireEnabled();
-		window.button("buttonModifyPassword").requireEnabled();
-		
-		window.table("tableDisplayedAccounts").unselectRows(0);
-		window.button("buttonDeleteAccount").requireDisabled();
 		window.button("buttonModifyUsername").requireDisabled();
 		window.button("buttonModifyPassword").requireDisabled();
 		
+		
+		window.textBox("textFieldUpdateCell").enterText("newValue");
+		window.button("buttonModifyUsername").requireEnabled();
+		window.button("buttonModifyPassword").requireEnabled();
 		
 	}
 	
