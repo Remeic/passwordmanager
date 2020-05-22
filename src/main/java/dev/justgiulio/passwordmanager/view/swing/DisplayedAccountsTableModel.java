@@ -33,7 +33,7 @@ public class DisplayedAccountsTableModel  extends AbstractTableModel {
     
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+    	return false;
     }
     
 	@Override

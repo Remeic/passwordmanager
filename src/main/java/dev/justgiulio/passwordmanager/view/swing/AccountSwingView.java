@@ -3,9 +3,11 @@ package dev.justgiulio.passwordmanager.view.swing;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
+import dev.justgiulio.passwordmanager.controller.AccountController;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.AccountView;
@@ -15,6 +17,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JButton;
@@ -301,10 +305,12 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonDeleteAccount.setEnabled(false);
         
         JButton buttonModifyUsername = new JButton("Modify Username");
+        buttonModifyUsername.setActionCommand("MODIFY_USERNAME");
         buttonModifyUsername.setName("buttonModifyUsername");
         buttonModifyUsername.setEnabled(false);
         
         JButton buttonModifyPassword = new JButton("Modify Password");
+        buttonModifyPassword.setActionCommand("MODIFY_PASSWORD");
         buttonModifyPassword.setName("buttonModifyPassword");
         buttonModifyPassword.setEnabled(false);
         
@@ -315,14 +321,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         
         JSeparator separator = new JSeparator();
         separator.setOrientation(SwingConstants.VERTICAL);
-        
-        JButton buttonUpdateCell = new JButton("Update");
-        buttonUpdateCell.setName("buttonUpdateCell");
-        buttonUpdateCell.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        buttonUpdateCell.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2Layout.setHorizontalGroup(
@@ -352,17 +350,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         				.addComponent(scrollPaneAccountsTable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
         				.addGroup(jPanel2Layout.createSequentialGroup()
         					.addComponent(buttonDeleteAccount)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
         					.addComponent(buttonModifyUsername)
-        					.addPreferredGap(ComponentPlacement.UNRELATED)
-        					.addComponent(buttonModifyPassword)
-        					.addGap(13)
-        					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        					.addGap(13)
-        					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addGap(18)
-        					.addComponent(buttonUpdateCell)
-        					.addGap(257))))
+        					.addComponent(buttonModifyPassword)
+        					.addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
         	jPanel2Layout.createParallelGroup(Alignment.LEADING)
@@ -385,19 +381,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         						.addComponent(buttonFindByPasswordAccounts))))
         			.addGap(18)
         			.addComponent(scrollPaneAccountsTable, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(jPanel2Layout.createSequentialGroup()
-        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(buttonDeleteAccount)
-        						.addComponent(buttonModifyUsername)
-        						.addComponent(buttonModifyPassword)
-        						.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(buttonUpdateCell))
-        					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        				.addGroup(jPanel2Layout.createSequentialGroup()
-        					.addComponent(separator, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-        					.addGap(15))))
+        				.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(buttonDeleteAccount)
+        					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(buttonModifyUsername)
+        					.addComponent(buttonModifyPassword))
+        				.addComponent(separator, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+        			.addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel2.setLayout(jPanel2Layout);
 
@@ -449,7 +441,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 					buttonFindByPasswordAccounts.setEnabled(false);
 					buttonFindBySiteAccounts.setEnabled(false);
 					buttonFindByUsernameAccounts.setEnabled(false);
-
 				}else
 	            {
 	            	buttonFindByPasswordAccounts.setEnabled(true);
@@ -484,18 +475,42 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 					buttonDeleteAccount.setEnabled(true);
 					buttonModifyPassword.setEnabled(true);
 					buttonModifyUsername.setEnabled(true);
+					textFieldUpdateCell.setEnabled(true);
+					textFieldUpdateCell.setText("");
 				}
 				else {
 					buttonDeleteAccount.setEnabled(false);
 					buttonModifyPassword.setEnabled(false);
 					buttonModifyUsername.setEnabled(false);
+					textFieldUpdateCell.setEnabled(false);
 				}
 				
 			}
         };
         
         tableDisplayedAccounts.getSelectionModel().addListSelectionListener(accountsButtonEnabler);
-	        
+        ActionListener updateCellComponentsEnabler = new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent actionEvent) {
+				int selectedRow = tableDisplayedAccounts.getSelectedRow();
+        		if(actionEvent.getActionCommand().equals(ACTION_MODIFY_USERNAME)) {
+        			SwingUtilities.invokeLater(() ->{
+            			accountController.modifyUsername(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
+
+        			});
+        		}
+        		else if(actionEvent.getActionCommand().equals(ACTION_MODIFY_PASSWORD)) {
+        			SwingUtilities.invokeLater(() ->{
+            			accountController.modifyPassword(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
+        			});
+        		}
+            }
+        };
+        
+        buttonModifyUsername.addActionListener(updateCellComponentsEnabler);
+        buttonModifyPassword.addActionListener(updateCellComponentsEnabler);
+
+        
         pack();
     }// </editor-fold>                        
 
@@ -544,12 +559,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private List<Account> displayedAccounts;
     private DisplayedAccountsTableModel modelDisplayedAccounts;
     private JTextField textFieldUpdateCell;
-
+    private final String ACTION_MODIFY_USERNAME = "MODIFY_USERNAME";
+    private final String ACTION_MODIFY_PASSWORD = "MODIFY_PASSWORD";
+    private transient AccountController accountController;
     
     public void setListAccountTableData(List<Account> displayedAccounts){
-    	SwingUtilities.invokeLater(() ->
-    		modelDisplayedAccounts.setModel(displayedAccounts)
-		);
+    	SwingUtilities.invokeLater(() -> {
+    		this.displayedAccounts = displayedAccounts;
+    		modelDisplayedAccounts.setModel(displayedAccounts);
+    	});
     }
     
 	@Override
@@ -591,5 +609,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 	public void accountIsDeleted() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void setAccountController(AccountController accountController) {
+		this.accountController = accountController;
 	}
 }
