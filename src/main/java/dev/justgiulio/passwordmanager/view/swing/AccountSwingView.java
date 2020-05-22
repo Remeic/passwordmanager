@@ -2,27 +2,43 @@ package dev.justgiulio.passwordmanager.view.swing;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import dev.justgiulio.passwordmanager.model.Account;
+import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.AccountView;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
    
-    public AccountSwingView() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public AccountSwingView() {
         initComponents();
     }
 
                  
     private void initComponents() {
-
+    	modelDisplayedAccounts = new DisplayedAccountsTableModel();
+        tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
+        tableDisplayedAccounts.setName("tableDisplayedAccounts");
+    	scrollPaneAccountsTable = new javax.swing.JScrollPane(tableDisplayedAccounts);
+        scrollPaneAccountsTable.setViewportView(tableDisplayedAccounts);
     	radioButtonGroupPasswordStrength = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         tabbedPanel = new javax.swing.JTabbedPane();
@@ -65,10 +81,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         textFieldGeneratedPassword.setName("textFieldGeneratedPassword");
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableDisplayedAccounts = new javax.swing.JTable();
-        tableDisplayedAccounts.setName("tableDisplayedAccounts");
+        jLabel9 = new javax.swing.JLabel();    
         textFieldSearchText = new javax.swing.JTextField();
         textFieldSearchText.setName("textFieldSearchText");
         jLabel10 = new javax.swing.JLabel();
@@ -109,54 +122,53 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonSaveAccount, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                            .addComponent(textFieldSiteName)
-                            .addComponent(textFieldUsername)
-                            .addComponent(textFieldPassword)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelErrorMessage))
-                .addGap(0, 0, Short.MAX_VALUE))
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(buttonSaveAccount, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(jLabel3)
+        					.addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+        					.addComponent(textFieldSiteName)
+        					.addComponent(textFieldUsername)
+        					.addComponent(textFieldPassword)
+        					.addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(jLabel5, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(labelErrorMessage))
+        			.addPreferredGap(ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+        			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldSiteName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonSaveAccount))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(labelErrorMessage)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(6)
+        					.addComponent(jLabel2)
+        					.addGap(18)
+        					.addComponent(jLabel3)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(textFieldSiteName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel4)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(textFieldUsername, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel5)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(textFieldPassword, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(buttonSaveAccount)
+        					.addGap(18)
+        					.addComponent(labelErrorMessage))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addGap(11)
+        					.addComponent(jSeparator2, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)))
+        			.addContainerGap())
         );
+        jPanel3.setLayout(jPanel3Layout);
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         jLabel1.setText("Passowrd Generator");
@@ -240,42 +252,31 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, 578, GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jPanel3, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+        				.addComponent(jPanel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        jPanel1.setLayout(jPanel1Layout);
 
         tabbedPanel.addTab("Add | Generate Password", jPanel1);
 
         jLabel9.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel9.setText("Accounts");
 
-        tableDisplayedAccounts.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tableDisplayedAccounts);
+       
 
         jLabel10.setText("Text to FInd");
 
@@ -327,7 +328,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         							.addPreferredGap(ComponentPlacement.UNRELATED)
         							.addComponent(buttonFindByPasswordAccounts)))
         					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        				.addComponent(jScrollPane1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+        				.addComponent(scrollPaneAccountsTable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         				.addGroup(jPanel2Layout.createSequentialGroup()
         					.addComponent(buttonDeleteAccount)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -356,7 +357,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         						.addComponent(buttonFindByUsernameAccounts)
         						.addComponent(buttonFindByPasswordAccounts))))
         			.addGap(18)
-        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(scrollPaneAccountsTable, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(buttonDeleteAccount)
@@ -406,21 +407,60 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 	            }
 			}
 		};
+		
+		final KeyAdapter findButtonsEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(textFieldSearchText.getText().trim().isEmpty()) {
+					buttonFindByPasswordAccounts.setEnabled(false);
+					buttonFindBySiteAccounts.setEnabled(false);
+					buttonFindByUsernameAccounts.setEnabled(false);
+
+				}else
+	            {
+	            	buttonFindByPasswordAccounts.setEnabled(true);
+					buttonFindBySiteAccounts.setEnabled(true);
+					buttonFindByUsernameAccounts.setEnabled(true);
+	            }
+			}
+		};
+		
 		textFieldSiteName.addKeyListener(btnSaveEnabler);
 		textFieldUsername.addKeyListener(btnSaveEnabler);
 		textFieldPassword.addKeyListener(btnSaveEnabler);
+		
+		textFieldSearchText.addKeyListener(findButtonsEnabler);
 		
 		radioButtonGroupPasswordStrength.add(radioButtonLowStrength);
 		radioButtonGroupPasswordStrength.add(radioButtonMediumStrength);
 		radioButtonGroupPasswordStrength.add(radioButtonHighStrength);
 		
-		 sliderLengthPasswordLabel = new Hashtable<>();
-		 sliderLengthPasswordLabel.put(1, new JLabel("1"));
-		 sliderLengthPasswordLabel.put(16, new JLabel("15"));
-		 sliderLengthPasswordLabel.put(32, new JLabel("32"));
+		sliderLengthPasswordLabel = new Hashtable<>();
+		sliderLengthPasswordLabel.put(1, new JLabel("1"));
+		sliderLengthPasswordLabel.put(16, new JLabel("15"));
+		sliderLengthPasswordLabel.put(32, new JLabel("32"));
         sliderPasswordLength.setLabelTable(sliderLengthPasswordLabel);
         sliderPasswordLength.setPaintLabels(true);
-	        
+	    
+        final ListSelectionListener accountsButtonEnabler = new ListSelectionListener(){
+            
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				if(tableDisplayedAccounts.getSelectedRowCount() > 0) {
+					buttonDeleteAccount.setEnabled(true);
+					buttonModifyPassword.setEnabled(true);
+					buttonModifyUsername.setEnabled(true);
+				}
+				else {
+					buttonDeleteAccount.setEnabled(false);
+					buttonModifyPassword.setEnabled(false);
+					buttonModifyUsername.setEnabled(false);
+				}
+				
+			}
+        };
+        
+        tableDisplayedAccounts.getSelectionModel().addListSelectionListener(accountsButtonEnabler);
 	        
         pack();
     }// </editor-fold>                        
@@ -451,7 +491,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane scrollPaneAccountsTable;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane tabbedPanel;
@@ -467,6 +507,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private javax.swing.JTextField textFieldSiteName;
     private javax.swing.JTextField textFieldUsername;
     private Hashtable<Integer, JLabel> sliderLengthPasswordLabel;
+    private List<Account> displayedAccounts;
+    private DisplayedAccountsTableModel modelDisplayedAccounts;
+
+    
+    public void setListAccountTableData(List<Account> displayedAccounts){
+    	SwingUtilities.invokeLater(() ->
+    		modelDisplayedAccounts.setModel(displayedAccounts)
+		);
+    }
     
 	@Override
 	public void showAccounts(List<Account> accounts) {
