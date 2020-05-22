@@ -1,25 +1,26 @@
 package dev.justgiulio.passwordmanager.view;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.assertj.swing.annotation.GUITest;
-import org.assertj.swing.core.matcher.JButtonMatcher;
-import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import dev.justgiulio.passwordmanager.model.Account;
+import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
 
 @RunWith(GUITestRunner.class)
 public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	private FrameFixture window;
 	private AccountSwingView accountSwingView;
-
+	
 	@Before
 	public void onSetUp() {
 		GuiActionRunner.execute(() -> {
@@ -108,25 +109,44 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonSaveAccount").requireEnabled();
 	}
 	
-	
+	@Test @GUITest
 	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		
 		window.textBox("textFieldSearchText").enterText("github.com");
 		window.button("buttonFindByPasswordAccounts").requireEnabled();
 		window.button("buttonFindBySiteAccounts").requireEnabled();
 		window.button("buttonFindByUsernameAccounts").requireEnabled();
-		
-		window.textBox("textFieldSearchText").setText("");
+
+		window.textBox("textFieldSearchText").deleteText();
 		window.button("buttonFindByPasswordAccounts").requireDisabled();
 		window.button("buttonFindBySiteAccounts").requireDisabled();
 		window.button("buttonFindByUsernameAccounts").requireDisabled();
 
 	}
 	
+	@Test @GUITest
+	public void testWhenAccountIsSelectedOnDisplayedAccountsTableMofidyButtonsAreEnable() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonDeleteAccount").requireEnabled();
+		window.button("buttonModifyUsername").requireEnabled();
+		window.button("buttonModifyPassword").requireEnabled();
+		
+		window.table("tableDisplayedAccounts").unselectRows(0);
+		window.button("buttonDeleteAccount").requireDisabled();
+		window.button("buttonModifyUsername").requireDisabled();
+		window.button("buttonModifyPassword").requireDisabled();
+		
+		
+	}
+	
 	private void resetInputTextAccountCredential() {
-		window.textBox("textFieldSiteName").setText("");
-		window.textBox("textFieldUsername").setText("");
-		window.textBox("textFieldPassword").setText("");
+		window.textBox("textFieldSiteName").deleteText();
+		window.textBox("textFieldUsername").deleteText();
+		window.textBox("textFieldPassword").deleteText();
 	}
 	
 
