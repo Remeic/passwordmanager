@@ -43,6 +43,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
                  
     private void initComponents() {
+    	currentDisplayedAccountsFilter = "";
     	modelDisplayedAccounts = new DisplayedAccountsTableModel();
         tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
         tableDisplayedAccounts.setName("tableDisplayedAccounts");
@@ -95,15 +96,19 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         textFieldSearchText.setName("textFieldSearchText");
         jLabel10 = new javax.swing.JLabel();
         buttonFindAllAccounts = new javax.swing.JButton();
+        buttonFindAllAccounts.setActionCommand("FILTER_ALL");
         buttonFindAllAccounts.setName("buttonFindAllAccounts");
         jSeparator1 = new javax.swing.JSeparator();
         buttonFindBySiteAccounts = new javax.swing.JButton();
+        buttonFindBySiteAccounts.setActionCommand("FILTER_BY_SITE");
         buttonFindBySiteAccounts.setEnabled(false);
         buttonFindBySiteAccounts.setName("buttonFindBySiteAccounts");
         buttonFindByUsernameAccounts = new javax.swing.JButton();
+        buttonFindByUsernameAccounts.setActionCommand("FILTER_BY_USERNAME");
         buttonFindByUsernameAccounts.setEnabled(false);
         buttonFindByUsernameAccounts.setName("buttonFindByUsernameAccounts");
         buttonFindByPasswordAccounts = new javax.swing.JButton();
+        buttonFindByPasswordAccounts.setActionCommand("FILTER_BY_PASSWORD");
         buttonFindByPasswordAccounts.setEnabled(false);
         buttonFindByPasswordAccounts.setName("buttonFindByPasswordAccounts");
         jLabel11 = new javax.swing.JLabel();
@@ -507,13 +512,14 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         	@Override
             public void actionPerformed(ActionEvent actionEvent) {
 				int selectedRow = tableDisplayedAccounts.getSelectedRow();
-        		if(actionEvent.getActionCommand().equals(ACTION_MODIFY_USERNAME)) {
+				String currentActionCommand = actionEvent.getActionCommand();
+        		if(currentActionCommand.equals(ACTION_MODIFY_USERNAME)) {
         			SwingUtilities.invokeLater(() ->{
             			accountController.modifyUsername(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
 
         			});
         		}
-        		else if(actionEvent.getActionCommand().equals(ACTION_MODIFY_PASSWORD)) {
+        		else if(currentActionCommand.equals(ACTION_MODIFY_PASSWORD)) {
         			SwingUtilities.invokeLater(() ->{
             			accountController.modifyPassword(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
         			});
@@ -523,7 +529,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         
         buttonModifyUsername.addActionListener(updateCellComponentsEnabler);
         buttonModifyPassword.addActionListener(updateCellComponentsEnabler);
-
         
         pack();
     }// </editor-fold>                        
@@ -576,6 +581,11 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private final String ACTION_MODIFY_USERNAME = "MODIFY_USERNAME";
     private final String ACTION_MODIFY_PASSWORD = "MODIFY_PASSWORD";
     private transient AccountController accountController;
+    private final String ACTION_FIND_ALL_ACCOUNTS = "FILTER_ALL";
+    private final String ACTION_FIND_BY_SITE_ACCOUNTS = "FILTER_BY_SITE";
+    private final String ACTION_FIND_BY_USERNAME_ACCOUNTS = "FILTER_BY_USERNAME";
+    private final String ACTION_FIND_BY_PASSWORD_ACCOUNTS = "FILTER_BY_PASSWORD";
+    private String currentDisplayedAccountsFilter;
     
     public void setListAccountTableData(List<Account> displayedAccounts){
     	SwingUtilities.invokeLater(() -> {
@@ -586,7 +596,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     
 	@Override
 	public void showAccounts(List<Account> accounts) {
-		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(() -> 
+			this.setListAccountTableData(accounts)
+    	);
 		
 	}
 
