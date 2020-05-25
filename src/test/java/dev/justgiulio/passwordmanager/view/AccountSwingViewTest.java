@@ -1,10 +1,14 @@
 package dev.justgiulio.passwordmanager.view;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.table.TableModel;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -14,15 +18,13 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import dev.justgiulio.passwordmanager.controller.AccountController;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
-
-import org.mockito.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 @RunWith(GUITestRunner.class)
 public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
@@ -158,6 +160,10 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonModifyUsername").requireEnabled();
 		window.button("buttonModifyPassword").requireEnabled();
 		
+		window.textBox("textFieldUpdateCell").deleteText();
+		window.button("buttonModifyUsername").requireDisabled();
+		window.button("buttonModifyPassword").requireDisabled();
+		
 	}
 	
 	@Test @GUITest
@@ -190,7 +196,8 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
 		window.button("buttonModifyUsername").click();
-		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_USERNAME);		
+		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_USERNAME);
+		
 	}
 	
 	@Test
@@ -204,13 +211,32 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
 		window.button("buttonModifyPassword").click();
 		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_PASSWORD);
-
 	}
+	
+	@Test
+	public void testShowAccountsDisplayCorrectAccountsIntoTable() {
+		Account firstAccount = new Account("github.com", new Credential("giulio","passgiulio"));
+		Account secondAccount = new Account("github.com", new Credential("remeic","remegiulio"));
+		List<Account> accountDisplayed = Arrays.asList(firstAccount,secondAccount);
+		accountSwingView.showAccounts(accountDisplayed);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		assertThat(accountList).containsAll(accountDisplayed);
+	}
+	
 	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
 		window.textBox("textFieldPassword").deleteText();
+	}
+
+	private List<Account> getAccountsList(String[][] tableContent){
+		List<Account> accounts = new ArrayList<Account>();
+		for (int i = 0; i < tableContent.length; i++) {
+			accounts.add(new Account(tableContent[i][0], new Credential(tableContent[i][1],tableContent[i][2])));
+		}
+		return accounts;
 	}
 	
 
