@@ -445,6 +445,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         final KeyAdapter btnSaveEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				resetErrorLabel();
 				if(textFieldSiteName.getText().trim().isEmpty() || textFieldUsername.getText().trim().isEmpty() || textFieldPassword.getText().trim().isEmpty())
 					buttonSaveAccount.setEnabled(false);
 	            else
@@ -674,6 +675,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
  		SwingUtilities.invokeLater(() -> {
 			labelOperationResult.setEnabled(false);
 			labelOperationResult.setText("");
+		});
+	}
+	
+	private void resetErrorLabel() {
+ 		SwingUtilities.invokeLater(() -> {
+			labelErrorMessage.setEnabled(false);
+			labelErrorMessage.setText("");
 		});
 	}
 }

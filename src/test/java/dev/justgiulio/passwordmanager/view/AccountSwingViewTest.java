@@ -288,10 +288,26 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelErrorMessage").requireText("Generic Error: "+accountToString);
 	}
 	
+	@Test
+	public void testLabelErrorReturnToInitalStateIfAccountInputFieldsChange() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		accountSwingView.showError("Generic Error");
+		window.textBox("textFieldSiteName").enterText(" ");
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+		
+		accountSwingView.showError("Generic Error");
+		window.textBox("textFieldUsername").enterText(" ");
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+		
+		accountSwingView.showError("Generic Error");
+		window.textBox("textFieldPassword").enterText(" ");
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+	}
+	
 
-	
-	
-	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
