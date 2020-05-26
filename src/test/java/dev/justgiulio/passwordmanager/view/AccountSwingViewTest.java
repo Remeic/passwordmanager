@@ -252,6 +252,17 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
+	@Test
+	public void testAccountIsDeletedShowLabelWithSuccessInfo() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.label("labelOperationResult").requireDisabled();
+		window.label("labelOperationResult").requireText("");
+		accountSwingView.accountIsDeleted();
+		window.label("labelOperationResult").requireEnabled();
+		window.label("labelOperationResult").requireText("Account Deleted!");
+		
+	}
+	
 	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();

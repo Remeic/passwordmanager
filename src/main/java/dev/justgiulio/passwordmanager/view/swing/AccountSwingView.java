@@ -645,7 +645,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
 	@Override
 	public void accountIsDeleted() {
-		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(() -> {
+			labelOperationResult.setEnabled(true);
+			labelOperationResult.setText("Account Deleted!");
+		});
 		
 	}
 
@@ -655,7 +658,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 	}
 	
 	private void resetLabelOperationResult() {
-		SwingUtilities.invokeLater(() -> {
+ 		SwingUtilities.invokeLater(() -> {
 			labelOperationResult.setEnabled(false);
 			labelOperationResult.setText("");
 		});
