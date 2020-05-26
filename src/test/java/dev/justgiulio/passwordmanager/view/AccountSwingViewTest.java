@@ -79,6 +79,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonModifyPassword").requireDisabled();
 		window.textBox("textFieldUpdateCell").requireDisabled();
 		window.textBox("textFieldUpdateCell").requireText("");
+		window.label("labelOperationResult").requireDisabled();
+		window.label("labelOperationResult").requireText("");
+
 
 	}
 	
@@ -222,6 +225,17 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsAll(accountDisplayed);
+	}
+	
+	@Test
+	public void testAccountIsModifiedShowLabelWithSuccessInfo() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.label("labelOperationResult").requireDisabled();
+		window.label("labelOperationResult").requireText("");
+		accountSwingView.accountIsModified();
+		window.label("labelOperationResult").requireEnabled();
+		window.label("labelOperationResult").requireText("Account Modified!");
+		
 	}
 	
 	
