@@ -53,7 +53,10 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 
 		//Verify Components on first panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
 		window.button("buttonGeneratePassword").requireEnabled();
 		window.button("buttonSaveAccount").requireDisabled();
 		window.tabbedPane("tabbedPanel").requireVisible();
@@ -81,7 +84,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldUpdateCell").requireText("");
 		window.label("labelOperationResult").requireDisabled();
 		window.label("labelOperationResult").requireText("");
-
 
 	}
 	
@@ -262,6 +264,32 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelOperationResult").requireText("Account Deleted!");
 		
 	}
+	
+	@Test
+	public void testShowErrorDisplayErrorLabelWithCorrectText() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+		
+		accountSwingView.showError("Generic Error");
+		window.label("labelErrorMessage").requireEnabled();
+		window.label("labelErrorMessage").requireText("Generic Error");
+	}
+	
+	@Test
+	public void testShowErrorAccountDisplayErrorLabelWithCorrectText() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+		String accountToString = "Account [site=github.com, credential=Credential [username=remeic, password=passremeic]]";
+		
+		accountSwingView.showError("Generic Error", new Account("github.com", new Credential("remeic","passremeic")));
+		window.label("labelErrorMessage").requireEnabled();
+		window.label("labelErrorMessage").requireText("Generic Error: "+accountToString);
+	}
+	
+
+	
 	
 	
 	private void resetInputTextAccountCredential() {
