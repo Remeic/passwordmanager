@@ -446,6 +446,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 			@Override
 			public void keyReleased(KeyEvent e) {
 				resetErrorLabel();
+				resetAccountAddedLabel();
 				if(textFieldSiteName.getText().trim().isEmpty() || textFieldUsername.getText().trim().isEmpty() || textFieldPassword.getText().trim().isEmpty())
 					buttonSaveAccount.setEnabled(false);
 	            else
@@ -624,8 +625,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
 	@Override
 	public void accountIsAdded() {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(() -> {
+			labelAccountAdded.setEnabled(true);
+			labelAccountAdded.setText("Account Saved!");
+		});
 	}
 
 
@@ -684,4 +687,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 			labelErrorMessage.setText("");
 		});
 	}
+	
+	private void resetAccountAddedLabel() {
+ 		SwingUtilities.invokeLater(() -> {
+ 			labelAccountAdded.setEnabled(false);
+ 			labelAccountAdded.setText("");
+		});
+	}
 }
+
+
