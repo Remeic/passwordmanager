@@ -483,6 +483,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
             
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
+				resetLabelOperationResult();
 				if(tableDisplayedAccounts.getSelectedRowCount() > 0) {
 					textFieldUpdateCell.setEnabled(true);
 					textFieldUpdateCell.setText("");
@@ -651,5 +652,12 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
 	public void setAccountController(AccountController accountController) {
 		this.accountController = accountController;
+	}
+	
+	private void resetLabelOperationResult() {
+		SwingUtilities.invokeLater(() -> {
+			labelOperationResult.setEnabled(false);
+			labelOperationResult.setText("");
+		});
 	}
 }
