@@ -238,6 +238,20 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
+	@Test
+	public void testLabelReturnToInitialStateWhenTableSelectionChange() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")),new Account("github.com", new Credential("remeic","passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		accountSwingView.accountIsModified();
+		window.table("tableDisplayedAccounts").unselectRows(0);
+		window.table("tableDisplayedAccounts").selectRows(1);
+		window.label("labelOperationResult").requireDisabled();
+		window.label("labelOperationResult").requireText("");
+		
+	}
+	
 	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
