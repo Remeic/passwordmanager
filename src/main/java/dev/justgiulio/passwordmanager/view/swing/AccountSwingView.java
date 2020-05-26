@@ -326,6 +326,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         
         JSeparator separator = new JSeparator();
         separator.setOrientation(SwingConstants.VERTICAL);
+        
+        labelOperationResult = new JLabel("");
+        labelOperationResult.setEnabled(false);
+        labelOperationResult.setName("labelOperationResult");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2Layout.setHorizontalGroup(
@@ -363,6 +367,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         					.addComponent(buttonModifyUsername)
         					.addGap(18)
         					.addComponent(buttonModifyPassword)
+        					.addGap(18)
+        					.addComponent(labelOperationResult, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)
         					.addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -392,7 +398,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         					.addComponent(buttonDeleteAccount)
         					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addComponent(buttonModifyUsername)
-        					.addComponent(buttonModifyPassword))
+        					.addComponent(buttonModifyPassword)
+        					.addComponent(labelOperationResult))
         				.addComponent(separator, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
         			.addContainerGap(9, Short.MAX_VALUE))
         );
@@ -586,6 +593,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private final String ACTION_FIND_BY_USERNAME_ACCOUNTS = "FILTER_BY_USERNAME";
     private final String ACTION_FIND_BY_PASSWORD_ACCOUNTS = "FILTER_BY_PASSWORD";
     private String currentDisplayedAccountsFilter;
+    private JLabel labelOperationResult;
     
     public void setListAccountTableData(List<Account> displayedAccounts){
     	SwingUtilities.invokeLater(() -> {
@@ -626,7 +634,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
 	@Override
 	public void accountIsModified() {
-		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(() -> {
+			labelOperationResult.setEnabled(true);
+			labelOperationResult.setText("Account Modified!");
+		});
 		
 	}
 
