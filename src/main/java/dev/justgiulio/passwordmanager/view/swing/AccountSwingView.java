@@ -70,6 +70,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonSaveAccount.setEnabled(false);
         buttonSaveAccount.setName("buttonSaveAccount");
         labelErrorMessage = new javax.swing.JLabel();
+        labelErrorMessage.setEnabled(false);
         labelErrorMessage.setName("labelErrorMessage");
         jSeparator2 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
@@ -134,6 +135,10 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonSaveAccount.setText("Save");
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        
+        labelAccountAdded = new JLabel("");
+        labelAccountAdded.setEnabled(false);
+        labelAccountAdded.setName("labelAccountAdded");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3Layout.setHorizontalGroup(
@@ -149,7 +154,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         					.addComponent(textFieldPassword)
         					.addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
         					.addComponent(jLabel5, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-        				.addComponent(labelErrorMessage))
+        				.addComponent(labelErrorMessage)
+        				.addComponent(labelAccountAdded))
         			.addPreferredGap(ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
         			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap())
@@ -176,7 +182,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         					.addGap(18)
         					.addComponent(buttonSaveAccount)
         					.addGap(18)
-        					.addComponent(labelErrorMessage))
+        					.addComponent(labelErrorMessage)
+        					.addGap(18)
+        					.addComponent(labelAccountAdded))
         				.addGroup(jPanel3Layout.createSequentialGroup()
         					.addGap(11)
         					.addComponent(jSeparator2, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)))
@@ -595,6 +603,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private final String ACTION_FIND_BY_PASSWORD_ACCOUNTS = "FILTER_BY_PASSWORD";
     private String currentDisplayedAccountsFilter;
     private JLabel labelOperationResult;
+    private JLabel labelAccountAdded;
     
     public void setListAccountTableData(List<Account> displayedAccounts){
     	SwingUtilities.invokeLater(() -> {
@@ -621,15 +630,19 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
 	@Override
 	public void showError(String string) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(() -> {
+			labelErrorMessage.setEnabled(true);
+			labelErrorMessage.setText(string);
+		});
 	}
 
 
 	@Override
 	public void showError(String string, Account accountToSave) {
-		// TODO Auto-generated method stub
-		
+		SwingUtilities.invokeLater(() -> {
+			labelErrorMessage.setEnabled(true);
+			labelErrorMessage.setText(string + ": "+ accountToSave );
+		});
 	}
 
 
