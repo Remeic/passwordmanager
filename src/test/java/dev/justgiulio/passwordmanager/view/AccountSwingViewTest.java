@@ -307,12 +307,46 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelErrorMessage").requireText("");
 	}
 	
+	
+	@Test
+	public void testAccountIsAddedShowLabelWithCorrectText() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+		
+		accountSwingView.accountIsAdded();
+		window.label("labelAccountAdded").requireEnabled();
+		window.label("labelAccountAdded").requireText("Account Saved!");
+		
+	}
+	
+	@Test
+	public void testLabelAccountAddedReturnToInitalStateIfAccountInputFieldsChange() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		accountSwingView.accountIsAdded();
+		window.textBox("textFieldSiteName").enterText(" ");
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+		
+		accountSwingView.accountIsAdded();
+		window.textBox("textFieldUsername").enterText(" ");
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+		
+		accountSwingView.accountIsAdded();
+		window.textBox("textFieldPassword").enterText(" ");
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+	}
+	
 
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
 		window.textBox("textFieldPassword").deleteText();
 	}
+	
+	
 
 	private List<Account> getAccountsList(String[][] tableContent){
 		List<Account> accounts = new ArrayList<Account>();
