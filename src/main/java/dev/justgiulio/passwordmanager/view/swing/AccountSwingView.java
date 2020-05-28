@@ -77,10 +77,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         radioButtonLowStrength = new javax.swing.JRadioButton();
+        radioButtonLowStrength.setActionCommand("STRENGHT_PASSWORD_LOW");
         radioButtonLowStrength.setName("radioButtonLowStrength");
         radioButtonMediumStrength = new javax.swing.JRadioButton();
+        radioButtonMediumStrength.setActionCommand("STRENGHT_PASSWORD_MEDIUM");
         radioButtonMediumStrength.setName("radioButtonMediumStrength");
         radioButtonHighStrength = new javax.swing.JRadioButton();
+        radioButtonHighStrength.setActionCommand("STRENGHT_PASSWORD_HIGH");
         radioButtonHighStrength.setName("radioButtonHighStrength");
         jLabel7 = new javax.swing.JLabel();
         sliderPasswordLength = new javax.swing.JSlider();
@@ -548,6 +551,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonModifyUsername.addActionListener(updateCellComponentsEnabler);
         buttonModifyPassword.addActionListener(updateCellComponentsEnabler);
         
+        
+        ActionListener generatePasswordListener = new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent actionEvent) {
+        		accountController.generatePassword(sliderPasswordLength.getValue(), radioButtonGroupPasswordStrength.getSelection().getActionCommand());
+        	}
+        };
+        
+        buttonGeneratePassword.addActionListener(generatePasswordListener);
         pack();
     }// </editor-fold>                        
 
@@ -693,6 +705,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
  			labelAccountAdded.setEnabled(false);
  			labelAccountAdded.setText("");
 		});
+	}
+
+
+	@Override
+	public void passwordIsGenereated(String generatedPassword) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

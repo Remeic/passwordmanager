@@ -1,22 +1,25 @@
 
 package dev.justgiulio.passwordmanager.controller;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static java.util.Arrays.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import dev.justgiulio.passwordmanager.generator.Generator;
+import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;
@@ -29,6 +32,9 @@ public class AccountControllerTest {
 	
 	@Mock
 	private AccountView accountView;
+	
+	@Mock
+	private Generator passwordGenerator;
 	
 	@InjectMocks
 	AccountController controller;
@@ -171,7 +177,34 @@ public class AccountControllerTest {
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
+
+	@Test
+	public void testGeneratePasswordLowStrengthCallPasswordIsGeneratedOnView() {
+		String generatedPassword = "abcd";
+		when(passwordGenerator.generate(4,0)).thenReturn(generatedPassword);
+		controller.generatePassword(4,"STRENGHT_PASSWORD_LOW");
+		verify(passwordGenerator).generate(4,0);
+		verify(accountView).passwordIsGenereated(generatedPassword);
+	}
 	
+	
+	@Test
+	public void testGeneratePasswordMediumStrengthCallPasswordIsGeneratedOnView() {
+		String generatedPassword = "ab96";
+		when(passwordGenerator.generate(4,1)).thenReturn(generatedPassword);
+		controller.generatePassword(4,"STRENGHT_PASSWORD_MEDIUM");
+		verify(passwordGenerator).generate(4,1);
+		verify(accountView).passwordIsGenereated(generatedPassword);
+	}
+	
+	@Test
+	public void testGeneratePasswordHighStrengthCallPasswordIsGeneratedOnView() {
+		String generatedPassword = "a!96";
+		when(passwordGenerator.generate(4,2)).thenReturn(generatedPassword);
+		controller.generatePassword(4,"STRENGHT_PASSWORD_HIGH");
+		verify(passwordGenerator).generate(4,2);
+		verify(accountView).passwordIsGenereated(generatedPassword);
+	}
 	
 	
 }

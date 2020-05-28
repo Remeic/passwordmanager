@@ -339,6 +339,34 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelAccountAdded").requireText("");
 	}
 	
+	
+	@Test
+	public void testGenerateButtonDelegateControllerHighStrength() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.radioButton("radioButtonHighStrength").check();
+		window.slider("sliderPasswordLength").slideTo(15);
+		window.button("buttonGeneratePassword").click();
+		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_HIGH");
+	}
+	
+	@Test
+	public void testGenerateButtonDelegateControllerMediumStrength() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.radioButton("radioButtonMediumStrength").check();
+		window.slider("sliderPasswordLength").slideTo(15);
+		window.button("buttonGeneratePassword").click();		
+		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_MEDIUM");
+	}
+	
+	@Test
+	public void testGenerateButtonDelegateControllerLowStrength() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.radioButton("radioButtonLowStrength").check();
+		window.slider("sliderPasswordLength").slideTo(15);
+		window.button("buttonGeneratePassword").click();		
+		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_LOW");
+	}
+	
 
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();

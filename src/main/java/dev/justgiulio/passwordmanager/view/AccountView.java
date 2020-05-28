@@ -14,5 +14,7 @@ public interface AccountView {
 	void accountIsModified();
 
 	void accountIsDeleted();
+	
+	void passwordIsGenereated(String generatedPassword);
 
 }

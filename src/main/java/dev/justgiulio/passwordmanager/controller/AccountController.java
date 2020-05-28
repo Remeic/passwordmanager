@@ -1,8 +1,6 @@
 package dev.justgiulio.passwordmanager.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import dev.justgiulio.passwordmanager.generator.Generator;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;
@@ -12,12 +10,16 @@ public class AccountController {
 
 	private AccountView accountView;
 	private AccountRepository accountRepository;
-	
-	
-	public AccountController(AccountView accountView, AccountRepository accountRepository) {
+	private Generator passwordGenerator;
+	static final String STRENGHT_PASSWORD_HIGH = "STRENGHT_PASSWORD_HIGH";
+	static final String STRENGHT_PASSWORD_MEDIUM = "STRENGHT_PASSWORD_MEDIUM";
+	static final String STRENGHT_PASSWORD_LOW = "STRENGHT_PASSWORD_LOW";
+
+	public AccountController(AccountView accountView, AccountRepository accountRepository, Generator passwordGenerator) {
 		super();
 		this.accountView = accountView;
 		this.accountRepository = accountRepository;
+		this.passwordGenerator = passwordGenerator;
 	}
 
 
@@ -84,6 +86,23 @@ public class AccountController {
 
 	}
 	
+	public void generatePassword(int length,String strenght) {
+		int strenghtLevel = 2;
+		String generatedPassword;
+		
+		if(strenght.equals(STRENGHT_PASSWORD_LOW)) {
+			strenghtLevel = 0;
+		}
+		else if(strenght.equals(STRENGHT_PASSWORD_MEDIUM)){
+			strenghtLevel = 1;
+		}
+		
+		generatedPassword = this.passwordGenerator.generate(4, strenghtLevel);
+		accountView.passwordIsGenereated(generatedPassword);
+		
+	}
+	
+	
 	
 	private boolean checkIfAccountAlreadyExists(Account account) {
 		return accountRepository.findByKey(account.getSite())
@@ -91,9 +110,5 @@ public class AccountController {
 				.anyMatch(x -> x.getCredential().getUsername().equals(account.getCredential().getUsername()));
 	}
 
-
-	
-
-	
 
 }
