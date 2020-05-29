@@ -229,7 +229,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		assertThat(accountList).containsAll(accountDisplayed);
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testAccountIsModifiedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.label("labelOperationResult").requireDisabled();
@@ -240,7 +240,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testLabelReturnToInitialStateWhenTableSelectionChange() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")),new Account("github.com", new Credential("remeic","passremeic")));
@@ -254,7 +254,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testAccountIsDeletedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.label("labelOperationResult").requireDisabled();
@@ -265,7 +265,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testShowErrorDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.label("labelErrorMessage").requireDisabled();
@@ -276,7 +276,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelErrorMessage").requireText("Generic Error");
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testShowErrorAccountDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.label("labelErrorMessage").requireDisabled();
@@ -288,7 +288,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelErrorMessage").requireText("Generic Error: "+accountToString);
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testLabelErrorReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		accountSwingView.showError("Generic Error");
@@ -308,7 +308,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	}
 	
 	
-	@Test
+	@Test @GUITest
 	public void testAccountIsAddedShowLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.label("labelAccountAdded").requireDisabled();
@@ -320,7 +320,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testLabelAccountAddedReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		accountSwingView.accountIsAdded();
@@ -340,7 +340,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	}
 	
 	
-	@Test
+	@Test @GUITest
 	public void testGenerateButtonDelegateControllerHighStrength() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.radioButton("radioButtonHighStrength").check();
@@ -349,7 +349,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_HIGH");
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testGenerateButtonDelegateControllerMediumStrength() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.radioButton("radioButtonMediumStrength").check();
@@ -358,7 +358,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_MEDIUM");
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testGenerateButtonDelegateControllerLowStrength() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.radioButton("radioButtonLowStrength").check();
@@ -367,12 +367,25 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_LOW");
 	}
 	
+	@Test  @GUITest
+	public void testPasswordIsGeneratedDisplayCorrectTextInsideInputField() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.textBox("textFieldGeneratedPassword").requireText("");
+		window.textBox("textFieldGeneratedPassword").requireNotEditable();
+		accountSwingView.passwordIsGenereated("generatedPassword");
+		window.textBox("textFieldGeneratedPassword").requireText("generatedPassword");
+		window.textBox("textFieldGeneratedPassword").requireNotEditable();
+	}
+	
+	
 
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
 		window.textBox("textFieldPassword").deleteText();
 	}
+	
+	
 	
 	
 
