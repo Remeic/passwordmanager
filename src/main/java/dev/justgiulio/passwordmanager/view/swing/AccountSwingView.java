@@ -680,6 +680,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 		});
 		
 	}
+	
+	@Override
+	public void passwordIsGenereated(String generatedPassword) {
+		SwingUtilities.invokeLater(() -> {
+			textFieldGeneratedPassword.setText(generatedPassword);
+		});
+	}
 
 
 	public void setAccountController(AccountController accountController) {
@@ -708,11 +715,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 	}
 
 
-	@Override
-	public void passwordIsGenereated(String generatedPassword) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
 
 
