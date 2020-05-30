@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.table.TableModel;
-
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -190,7 +188,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testModifyUsernameButtonsDelegateToController() {
 		final String UPDATED_USERNAME = "newUsername";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
@@ -205,7 +203,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testModifyPasswordButtonDelegateToController() {
 		final String UPDATED_PASSWORD = "newPassword";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
@@ -218,7 +216,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_PASSWORD);
 	}
 	
-	@Test
+	@Test @GUITest
 	public void testShowAccountsDisplayCorrectAccountsIntoTable() {
 		Account firstAccount = new Account("github.com", new Credential("giulio","passgiulio"));
 		Account secondAccount = new Account("github.com", new Credential("remeic","remegiulio"));
