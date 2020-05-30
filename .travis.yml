@@ -20,7 +20,8 @@ matrix:
         
 services:
    - docker
-   
+   - xvfb
+
 # skip installation step
 install: true
 
