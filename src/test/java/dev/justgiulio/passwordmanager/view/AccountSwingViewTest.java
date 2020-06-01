@@ -174,6 +174,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
+		
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonModifyUsername").click();
 		window.textBox("textFieldUpdateCell").requireText("");

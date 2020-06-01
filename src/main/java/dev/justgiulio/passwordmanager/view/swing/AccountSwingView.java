@@ -48,6 +48,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
         tableDisplayedAccounts.setName("tableDisplayedAccounts");
     	scrollPaneAccountsTable = new javax.swing.JScrollPane(tableDisplayedAccounts);
+    	scrollPaneAccountsTable.setName("scrollPaneAccounts");
         scrollPaneAccountsTable.setViewportView(tableDisplayedAccounts);
     	radioButtonGroupPasswordStrength = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
