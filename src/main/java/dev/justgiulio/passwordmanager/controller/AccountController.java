@@ -97,7 +97,7 @@ public class AccountController {
 			strenghtLevel = 1;
 		}
 		
-		generatedPassword = this.passwordGenerator.generate(4, strenghtLevel);
+		generatedPassword = this.passwordGenerator.generate(length, strenghtLevel);
 		accountView.passwordIsGenereated(generatedPassword);
 		
 	}
