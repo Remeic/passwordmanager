@@ -195,8 +195,8 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	public void testModifyUsernameButtonsDelegateToController() {
 		final String UPDATED_USERNAME = "newUsername";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
-		window.tabbedPane("tabbedPanel").selectTab(1);
 		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
 
 		//Verify modifyUsername called when action performed on Modify Username Button
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -213,6 +213,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		accountSwingView.setListAccountTableData(accounts);
 		//Verify modifyUsername called when action performed on Modify Password Button
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
 		window.button("buttonModifyPassword").click();
