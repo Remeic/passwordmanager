@@ -171,10 +171,10 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndUserClickModifyButtonsCellUpdateComponentsAreEnable() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
 		
+		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.scrollPane("scrollPaneAccounts").focus();
 		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
