@@ -537,13 +537,21 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 				String currentActionCommand = actionEvent.getActionCommand();
         		if(currentActionCommand.equals(ACTION_MODIFY_USERNAME)) {
         			SwingUtilities.invokeLater(() ->{
-            			accountController.modifyUsername(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
+        				String site = (String) tableDisplayedAccounts.getValueAt(selectedRow, 0);
+        				String username = (String) tableDisplayedAccounts.getValueAt(selectedRow, 1);
+        				String password = (String) tableDisplayedAccounts.getValueAt(selectedRow, 2);
+        				Account tmpAccount = new Account(site, new Credential(username,password));
+            			accountController.modifyUsername(tmpAccount,textFieldUpdateCell.getText());
 
         			});
         		}
-        		else if(currentActionCommand.equals(ACTION_MODIFY_PASSWORD)) {
+        		else {
         			SwingUtilities.invokeLater(() ->{
-            			accountController.modifyPassword(displayedAccounts.get(selectedRow),textFieldUpdateCell.getText());
+        				String site = (String) tableDisplayedAccounts.getValueAt(selectedRow, 0);
+        				String username = (String) tableDisplayedAccounts.getValueAt(selectedRow, 1);
+        				String password = (String) tableDisplayedAccounts.getValueAt(selectedRow, 2);
+        				Account tmpAccount = new Account(site, new Credential(username,password));
+            			accountController.modifyPassword(tmpAccount,textFieldUpdateCell.getText());
         			});
         		}
             }
