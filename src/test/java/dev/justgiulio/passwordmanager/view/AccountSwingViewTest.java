@@ -132,13 +132,15 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
 		
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.textBox("textFieldSearchText").focus();
 		window.textBox("textFieldSearchText").enterText("github.com");
 		window.button("buttonFindByPasswordAccounts").requireEnabled();
 		window.button("buttonFindBySiteAccounts").requireEnabled();
 		window.button("buttonFindByUsernameAccounts").requireEnabled();
 
+		window.textBox("textFieldSearchText").focus();
 		window.textBox("textFieldSearchText").deleteText();
 		window.button("buttonFindByPasswordAccounts").requireDisabled();
 		window.button("buttonFindBySiteAccounts").requireDisabled();
