@@ -359,7 +359,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testGenerateButtonDelegateControllerMediumStrength() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.radioButton("radioButtonMediumStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();		
@@ -368,7 +367,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testGenerateButtonDelegateControllerLowStrength() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.radioButton("radioButtonLowStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();		
@@ -377,7 +375,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test  @GUITest
 	public void testPasswordIsGeneratedDisplayCorrectTextInsideInputField() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.textBox("textFieldGeneratedPassword").requireText("");
 		window.textBox("textFieldGeneratedPassword").requireNotEditable();
 		accountSwingView.passwordIsGenereated("generatedPassword");
