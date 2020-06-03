@@ -51,6 +51,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 
 		//Verify Components on first panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
 		window.label("labelAccountAdded").requireDisabled();
@@ -69,6 +70,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldUsername").requireText("");
 		//Verify Components on second panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.button("buttonFindAllAccounts").requireEnabled();
 		window.button("buttonFindByPasswordAccounts").requireDisabled();
 		window.button("buttonFindBySiteAccounts").requireDisabled();
@@ -88,6 +90,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
+		window.panel("panelGeneratePassword").focus();
 		window.textBox("textFieldSiteName").enterText("github.com");
 		window.textBox("textFieldUsername").enterText("");
 		window.textBox("textFieldPassword").enterText("");
@@ -134,6 +137,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
 		
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.textBox("textFieldSearchText").focus();
 		window.textBox("textFieldSearchText").enterText("github.com");
 		window.button("buttonFindByPasswordAccounts").requireEnabled();
@@ -151,6 +155,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndFieldCellUpdateIsNotEmptyMofidyButtonsAreEnable() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -177,6 +182,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		accountSwingView.setListAccountTableData(accounts);
 		
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
 		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -201,6 +207,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 
 		//Verify modifyUsername called when action performed on Modify Username Button
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
 		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -218,6 +225,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		
 		//Verify modifyUsername called when action performed on Modify Password Button
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
 		window.table("tableDisplayedAccounts").focus();
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -233,6 +241,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		List<Account> accountDisplayed = Arrays.asList(firstAccount,secondAccount);
 		accountSwingView.showAccounts(accountDisplayed);
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsAll(accountDisplayed);
 	}
@@ -240,6 +249,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testAccountIsModifiedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.label("labelOperationResult").requireDisabled();
 		window.label("labelOperationResult").requireText("");
 		accountSwingView.accountIsModified();
@@ -251,6 +261,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testLabelReturnToInitialStateWhenTableSelectionChange() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")),new Account("github.com", new Credential("remeic","passremeic")));
 		accountSwingView.setListAccountTableData(accounts);
 		window.table("tableDisplayedAccounts").selectRows(0);
@@ -265,6 +276,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testAccountIsDeletedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
 		window.label("labelOperationResult").requireDisabled();
 		window.label("labelOperationResult").requireText("");
 		accountSwingView.accountIsDeleted();
@@ -276,6 +288,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testShowErrorDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
 		
@@ -287,6 +300,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testShowErrorAccountDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
 		String accountToString = "Account [site=github.com, credential=Credential [username=remeic, password=passremeic]]";
@@ -299,6 +313,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testLabelErrorReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		accountSwingView.showError("Generic Error");
 		window.textBox("textFieldSiteName").enterText(" ");
 		window.label("labelErrorMessage").requireDisabled();
@@ -319,6 +334,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testAccountIsAddedShowLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		window.label("labelAccountAdded").requireDisabled();
 		window.label("labelAccountAdded").requireText("");
 		
@@ -331,6 +347,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testLabelAccountAddedReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		accountSwingView.accountIsAdded();
 		window.textBox("textFieldSiteName").enterText(" ");
 		window.label("labelAccountAdded").requireDisabled();
@@ -351,6 +368,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	@Test @GUITest
 	public void testGenerateButtonDelegateControllerHighStrength() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
+		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonHighStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();
@@ -359,6 +377,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testGenerateButtonDelegateControllerMediumStrength() {
+		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonMediumStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();		
@@ -367,6 +386,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test @GUITest
 	public void testGenerateButtonDelegateControllerLowStrength() {
+		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonLowStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();		
@@ -375,6 +395,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 	
 	@Test  @GUITest
 	public void testPasswordIsGeneratedDisplayCorrectTextInsideInputField() {
+		window.panel("panelGeneratePassword").focus();
 		window.textBox("textFieldGeneratedPassword").requireText("");
 		window.textBox("textFieldGeneratedPassword").requireNotEditable();
 		accountSwingView.passwordIsGenereated("generatedPassword");
