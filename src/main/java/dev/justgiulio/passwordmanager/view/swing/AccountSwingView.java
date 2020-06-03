@@ -43,6 +43,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
 
                  
     private void initComponents() {
+    	this.setVisible(true);
     	currentDisplayedAccountsFilter = "";
     	modelDisplayedAccounts = new DisplayedAccountsTableModel();
         tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
