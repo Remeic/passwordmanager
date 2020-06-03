@@ -32,5 +32,9 @@ cache:
       - $HOME/.m2
       - $HOME/.sonar/cache
 
+before_script:
+   - "Xvfb :99 &"
+   - "export DISPLAY=:99"
+
 script:
    - ./mvnw clean verify $MAVEN_ARGS
