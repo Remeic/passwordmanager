@@ -42,10 +42,10 @@ public class DisplayedAccountsTableModel  extends AbstractTableModel {
 	      if (columnIndex == 0) {
 	    	  cellItem = accounts.get(rowIndex).getSite();
 	      }
-	      else if (columnIndex == 1) {
+	      if (columnIndex == 1) {
 	    	  cellItem = accounts.get(rowIndex).getCredential().getUsername();
 	      }
-	      else if (columnIndex == 2) {
+	      if (columnIndex == 2) {
 	    	  cellItem = accounts.get(rowIndex).getCredential().getPassword();
 	      }
 	      return cellItem;
