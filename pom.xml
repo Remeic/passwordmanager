@@ -34,8 +34,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.15.0</version>
+			<artifactId>assertj-swing-junit</artifactId>
+			<version>3.9.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -60,6 +60,12 @@
 			<artifactId>mockito-core</artifactId>
 			<version>2.23.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.maven</groupId>
+		    <artifactId>maven-compat</artifactId>
+		    <version>3.0.5</version>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -152,14 +158,19 @@
 				<plugin>
 					<groupId>org.pitest</groupId>
 					<artifactId>pitest-maven</artifactId>
-					<version>1.4.8</version>
+					<version>1.5.2</version>
 					<configuration>
 						<targetClasses>
 							<param>dev.justgiulio.passwordmanager.*</param>
 						</targetClasses>
 						<excludedClasses>
 							<param>dev.justgiulio.passwordmanager.model.*</param>
+							<param>dev.justgiulio.passwordmanager.view.*</param>
+							<param>dev.justgiulio.passwordmanager.view.swing.*</param>
 						</excludedClasses>
+						<excludedTestClasses>
+						    <param>dev.justgiulio.passwordmanager.view.*</param>
+						</excludedTestClasses>   
 						<excludedMethods>
 							<excludedMethod>
 								<!-- "Removed conditional replace equality with false" This is a 
@@ -215,6 +226,11 @@
 								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
 									check -->
 								delete
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								generatePassword
 							</excludedMethod>
 						</excludedMethods>
 

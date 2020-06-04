@@ -21,14 +21,20 @@ matrix:
 services:
    - docker
    - xvfb
+
 # skip installation step
 install: true
 
+env: DISPLAY=:99.0
 
 cache:
    directories:
       - $HOME/.m2
       - $HOME/.sonar/cache
+
+before_script:
+   - "Xvfb :99 &"
+   - "export DISPLAY=:99"
 
 script:
    - ./mvnw clean verify $MAVEN_ARGS
