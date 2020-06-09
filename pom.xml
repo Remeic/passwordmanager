@@ -23,6 +23,35 @@
 		<sonar.coverage.exclusions>
 			**/model/*
 		</sonar.coverage.exclusions>
+		<!-- Disable rule for "Anonymous inner classes containing only one method should become lambda"  -->
+		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			java:S1604
+		</sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		<!-- Disable rule for "Cognitive Complexity of methods should not be too high " initComponents method of AccountSwingView  -->
+		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			java:S3776
+		</sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		<!-- Disable rule for "Private fields only used as local variables in methods should become local variables"  -->
+		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			squid:S1450
+		</sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		<!-- "Tests should include assertions" disabled on tests using AssertJ 
+			Swing since its assertions are not recognized as assertions -->
+		<sonar.issue.ignore.multicriteria.e13.ruleKey>
+			squid:S2699
+		</sonar.issue.ignore.multicriteria.e13.ruleKey>
+		<sonar.issue.ignore.multicriteria.e13.resourceKey>
+			**/AccountSwingView*.java
+		</sonar.issue.ignore.multicriteria.e13.resourceKey>
 	</properties>
 
 	<dependencies>
@@ -62,10 +91,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.maven</groupId>
-		    <artifactId>maven-compat</artifactId>
-		    <version>3.0.5</version>
-		    <scope>test</scope>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>3.0.5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -169,8 +198,8 @@
 							<param>dev.justgiulio.passwordmanager.view.swing.*</param>
 						</excludedClasses>
 						<excludedTestClasses>
-						    <param>dev.justgiulio.passwordmanager.view.*</param>
-						</excludedTestClasses>   
+							<param>dev.justgiulio.passwordmanager.view.*</param>
+						</excludedTestClasses>
 						<excludedMethods>
 							<excludedMethod>
 								<!-- "Removed conditional replace equality with false" This is a 

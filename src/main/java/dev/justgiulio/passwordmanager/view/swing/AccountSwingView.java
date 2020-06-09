@@ -39,7 +39,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
                  
     private void initComponents() {
     	this.setVisible(true);
-    	currentDisplayedAccountsFilter = "";
     	modelDisplayedAccounts = new DisplayedAccountsTableModel();
         tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
         tableDisplayedAccounts.setName("tableDisplayedAccounts");
@@ -275,25 +274,25 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
                 .addContainerGap(102, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout gl_panelGeneratePassword = new javax.swing.GroupLayout(panelGeneratePassword);
-        gl_panelGeneratePassword.setHorizontalGroup(
-        	gl_panelGeneratePassword.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, gl_panelGeneratePassword.createSequentialGroup()
+        javax.swing.GroupLayout glPanelGeneratePassword = new javax.swing.GroupLayout(panelGeneratePassword);
+        glPanelGeneratePassword.setHorizontalGroup(
+        	glPanelGeneratePassword.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, glPanelGeneratePassword.createSequentialGroup()
         			.addContainerGap()
         			.addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
         			.addGap(18)
         			.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, 578, GroupLayout.PREFERRED_SIZE))
         );
-        gl_panelGeneratePassword.setVerticalGroup(
-        	gl_panelGeneratePassword.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(Alignment.LEADING, gl_panelGeneratePassword.createSequentialGroup()
+        glPanelGeneratePassword.setVerticalGroup(
+        	glPanelGeneratePassword.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, glPanelGeneratePassword.createSequentialGroup()
         			.addContainerGap()
-        			.addGroup(gl_panelGeneratePassword.createParallelGroup(Alignment.LEADING)
+        			.addGroup(glPanelGeneratePassword.createParallelGroup(Alignment.LEADING)
         				.addComponent(jPanel3, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
         				.addComponent(jPanel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
         			.addContainerGap())
         );
-        panelGeneratePassword.setLayout(gl_panelGeneratePassword);
+        panelGeneratePassword.setLayout(glPanelGeneratePassword);
 
         tabbedPanel.addTab("Add | Generate Password", panelGeneratePassword);
 
@@ -320,7 +319,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         buttonDeleteAccount.setEnabled(false);
         
         JButton buttonModifyUsername = new JButton("Modify Username");
-        buttonModifyUsername.setActionCommand("MODIFY_USERNAME");
+        buttonModifyUsername.setActionCommand(ACTION_MODIFY_USERNAME);
         buttonModifyUsername.setName("buttonModifyUsername");
         buttonModifyUsername.setEnabled(false);
         
@@ -341,23 +340,23 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         labelOperationResult.setEnabled(false);
         labelOperationResult.setName("labelOperationResult");
 
-        javax.swing.GroupLayout gl_panelDisplayedAccounts = new javax.swing.GroupLayout(panelDisplayedAccounts);
-        gl_panelDisplayedAccounts.setHorizontalGroup(
-        	gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
-        		.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        javax.swing.GroupLayout glPanelDisplayedAccounts = new javax.swing.GroupLayout(panelDisplayedAccounts);
+        glPanelDisplayedAccounts.setHorizontalGroup(
+        	glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        		.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         			.addContainerGap()
-        			.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
-        				.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
-        					.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        			.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        				.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
+        					.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
         						.addComponent(jLabel9)
-        						.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        						.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         							.addComponent(buttonFindAllAccounts)
         							.addGap(18)
         							.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        					.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
         						.addComponent(jLabel10)
-        						.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        						.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         							.addComponent(textFieldSearchText, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
         							.addGap(18)
         							.addComponent(buttonFindBySiteAccounts)
@@ -367,7 +366,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         							.addComponent(buttonFindByPasswordAccounts)))
         					.addContainerGap(209, Short.MAX_VALUE))
         				.addComponent(scrollPaneAccountsTable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
-        				.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        				.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         					.addComponent(buttonDeleteAccount)
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -381,21 +380,21 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         					.addComponent(labelOperationResult, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)
         					.addContainerGap())))
         );
-        gl_panelDisplayedAccounts.setVerticalGroup(
-        	gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
-        		.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        glPanelDisplayedAccounts.setVerticalGroup(
+        	glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        		.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         			.addGap(17)
-        			.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        			.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         					.addComponent(jLabel9)
         					.addGap(12)
-        					.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
+        					.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.LEADING)
         						.addComponent(buttonFindAllAccounts)
         						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
-        				.addGroup(gl_panelDisplayedAccounts.createSequentialGroup()
+        				.addGroup(glPanelDisplayedAccounts.createSequentialGroup()
         					.addComponent(jLabel10)
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.BASELINE)
+        					.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.BASELINE)
         						.addComponent(textFieldSearchText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         						.addComponent(buttonFindBySiteAccounts)
         						.addComponent(buttonFindByUsernameAccounts)
@@ -403,8 +402,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         			.addGap(18)
         			.addComponent(scrollPaneAccountsTable, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(gl_panelDisplayedAccounts.createParallelGroup(Alignment.BASELINE)
+        			.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(glPanelDisplayedAccounts.createParallelGroup(Alignment.BASELINE)
         					.addComponent(buttonDeleteAccount)
         					.addComponent(textFieldUpdateCell, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addComponent(buttonModifyUsername)
@@ -413,7 +412,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
         				.addComponent(separator, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
         			.addContainerGap(9, Short.MAX_VALUE))
         );
-        panelDisplayedAccounts.setLayout(gl_panelDisplayedAccounts);
+        panelDisplayedAccounts.setLayout(glPanelDisplayedAccounts);
 
         tabbedPanel.addTab("Saved Password", panelDisplayedAccounts);
 
@@ -612,23 +611,17 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView{
     private javax.swing.JTextField textFieldSiteName;
     private javax.swing.JTextField textFieldUsername;
     private Hashtable<Integer, JLabel> sliderLengthPasswordLabel;
-    private List<Account> displayedAccounts;
+    private transient List<Account> displayedAccounts;
     private DisplayedAccountsTableModel modelDisplayedAccounts;
     private JTextField textFieldUpdateCell;
-    private final String ACTION_MODIFY_USERNAME = "MODIFY_USERNAME";
-    private final String ACTION_MODIFY_PASSWORD = "MODIFY_PASSWORD";
+    private static final String ACTION_MODIFY_USERNAME = "MODIFY_USERNAME";
     private transient AccountController accountController;
-    private final String ACTION_FIND_ALL_ACCOUNTS = "FILTER_ALL";
-    private final String ACTION_FIND_BY_SITE_ACCOUNTS = "FILTER_BY_SITE";
-    private final String ACTION_FIND_BY_USERNAME_ACCOUNTS = "FILTER_BY_USERNAME";
-    private final String ACTION_FIND_BY_PASSWORD_ACCOUNTS = "FILTER_BY_PASSWORD";
-    private String currentDisplayedAccountsFilter;
     private JLabel labelOperationResult;
     private JLabel labelAccountAdded;
     
-    public void setListAccountTableData(List<Account> displayedAccounts){
+    public void setListAccountTableData(List<Account> accountsTableData){
     	SwingUtilities.invokeLater(() -> {
-    		this.displayedAccounts = displayedAccounts;
+    		displayedAccounts = accountsTableData;
     		modelDisplayedAccounts.setModel(displayedAccounts);
     	});
     }
