@@ -20,9 +20,47 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5</sonar.issue.ignore.multicriteria>
 		<sonar.coverage.exclusions>
 			**/model/*
 		</sonar.coverage.exclusions>
+		<!-- Disable rule for "Anonymous inner classes containing only one method should become lambda"  -->
+		<sonar.issue.ignore.multicriteria.e1.ruleKey>
+			java:S1604
+		</sonar.issue.ignore.multicriteria.e1.ruleKey>
+		<sonar.issue.ignore.multicriteria.e1.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e1.resourceKey>
+		<!-- Disable rule for "Cognitive Complexity of methods should not be too high " initComponents method of AccountSwingView  -->
+		<sonar.issue.ignore.multicriteria.e2.ruleKey>
+			java:S3776
+		</sonar.issue.ignore.multicriteria.e2.ruleKey>
+		<sonar.issue.ignore.multicriteria.e2.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e2.resourceKey>
+		<!-- Disable rule for "Private fields only used as local variables in methods should become local variables"  -->
+		<sonar.issue.ignore.multicriteria.e3.ruleKey>
+			squid:S1450
+		</sonar.issue.ignore.multicriteria.e3.ruleKey>
+		<sonar.issue.ignore.multicriteria.e3.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e3.resourceKey>
+		<!-- "Tests should include assertions" disabled on tests using AssertJ 
+			Swing since its assertions are not recognized as assertions -->
+		<sonar.issue.ignore.multicriteria.e4.ruleKey>
+			squid:S2699
+		</sonar.issue.ignore.multicriteria.e4.ruleKey>
+		<sonar.issue.ignore.multicriteria.e4.resourceKey>
+			**/AccountSwingView*.java
+		</sonar.issue.ignore.multicriteria.e4.resourceKey>
+		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should not be used"
+			Using it for swingSlider label -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>
+			squid:S1149
+		</sonar.issue.ignore.multicriteria.e5.ruleKey>
+		<sonar.issue.ignore.multicriteria.e5.resourceKey>
+			**/AccountSwingView*.java
+		</sonar.issue.ignore.multicriteria.e5.resourceKey>
 	</properties>
 
 	<dependencies>
@@ -62,10 +100,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.maven</groupId>
-		    <artifactId>maven-compat</artifactId>
-		    <version>3.0.5</version>
-		    <scope>test</scope>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>3.0.5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -169,8 +207,8 @@
 							<param>dev.justgiulio.passwordmanager.view.swing.*</param>
 						</excludedClasses>
 						<excludedTestClasses>
-						    <param>dev.justgiulio.passwordmanager.view.*</param>
-						</excludedTestClasses>   
+							<param>dev.justgiulio.passwordmanager.view.*</param>
+						</excludedTestClasses>
 						<excludedMethods>
 							<excludedMethod>
 								<!-- "Removed conditional replace equality with false" This is a 

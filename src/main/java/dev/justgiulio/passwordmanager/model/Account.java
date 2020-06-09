@@ -52,13 +52,15 @@ public class Account {
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
-		} else if (!credential.equals(other.credential))
+		} else if (!credential.equals(other.credential)) {
 			return false;
+		}
 		if (site == null) {
 			if (other.site != null)
 				return false;
-		} else if (!site.equals(other.site))
+		} else if (!site.equals(other.site)) {
 			return false;
+		}
 		return true;
 	}
 

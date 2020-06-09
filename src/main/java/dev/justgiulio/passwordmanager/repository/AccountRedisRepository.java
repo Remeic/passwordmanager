@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 import dev.justgiulio.passwordmanager.model.Account;
@@ -27,7 +26,7 @@ public class AccountRedisRepository implements AccountRepository {
 		keys
 			.stream()
 			.map(key -> this.fromMapToAccounts(key,this.getMapFromKey(key)))
-			.forEach(account -> accounts.addAll(account));
+			.forEach(accounts::addAll);
 		return accounts;
 	}
 
@@ -52,7 +51,7 @@ public class AccountRedisRepository implements AccountRepository {
 	
 	@Override
 	public String save(Account accountToSave) {
-		Map<String, String> mapToSave = new HashMap<String, String>();
+		Map<String, String> mapToSave = new HashMap<>();
 		mapToSave.put(accountToSave.getCredential().getUsername(), accountToSave.getCredential().getPassword());
 		return this.client.hmset(accountToSave.getSite(), mapToSave);
 	}

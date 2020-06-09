@@ -4,7 +4,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -66,12 +65,12 @@ public class SecureRandomGenerator implements Generator {
 	}
 	
 	private String shufflePassword(String password) {
-		List<String> splittedPassword = new ArrayList<String>();
+		List<String> splittedPassword = new ArrayList<>();
 		for( char c: password.toCharArray()) {
 			splittedPassword.add(Character.toString(c));
 		}
 		Collections.shuffle(splittedPassword);
-		return splittedPassword.stream().map(n -> String.valueOf(n))
+		return splittedPassword.stream().map(String::valueOf)
 				.collect(Collectors.joining());
 	}
 	
