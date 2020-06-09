@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 import dev.justgiulio.passwordmanager.model.Account;
