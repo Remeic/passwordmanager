@@ -9,7 +9,7 @@ import dev.justgiulio.passwordmanager.model.Account;
 
 public class DisplayedAccountsTableModel  extends AbstractTableModel {
 	private String[] columnNames = {"Site","Username","Password"};
-	private List<Account> accounts;
+	private transient List<Account> accounts;
 	
 	public DisplayedAccountsTableModel() {
 		accounts = new ArrayList<>();
