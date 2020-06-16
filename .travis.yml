@@ -5,6 +5,9 @@ addons:
      organization: "remeic"
      token: ${SONAR_TOKEN}
 
+git:
+   depth: false
+   
 matrix:
    include:
       # always build this environment
