@@ -27,7 +27,6 @@
 		<sonar.sources>
 			pom.xml,
 			${project.build.sourceDirectory},
-			${basedir}/src/main/resources
 		</sonar.sources>
 		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<sonar.coverage.exclusions>
