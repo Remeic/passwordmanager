@@ -70,7 +70,7 @@
 			squid:S1149
 		</sonar.issue.ignore.multicriteria.e5.ruleKey>
 		<sonar.issue.ignore.multicriteria.e5.resourceKey>
-			**/AccountSwingView*.java
+			**/AccountSwingView.java
 		</sonar.issue.ignore.multicriteria.e5.resourceKey>
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>
 			squid:MaximumInheritanceDepth
