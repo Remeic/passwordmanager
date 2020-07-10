@@ -16,6 +16,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<!-- For SonarQube -->
 		<sonar.version>3.7.0.1746</sonar.version>
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
@@ -24,14 +26,10 @@
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
 		</sonar.junit.reportPaths>
-		<sonar.sources>
-			pom.xml,
-			${project.build.sourceDirectory},
-		</sonar.sources>
-		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<sonar.coverage.exclusions>
 			**/model/*
 		</sonar.coverage.exclusions>
+		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<!-- Disable rule for "Anonymous inner classes containing only one method 
 			should become lambda" -->
 		<sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -51,7 +49,7 @@
 		<!-- Disable rule for "Private fields only used as local variables in methods 
 			should become local variables" -->
 		<sonar.issue.ignore.multicriteria.e3.ruleKey>
-			squid:S1450
+			java:S1450
 		</sonar.issue.ignore.multicriteria.e3.ruleKey>
 		<sonar.issue.ignore.multicriteria.e3.resourceKey>
 			**/AccountSwingView.java
@@ -59,7 +57,7 @@
 		<!-- "Tests should include assertions" disabled on tests using AssertJ 
 			Swing since its assertions are not recognized as assertions -->
 		<sonar.issue.ignore.multicriteria.e4.ruleKey>
-			squid:S2699
+			java:S2699
 		</sonar.issue.ignore.multicriteria.e4.ruleKey>
 		<sonar.issue.ignore.multicriteria.e4.resourceKey>
 			**/AccountSwingView*.java
@@ -67,17 +65,21 @@
 		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
 			not be used" Using it for swingSlider label -->
 		<sonar.issue.ignore.multicriteria.e5.ruleKey>
-			squid:S1149
+			java:S1149
 		</sonar.issue.ignore.multicriteria.e5.ruleKey>
 		<sonar.issue.ignore.multicriteria.e5.resourceKey>
 			**/AccountSwingView*.java
 		</sonar.issue.ignore.multicriteria.e5.resourceKey>
+		<!-- "Inheritance tree of classes should not be too deep -->
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>
-			squid:MaximumInheritanceDepth
+			java:S110
 		</sonar.issue.ignore.multicriteria.e6.ruleKey>
 		<sonar.issue.ignore.multicriteria.e6.resourceKey>
 			**/*.java
 		</sonar.issue.ignore.multicriteria.e6.resourceKey>
+		
+		<!-- End SonarQube -->
+		
 	</properties>
 
 	<dependencies>

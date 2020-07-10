@@ -44,7 +44,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		scrollPaneAccountsTable.setName("scrollPaneAccounts");
 		scrollPaneAccountsTable.setViewportView(tableDisplayedAccounts);
 		radioButtonGroupPasswordStrength = new javax.swing.ButtonGroup();
-		buttonGroup2 = new javax.swing.ButtonGroup();
 		tabbedPanel = new javax.swing.JTabbedPane();
 		tabbedPanel.setName("tabbedPanel");
 		panelGeneratePassword = new javax.swing.JPanel();
@@ -522,7 +521,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	private javax.swing.JButton buttonFindByUsernameAccounts;
 	private javax.swing.JButton buttonGeneratePassword;
 	private javax.swing.ButtonGroup radioButtonGroupPasswordStrength;
-	private javax.swing.ButtonGroup buttonGroup2;
 	private javax.swing.JButton buttonSaveAccount;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel10;
