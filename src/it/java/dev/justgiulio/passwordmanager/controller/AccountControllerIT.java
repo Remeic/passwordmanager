@@ -1,41 +1,46 @@
 package dev.justgiulio.passwordmanager.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.containers.GenericContainer;
 
 import dev.justgiulio.passwordmanager.generator.Generator;
+import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.repository.AccountRedisRepository;
 import dev.justgiulio.passwordmanager.view.AccountView;
 import redis.clients.jedis.Jedis;
 
+/**
+ * Tests integration of the controller with a Redis repository 
+ * 
+ * Communicates with a Redis server on localhost 
+ * 
+ * Run Redis on docker with:
+ * <pre>
+ * docker run -p 6379:6379 --rm redis:3.0.2
+ * </pre>
+ * 
+ * @author Giulio Fagioli
+ *
+ */
 public class AccountControllerIT {
 
-	@SuppressWarnings("rawtypes")
-	@ClassRule
-	public static final GenericContainer redis = new GenericContainer("redis:3.0.2").withExposedPorts(6379);
 
-	public Jedis jedis;
+	
+	public  Jedis jedis;
 	public AccountRedisRepository accountRedisRepository;
 	public AccountController accountController;
-	public Generator passwordGenerator;
+	public static Generator passwordGenerator;
 
 	@Mock
 	public AccountView accountView;
@@ -43,16 +48,20 @@ public class AccountControllerIT {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		jedis = new Jedis(redis.getContainerIpAddress(), redis.getFirstMappedPort());
+		jedis = new Jedis("localhost", 6379);
 		accountRedisRepository = new AccountRedisRepository(jedis);
 		accountController = new AccountController(accountView, accountRedisRepository, passwordGenerator);
+		passwordGenerator = new SecureRandomGenerator();
 		jedis.flushAll();
+		jedis.flushDB();
 	}
-
-	@AfterClass
-	public static void afterClass() {
-		redis.stop();
+	
+	@After
+	public void cleanUp() {		
+		jedis.flushAll();
+		jedis.flushDB();
 	}
+	
 
 	@Test
 	public void testFindAllAccounts() {
@@ -60,23 +69,122 @@ public class AccountControllerIT {
 		Account secondAccount = new Account("github.com", new Credential("giulio","giuliopassword"));
 		Account thirdAccount = new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword"));
 
-		Comparator<Account> byUsername =
-				(Account o1, Account o2)->o1.getCredential().getUsername().compareTo(o2.getCredential().getUsername());
-		List<Account> accountList = Arrays.asList(thirdAccount);
-		List<Account> accountListGithub = Arrays.asList(firstAccount,secondAccount);
-		accountListGithub.sort(byUsername);
+		List<Account> accounts =  Arrays.asList(thirdAccount,secondAccount,firstAccount);
 		
-		List<Account> accounts = new ArrayList<>();
-		accounts.addAll(accountList);
-		accounts.addAll(accountListGithub);
-
 		accountRedisRepository.save(firstAccount);
-		accountRedisRepository.save(secondAccount);
 		accountRedisRepository.save(thirdAccount);
+		accountRedisRepository.save(secondAccount);
 
 		accountController.findAllAccounts();
 		verify(accountView)
 			.showAccounts(accounts);
+					
+	}
+	
+	@Test
+	public void testFindAccountsBySite() {
+		Account firstAccount = new Account("github.com", new Credential("remeic","remepassword"));
+		Account secondAccount = new Account("github.com", new Credential("giulio","giuliopassword"));
+		Account thirdAccount = new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword"));
+
+		List<Account> accountListGithub = Arrays.asList(secondAccount,firstAccount);
+		
+		accountRedisRepository.save(firstAccount);
+		accountRedisRepository.save(thirdAccount);
+		accountRedisRepository.save(secondAccount);
+		
+	
+		accountController.findAccountsByKey("github.com");
+		verify(accountView)
+			.showAccounts(accountListGithub);
+					
+	}
+	
+	@Test
+	public void testFindAccountsByUsername() {
+		Account firstAccount = new Account("github.com", new Credential("remeic","remepassword"));
+		Account secondAccount = new Account("github.com", new Credential("giulio","giuliopassword"));
+		Account thirdAccount = new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword"));
+				
+		List<Account> accountList = Arrays.asList(thirdAccount,secondAccount);
+		
+		accountRedisRepository.save(firstAccount);
+		accountRedisRepository.save(secondAccount);
+		accountRedisRepository.save(thirdAccount);
+		
+		
+		accountController.findAccountsByUsername("giulio");
+		verify(accountView)
+			.showAccounts(accountList);
+					
+	}
+	
+	@Test
+	public void testFindAccountsByPassword() {
+		Account firstAccount = new Account("github.com", new Credential("remeic","remepassword"));
+		Account secondAccount = new Account("github.com", new Credential("giulio","giuliopassword"));
+		Account thirdAccount = new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword"));
+				
+		List<Account> accountList = Arrays.asList(thirdAccount,secondAccount);
+
+		
+		accountRedisRepository.save(firstAccount);
+		accountRedisRepository.save(secondAccount);
+		accountRedisRepository.save(thirdAccount);
+		
+		accountController.findAccountsByPassword("giuliopassword");
+		verify(accountView)
+			.showAccounts(accountList);
+					
+	}
+	
+	@Test
+	public void testSaveAccount() {
+		Account firstAccount = new Account("github.com", new Credential("remeic","remepassword"));
+		accountController.saveAccount(firstAccount);
+		verify(accountView)
+			.accountIsAdded();
+					
+	}
+	
+	
+	@Test
+	public void testDeleteAccount() {
+		Account accountToDelete = new Account("github.com", new Credential("remeic","remepassword"));
+		accountRedisRepository.save(accountToDelete);
+		accountController.delete(accountToDelete);
+		verify(accountView)
+			.accountIsDeleted();
+					
+	}
+	
+	
+	@Test
+	public void testModifyAccountUsername() {
+		Account accountToModify = new Account("github.com", new Credential("remeic","remepassword"));
+		accountRedisRepository.save(accountToModify);
+		accountController.modifyUsername(accountToModify,"giulio");
+		verify(accountView)
+			.accountIsModified();
+					
+	}
+	
+	
+	@Test
+	public void testModifyAccountPassword() {
+		Account accountToModify = new Account("github.com", new Credential("remeic","remepassword"));
+		accountRedisRepository.save(accountToModify);
+		accountController.modifyPassword(accountToModify,"newPassword4564");
+		verify(accountView)
+			.accountIsModified();
+					
+	}
+	
+	
+	@Test
+	public void testGenerateMediumPassword() {
+		accountController.generatePassword(16, "STRENGHT_PASSWORD_MEDIUM");		
+		verify(accountView).passwordIsGenereated(anyString());
 					
 	}
 	
