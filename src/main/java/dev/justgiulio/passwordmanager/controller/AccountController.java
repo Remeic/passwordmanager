@@ -59,7 +59,7 @@ public class AccountController {
 			accountRepository.save(new Account(alreadySavedAccount.getSite(), new Credential(alreadySavedAccount.getCredential().getUsername(), newCredentialPassword)));
 			accountView.accountIsModified();
 		}else {
-			accountView.showError("Can't find any account for selected site with specified username");
+			accountView.showError("Can't find any account for selected site with specified password");
 		}
 		
 	}
