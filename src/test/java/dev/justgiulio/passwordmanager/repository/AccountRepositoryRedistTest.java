@@ -66,6 +66,14 @@ public class AccountRepositoryRedistTest {
 	}
 	
 	@Test
+	public void testFindAllOrdered() {
+		addAccountToRedisDatabase(new Account("github.com", new Credential("giulio","passgiulio")));
+		addAccountToRedisDatabase(new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findAll());
+		assertThat.containsExactly(new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword")),new Account("github.com", new Credential("giulio","passgiulio")));
+	}
+	
+	@Test
 	public void testFindAllWhenExistMultipleAccountForSameSite() {
 		addAccountToRedisDatabase(new Account("github.com", new Credential("giulio","passgiulio")));
 		addAccountToRedisDatabase(new Account("github.com", new Credential("remeic","passremeic")));
@@ -131,6 +139,15 @@ public class AccountRepositoryRedistTest {
 		assertThat.containsAll(savedAccounts);
 	}
 	
+	@Test
+	public void testFindByUsernameOrdered() {
+		String username = "giulio";
+		addAccountToRedisDatabase(new Account("github.com", new Credential(username,"passgiulio")));
+		addAccountToRedisDatabase(new Account("dontUseFacebook.privacy", new Credential(username,"giuliopassword")));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByUsername(username));
+		assertThat.containsExactly(new Account("dontUseFacebook.privacy", new Credential("giulio","giuliopassword")),new Account("github.com", new Credential("giulio","passgiulio")));
+	}
+	
 	/**
 	 * Test for findByPassword method
 	 */
@@ -165,6 +182,14 @@ public class AccountRepositoryRedistTest {
 		assertThat.containsAll(savedAccounts);
 	}
 	
+	@Test
+	public void testFindByPasswordOrdered() {
+		String password = "passgiulio";
+		addAccountToRedisDatabase(new Account("github.com", new Credential("remeic",password)));
+		addAccountToRedisDatabase(new Account("dontUseFacebook.privacy", new Credential("giulio",password)));
+		ListAssert<Account> assertThat = assertThat(accountRedisRepository.findByPassword(password));
+		assertThat.containsExactly(new Account("dontUseFacebook.privacy", new Credential("giulio",password)),new Account("github.com", new Credential("remeic",password)));
+	}
 	
 	/**
 	 * Test for save method
