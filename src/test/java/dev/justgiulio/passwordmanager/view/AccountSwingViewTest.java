@@ -432,15 +432,17 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	
 	@Test
 	@GUITest
-	public void testFindAccountByUsernameDelegateControllerFindByUsername() {
+	public void testFindAccountsByUsernameDelegateControllerFindByUsername() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.textBox("textFieldSearchText").enterText("textToSearch");
-		window.button("buttonFindBySiteAccounts").click();
+		window.button("buttonFindByUsernameAccounts").click();
 		verify(accountController).findAccountsByUsername("textToSearch");
 	}
 	
 	@Test
 	@GUITest
-	public void testFindAccountByPasswordDelegateControllerFindByPassword() {
+	public void testFindAccountsByPasswordDelegateControllerFindByPassword() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.textBox("textFieldSearchText").enterText("textToSearch");
 		window.button("buttonFindByPasswordAccounts").click();
 		verify(accountController).findAccountsByPassword("textToSearch");
@@ -449,10 +451,19 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	
 	@Test
 	@GUITest
-	public void testFindAccountBySiteDelegateControllerFindBySite() {
+	public void testFindAccountsBySiteDelegateControllerFindBySite() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.textBox("textFieldSearchText").enterText("textToSearch");
-		window.button("buttonFindAllAccounts").click();
+		window.button("buttonFindBySiteAccounts").click();
 		verify(accountController).findAccountsByKey("textToSearch");
+	}
+	
+	@Test
+	@GUITest
+	public void testFindAllAccountDelegateControllerFindAll() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.button("buttonFindAllAccounts").click();
+		verify(accountController).findAllAccounts();
 	}
 
 	private void resetInputTextAccountCredential() {
