@@ -504,6 +504,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		buttonModifyUsername.addActionListener(updateCellComponentsEnabler);
 		buttonModifyPassword.addActionListener(updateCellComponentsEnabler);
 
+		
+		
 		ActionListener generatePasswordListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -556,6 +558,20 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		};
 		buttonFindBySiteAccounts.addActionListener(findBySiteListener);
 		
+
+		ActionListener deleteAccountListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				int selectedRow = tableDisplayedAccounts.getSelectedRow();
+				SwingUtilities.invokeLater(() -> {
+					String site = (String) tableDisplayedAccounts.getValueAt(selectedRow, 0);
+					String username = (String) tableDisplayedAccounts.getValueAt(selectedRow, 1);
+					String password = (String) tableDisplayedAccounts.getValueAt(selectedRow, 2);
+					accountController.delete(new Account(site, new Credential(username,password)));
+				});
+			}
+		};
+		buttonDeleteAccount.addActionListener(deleteAccountListener);
 
 		pack();
 	}// </editor-fold>
