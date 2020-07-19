@@ -465,6 +465,19 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button("buttonFindAllAccounts").click();
 		verify(accountController).findAllAccounts();
 	}
+	
+	@Test
+	@GUITest
+	public void testDeleteAccountDelegateControllerDeleteAccount() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonDeleteAccount").click();
+		verify(accountController).delete(new Account("github.com", new Credential("giulio", "passgiulio")));
+	}
 
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
