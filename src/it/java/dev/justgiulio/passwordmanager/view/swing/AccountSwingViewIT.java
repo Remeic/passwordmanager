@@ -115,12 +115,15 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testSaveAccountShowedInFindAll() {
-		Account firstAccount = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountController.saveAccount(firstAccount);
+		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
+		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
+		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
+		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
+		window.button("buttonSaveAccount").click();
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		accountController.findAllAccounts();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
-		assertThat(accountList).containsExactly(firstAccount);
+		assertThat(accountList).containsExactly(accountToSave);
 	}
 
 	@Test
