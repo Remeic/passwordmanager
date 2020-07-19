@@ -1,6 +1,5 @@
 package dev.justgiulio.passwordmanager.view;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -25,13 +24,13 @@ import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
 
 @RunWith(GUITestRunner.class)
-public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
+public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	private FrameFixture window;
 	private AccountSwingView accountSwingView;
-	
+
 	@Mock
 	private AccountController accountController;
-	
+
 	@Before
 	public void onSetUp() {
 		MockitoAnnotations.initMocks(this);
@@ -44,12 +43,11 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.show(); // shows the frame to test
 	}
 
-
-   
-	@Test @GUITest
+	@Test
+	@GUITest
 	public void testControlsInitialStates() {
 
-		//Verify Components on first panel of tabbedPanel
+		// Verify Components on first panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
@@ -68,7 +66,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldPassword").requireText("");
 		window.textBox("textFieldSiteName").requireText("");
 		window.textBox("textFieldUsername").requireText("");
-		//Verify Components on second panel of tabbedPanel
+		// Verify Components on second panel of tabbedPanel
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		window.button("buttonFindAllAccounts").requireEnabled();
@@ -86,9 +84,9 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.label("labelOperationResult").requireText("");
 
 	}
-	
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
 		window.panel("panelGeneratePassword").focus();
 		window.textBox("textFieldSiteName").enterText("github.com");
@@ -96,46 +94,47 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldPassword").enterText("");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("");
 		window.textBox("textFieldUsername").enterText("remeic");
 		window.textBox("textFieldPassword").enterText("");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("");
 		window.textBox("textFieldUsername").enterText("");
 		window.textBox("textFieldPassword").enterText("passgiulio");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("github.com");
 		window.textBox("textFieldUsername").enterText("remeic");
 		window.textBox("textFieldPassword").enterText("");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("");
 		window.textBox("textFieldUsername").enterText("remeic");
 		window.textBox("textFieldPassword").enterText("passgiulio");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("github.com");
 		window.textBox("textFieldUsername").enterText("");
 		window.textBox("textFieldPassword").enterText("passgiulio");
 		window.button("buttonSaveAccount").requireDisabled();
 		resetInputTextAccountCredential();
-		
+
 		window.textBox("textFieldSiteName").enterText("github.com");
 		window.textBox("textFieldUsername").enterText("remeic");
 		window.textBox("textFieldPassword").enterText("passgiulio");
 		window.button("buttonSaveAccount").requireEnabled();
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
-		
+
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		window.textBox("textFieldSearchText").focus();
@@ -151,12 +150,13 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonFindByUsernameAccounts").requireDisabled();
 
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndFieldCellUpdateIsNotEmptyMofidyButtonsAreEnable() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
-		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").requireText("");
@@ -164,23 +164,23 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.button("buttonDeleteAccount").requireEnabled();
 		window.button("buttonModifyUsername").requireDisabled();
 		window.button("buttonModifyPassword").requireDisabled();
-		
-		
+
 		window.textBox("textFieldUpdateCell").enterText("newValue");
 		window.button("buttonModifyUsername").requireEnabled();
 		window.button("buttonModifyPassword").requireEnabled();
-		
+
 		window.textBox("textFieldUpdateCell").deleteText();
 		window.button("buttonModifyUsername").requireDisabled();
 		window.button("buttonModifyPassword").requireDisabled();
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndUserClickModifyButtonsCellUpdateComponentsAreEnable() {
-		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
-		
+
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
@@ -188,24 +188,25 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonModifyUsername").click();
 		window.textBox("textFieldUpdateCell").requireText("");
-		
+
 		window.table("tableDisplayedAccounts").unselectRows(0);
 		window.textBox("textFieldUpdateCell").requireText("");
-		
+
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonModifyPassword").click();
 		window.textBox("textFieldUpdateCell").requireEnabled();
 		window.textBox("textFieldUpdateCell").requireText("");
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testModifyUsernameButtonsDelegateToController() {
 		final String UPDATED_USERNAME = "newUsername";
-		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
 
-		//Verify modifyUsername called when action performed on Modify Username Button
+		// Verify modifyUsername called when action performed on Modify Username Button
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
@@ -213,17 +214,19 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
 		window.button("buttonModifyUsername").click();
-		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_USERNAME);
-		
+		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio", "passgiulio")),
+				UPDATED_USERNAME);
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testModifyPasswordButtonDelegateToController() {
 		final String UPDATED_PASSWORD = "newPassword";
-		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")));
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
 		accountSwingView.setListAccountTableData(accounts);
-		
-		//Verify modifyUsername called when action performed on Modify Password Button
+
+		// Verify modifyUsername called when action performed on Modify Password Button
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
@@ -231,22 +234,25 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
 		window.button("buttonModifyPassword").click();
-		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), UPDATED_PASSWORD);
+		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio", "passgiulio")),
+				UPDATED_PASSWORD);
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testShowAccountsDisplayCorrectAccountsIntoTable() {
-		Account firstAccount = new Account("github.com", new Credential("giulio","passgiulio"));
-		Account secondAccount = new Account("github.com", new Credential("remeic","remegiulio"));
-		List<Account> accountDisplayed = Arrays.asList(firstAccount,secondAccount);
+		Account firstAccount = new Account("github.com", new Credential("giulio", "passgiulio"));
+		Account secondAccount = new Account("github.com", new Credential("remeic", "remegiulio"));
+		List<Account> accountDisplayed = Arrays.asList(firstAccount, secondAccount);
 		accountSwingView.showAccounts(accountDisplayed);
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsAll(accountDisplayed);
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testAccountIsModifiedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
@@ -255,14 +261,16 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		accountSwingView.accountIsModified();
 		window.label("labelOperationResult").requireEnabled();
 		window.label("labelOperationResult").requireText("Account Modified!");
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testLabelReturnToInitialStateWhenTableSelectionChange() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
-		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio","passgiulio")),new Account("github.com", new Credential("remeic","passremeic")));
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
 		accountSwingView.setListAccountTableData(accounts);
 		window.table("tableDisplayedAccounts").selectRows(0);
 		accountSwingView.accountIsModified();
@@ -270,10 +278,11 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.table("tableDisplayedAccounts").selectRows(1);
 		window.label("labelOperationResult").requireDisabled();
 		window.label("labelOperationResult").requireText("");
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testAccountIsDeletedShowLabelWithSuccessInfo() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.panel("panelDisplayedAccounts").focus();
@@ -282,35 +291,38 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		accountSwingView.accountIsDeleted();
 		window.label("labelOperationResult").requireEnabled();
 		window.label("labelOperationResult").requireText("Account Deleted!");
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testShowErrorDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
-		
+
 		accountSwingView.showError("Generic Error");
 		window.label("labelErrorMessage").requireEnabled();
 		window.label("labelErrorMessage").requireText("Generic Error");
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testShowErrorAccountDisplayErrorLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
 		String accountToString = "Account [site=github.com, credential=Credential [username=remeic, password=passremeic]]";
-		
-		accountSwingView.showError("Generic Error", new Account("github.com", new Credential("remeic","passremeic")));
+
+		accountSwingView.showError("Generic Error", new Account("github.com", new Credential("remeic", "passremeic")));
 		window.label("labelErrorMessage").requireEnabled();
-		window.label("labelErrorMessage").requireText("Generic Error: "+accountToString);
+		window.label("labelErrorMessage").requireText("Generic Error: " + accountToString);
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testLabelErrorReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
@@ -318,33 +330,34 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldSiteName").enterText(" ");
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
-		
+
 		accountSwingView.showError("Generic Error");
 		window.textBox("textFieldUsername").enterText(" ");
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
-		
+
 		accountSwingView.showError("Generic Error");
 		window.textBox("textFieldPassword").enterText(" ");
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
 	}
-	
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testAccountIsAddedShowLabelWithCorrectText() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
 		window.label("labelAccountAdded").requireDisabled();
 		window.label("labelAccountAdded").requireText("");
-		
+
 		accountSwingView.accountIsAdded();
 		window.label("labelAccountAdded").requireEnabled();
 		window.label("labelAccountAdded").requireText("Account Saved!");
-		
+
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testLabelAccountAddedReturnToInitalStateIfAccountInputFieldsChange() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
@@ -352,48 +365,51 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldSiteName").enterText(" ");
 		window.label("labelAccountAdded").requireDisabled();
 		window.label("labelAccountAdded").requireText("");
-		
+
 		accountSwingView.accountIsAdded();
 		window.textBox("textFieldUsername").enterText(" ");
 		window.label("labelAccountAdded").requireDisabled();
 		window.label("labelAccountAdded").requireText("");
-		
+
 		accountSwingView.accountIsAdded();
 		window.textBox("textFieldPassword").enterText(" ");
 		window.label("labelAccountAdded").requireDisabled();
 		window.label("labelAccountAdded").requireText("");
 	}
-	
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testGenerateButtonDelegateControllerHighStrength() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonHighStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
 		window.button("buttonGeneratePassword").click();
-		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_HIGH");
+		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_HIGH");
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testGenerateButtonDelegateControllerMediumStrength() {
 		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonMediumStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
-		window.button("buttonGeneratePassword").click();		
-		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_MEDIUM");
+		window.button("buttonGeneratePassword").click();
+		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_MEDIUM");
 	}
-	
-	@Test @GUITest
+
+	@Test
+	@GUITest
 	public void testGenerateButtonDelegateControllerLowStrength() {
 		window.panel("panelGeneratePassword").focus();
 		window.radioButton("radioButtonLowStrength").check();
 		window.slider("sliderPasswordLength").slideTo(15);
-		window.button("buttonGeneratePassword").click();		
-		verify(accountController).generatePassword(15,"STRENGHT_PASSWORD_LOW");
+		window.button("buttonGeneratePassword").click();
+		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_LOW");
 	}
-	
-	@Test  @GUITest
+
+	@Test
+	@GUITest
 	public void testPasswordIsGeneratedDisplayCorrectTextInsideInputField() {
 		window.panel("panelGeneratePassword").focus();
 		window.textBox("textFieldGeneratedPassword").requireText("");
@@ -402,26 +418,79 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase  {
 		window.textBox("textFieldGeneratedPassword").requireText("generatedPassword");
 		window.textBox("textFieldGeneratedPassword").requireNotEditable();
 	}
+
+	@Test
+	@GUITest
+	public void testButtonSaveAccountDelegateControllerSaveAccount() {
+		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
+		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
+		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
+		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
+		window.button("buttonSaveAccount").click();
+		verify(accountController).saveAccount(accountToSave);
+	}
+	
+	@Test
+	@GUITest
+	public void testFindAccountsByUsernameDelegateControllerFindByUsername() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.textBox("textFieldSearchText").enterText("textToSearch");
+		window.button("buttonFindByUsernameAccounts").click();
+		verify(accountController).findAccountsByUsername("textToSearch");
+	}
+	
+	@Test
+	@GUITest
+	public void testFindAccountsByPasswordDelegateControllerFindByPassword() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.textBox("textFieldSearchText").enterText("textToSearch");
+		window.button("buttonFindByPasswordAccounts").click();
+		verify(accountController).findAccountsByPassword("textToSearch");
+	}
 	
 	
+	@Test
+	@GUITest
+	public void testFindAccountsBySiteDelegateControllerFindBySite() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.textBox("textFieldSearchText").enterText("textToSearch");
+		window.button("buttonFindBySiteAccounts").click();
+		verify(accountController).findAccountsByKey("textToSearch");
+	}
+	
+	@Test
+	@GUITest
+	public void testFindAllAccountDelegateControllerFindAll() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.button("buttonFindAllAccounts").click();
+		verify(accountController).findAllAccounts();
+	}
+	
+	@Test
+	@GUITest
+	public void testDeleteAccountDelegateControllerDeleteAccount() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonDeleteAccount").click();
+		verify(accountController).delete(new Account("github.com", new Credential("giulio", "passgiulio")));
+	}
 
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
 		window.textBox("textFieldPassword").deleteText();
 	}
-	
-	
-	
-	
 
-	private List<Account> getAccountsList(String[][] tableContent){
+	private List<Account> getAccountsList(String[][] tableContent) {
 		List<Account> accounts = new ArrayList<Account>();
 		for (int i = 0; i < tableContent.length; i++) {
-			accounts.add(new Account(tableContent[i][0], new Credential(tableContent[i][1],tableContent[i][2])));
+			accounts.add(new Account(tableContent[i][0], new Credential(tableContent[i][1], tableContent[i][2])));
 		}
 		return accounts;
 	}
-	
 
 }

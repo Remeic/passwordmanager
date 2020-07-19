@@ -402,7 +402,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 				resetErrorLabel();
 				resetAccountAddedLabel();
 				boolean buttonIsEnable = !(textFieldSiteName.getText().trim().isEmpty()
-						|| textFieldUsername.getText().trim().isEmpty() || textFieldPassword.getText().trim().isEmpty());
+						|| textFieldUsername.getText().trim().isEmpty()
+						|| textFieldPassword.getText().trim().isEmpty());
 				buttonSaveAccount.setEnabled(buttonIsEnable);
 			}
 		};
@@ -503,6 +504,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		buttonModifyUsername.addActionListener(updateCellComponentsEnabler);
 		buttonModifyPassword.addActionListener(updateCellComponentsEnabler);
 
+		
+		
 		ActionListener generatePasswordListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -512,6 +515,64 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		};
 
 		buttonGeneratePassword.addActionListener(generatePasswordListener);
+		
+		ActionListener saveAccountListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				accountController.saveAccount(new Account(textFieldSiteName.getText(),
+						new Credential(textFieldUsername.getText(), textFieldPassword.getText())));
+			}
+		};
+		buttonSaveAccount.addActionListener(saveAccountListener);
+		
+		ActionListener findAllListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				accountController.findAllAccounts();
+			}
+		};
+		buttonFindAllAccounts.addActionListener(findAllListener);
+		
+		ActionListener findByUsernameListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				accountController.findAccountsByUsername(textFieldSearchText.getText());
+			}
+		};
+		buttonFindByUsernameAccounts.addActionListener(findByUsernameListener);
+		
+		ActionListener findByPasswordListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				accountController.findAccountsByPassword(textFieldSearchText.getText());
+			}
+		};
+		buttonFindByPasswordAccounts.addActionListener(findByPasswordListener);
+		
+
+		ActionListener findBySiteListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				accountController.findAccountsByKey(textFieldSearchText.getText());
+			}
+		};
+		buttonFindBySiteAccounts.addActionListener(findBySiteListener);
+		
+
+		ActionListener deleteAccountListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				int selectedRow = tableDisplayedAccounts.getSelectedRow();
+				SwingUtilities.invokeLater(() -> {
+					String site = (String) tableDisplayedAccounts.getValueAt(selectedRow, 0);
+					String username = (String) tableDisplayedAccounts.getValueAt(selectedRow, 1);
+					String password = (String) tableDisplayedAccounts.getValueAt(selectedRow, 2);
+					accountController.delete(new Account(site, new Credential(username,password)));
+				});
+			}
+		};
+		buttonDeleteAccount.addActionListener(deleteAccountListener);
+
 		pack();
 	}// </editor-fold>
 
@@ -561,7 +622,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	private JLabel labelOperationResult;
 	private JLabel labelAccountAdded;
 	private static final String SELECTED_FONT = "sansserif";
-	
+
 	public void setListAccountTableData(List<Account> accountsTableData) {
 		SwingUtilities.invokeLater(() -> {
 			displayedAccounts = accountsTableData;
