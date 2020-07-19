@@ -10,16 +10,15 @@ git:
    
 matrix:
    include:
-      # always build this environment
       - jdk: openjdk8
-        env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
-      # only on PR
+         if: type IN (push) AND type NOT IN (pull_request)
+         env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
       - jdk: openjdk8
-        if: type IN (pull_request)
-        env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
+         if: type IN (pull_request)
+         env: MAVEN_ARGS="-Pjacoco,it coveralls:report sonar:sonar"
       - jdk: openjdk8
-        if: type IN (pull_request)
-        env: MAVEN_ARGS="-Ppit"
+         if: type IN (pull_request)
+         env: MAVEN_ARGS="-Ppit"
         
 services:
    - docker
