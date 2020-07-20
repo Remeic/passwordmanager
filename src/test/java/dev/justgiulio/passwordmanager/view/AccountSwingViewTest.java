@@ -291,7 +291,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		accountSwingView.accountIsDeleted();
 		window.label("labelOperationResult").requireEnabled();
 		window.label("labelOperationResult").requireText("Account Deleted!");
-
 	}
 
 	@Test
@@ -479,6 +478,18 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		verify(accountController).delete(new Account("github.com", new Credential("giulio", "passgiulio")));
 	}
 
+	@Test
+	@GUITest
+	public void testModifyOperationErrorShowLabel() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.label("labelOperationResult").requireDisabled();
+		window.label("labelOperationResult").requireText("");
+		accountSwingView.showAccountRelatedError("Generic Error");
+		window.label("labelOperationResult").requireEnabled();
+		window.label("labelOperationResult").requireText("Generic Error");
+	}
+	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
 		window.textBox("textFieldUsername").deleteText();
