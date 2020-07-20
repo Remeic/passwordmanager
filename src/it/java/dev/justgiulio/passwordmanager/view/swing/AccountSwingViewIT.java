@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.swing.annotation.GUITest;
@@ -68,7 +69,7 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 
 	@Test
 	@GUITest
-	public void testAccountIsModifiedPassowrd() {
+	public void testAccountIsModifiedPassword() {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
 		accountRedisRepository.save(accountToSave);
 		window.tabbedPane("tabbedPanel").selectTab(1);
@@ -205,7 +206,56 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		assertThat(accountRedisRepository.findByPassword(password)).containsExactly(firstAccount, thirdAccount);
 
 	}
+	
+	@Test
+	@GUITest
+	public void testSaveAccountAlreadyPresentDipslayErrorLabel() {
+		window.tabbedPane("tabbedPanel").selectTab(0);
+		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
+		accountRedisRepository.save(accountToSave);
+		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
+		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
+		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
+		window.button("buttonSaveAccount").click();
+		assertThat(window.label("labelErrorMessage").text())
+		.isEqualTo("Already existing credential for the same site with the same username: "+accountToSave.toString());
 
+	}
+	
+
+	@Test
+	@GUITest
+	public void testModifyUsernameAccountNotExistingShowErrorLabel() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText("newUsername");
+		window.button("buttonModifyUsername").click();
+		assertThat(window.label("labelOperationResult").text())
+		.isEqualTo("Can't find any account for selected site with specified username");
+		
+	}
+	
+	@Test
+	@GUITest
+	public void testModifyPasswordAccountNotExistingShowErrorLabel() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText("newPassword");
+		window.button("buttonModifyPassword").click();
+		assertThat(accountRedisRepository.findAll()).isEmpty();
+		window.tabbedPane("tabbedPanel").selectTab(0);
+
+		assertThat(window.label("labelErrorMessage").text())
+		.isEqualTo("Can't find any account for selected site with specified password");
+		
+	}
+	
 	private List<Account> getAccountsList(String[][] tableContent) {
 		List<Account> accounts = new ArrayList<Account>();
 		for (int i = 0; i < tableContent.length; i++) {
