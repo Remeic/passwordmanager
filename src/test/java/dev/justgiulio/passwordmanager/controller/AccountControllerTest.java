@@ -142,7 +142,7 @@ public class AccountControllerTest {
 		String newCredentialPassword = "passMoreSecure123";
 		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com", new Credential("remegiulio","remepassword"))));
 		controller.modifyPassword(new Account("github.com", new Credential("giulio","passgiulio")), newCredentialPassword);
-		verify(accountView).showError("Can't find any account for selected site with specified username");
+		verify(accountView).showAccountRelatedError("Can't find any account for selected site with specified password");
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
@@ -152,7 +152,7 @@ public class AccountControllerTest {
 		String newCredentialUsername = "remeic";
 		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(new Account("github.com", new Credential("remegiulio","remepassword"))));
 		controller.modifyUsername(new Account("github.com", new Credential("giulio","passgiulio")), newCredentialUsername);
-		verify(accountView).showError("Can't find any account for selected site with specified username");
+		verify(accountView).showAccountRelatedError("Can't find any account for selected site with specified username");
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
@@ -173,7 +173,7 @@ public class AccountControllerTest {
 		Account accountToDelete = new Account("github.com", new Credential("remegiulio","remepassword"));
 		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(accountToDelete));
 		controller.delete( new Account("github.com", new Credential("giulio","remepassword")));
-		verify(accountView).showError("Can't find any account for selected site");
+		verify(accountView).showAccountRelatedError("Can't find any account for selected site");
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	
