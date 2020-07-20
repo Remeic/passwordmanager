@@ -59,7 +59,7 @@ public class AccountController {
 			accountRepository.save(new Account(alreadySavedAccount.getSite(), new Credential(alreadySavedAccount.getCredential().getUsername(), newCredentialPassword)));
 			accountView.accountIsModified();
 		}else {
-			accountView.showError("Can't find any account for selected site with specified username");
+			accountView.showAccountRelatedError("Can't find any account for selected site with specified password");
 		}
 		
 	}
@@ -71,7 +71,7 @@ public class AccountController {
 			accountRepository.save(new Account(alreadySavedAccount.getSite(), new Credential(newCredentialUsername,alreadySavedAccount.getCredential().getPassword())));
 			accountView.accountIsModified();
 		}else {
-			accountView.showError("Can't find any account for selected site with specified username");
+			accountView.showAccountRelatedError("Can't find any account for selected site with specified username");
 		}
 		
 	}
@@ -81,7 +81,7 @@ public class AccountController {
 			accountRepository.delete(accountToDelete);
 			accountView.accountIsDeleted();
 		}else {
-			accountView.showError("Can't find any account for selected site");
+			accountView.showAccountRelatedError("Can't find any account for selected site");
 		}
 
 	}
