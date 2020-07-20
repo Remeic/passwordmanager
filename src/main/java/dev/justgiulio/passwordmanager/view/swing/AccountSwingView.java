@@ -682,6 +682,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	public void passwordIsGenereated(String generatedPassword) {
 		SwingUtilities.invokeLater(() -> textFieldGeneratedPassword.setText(generatedPassword));
 	}
+	
+	@Override
+	public void showAccountRelatedError(String string) {
+		SwingUtilities.invokeLater(() -> {
+			labelOperationResult.setEnabled(true);
+			labelOperationResult.setText(string);
+		});
+		
+	}
 
 	public void setAccountController(AccountController accountController) {
 		this.accountController = accountController;
@@ -707,5 +716,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelAccountAdded.setText("");
 		});
 	}
+
+	
 
 }

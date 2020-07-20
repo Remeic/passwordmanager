@@ -16,5 +16,7 @@ public interface AccountView {
 	void accountIsDeleted();
 	
 	void passwordIsGenereated(String generatedPassword);
+	
+	void showAccountRelatedError(String string);
 
 }
