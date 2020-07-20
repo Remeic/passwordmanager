@@ -76,9 +76,10 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
-		accountController.findAllAccounts();
+		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
+		assertThat(accountRedisRepository.findAll()).containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
 	}
 
 	@Test
@@ -91,9 +92,10 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newUsername");
 		window.button("buttonModifyUsername").click();
-		accountController.findAllAccounts();
+		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
+		assertThat(accountRedisRepository.findAll()).containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
 	}
 
 	@Test
@@ -105,9 +107,11 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		accountController.findAllAccounts();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonDeleteAccount").click();
-		accountController.findAllAccounts();
+		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).isEmpty();
+		assertThat(accountRedisRepository.findAll()).isEmpty();
+
 	}
 	
 	
@@ -121,9 +125,11 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
 		window.button("buttonSaveAccount").click();
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAllAccounts();
+		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(accountToSave);
+		assertThat(accountRedisRepository.findAll()).containsExactly(accountToSave);
+
 	}
 
 	@Test
@@ -135,9 +141,11 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		accountRedisRepository.save(firstAccount);
 		accountRedisRepository.save(secondAccount);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAllAccounts();
+		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(firstAccount, secondAccount);
+		assertThat(accountRedisRepository.findAll()).containsExactly(firstAccount, secondAccount);
+
 	}
 
 	@Test
@@ -152,9 +160,12 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		accountRedisRepository.save(secondAccount);
 		accountRedisRepository.save(thirdAccount);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAccountsByKey(site);
+		window.textBox("textFieldSearchText").enterText(site);
+		window.button("buttonFindBySiteAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(firstAccount, thirdAccount);
+		assertThat(accountRedisRepository.findByKey(site)).containsExactly(firstAccount, thirdAccount);
+
 	}
 
 	@Test
@@ -168,9 +179,31 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		accountRedisRepository.save(firstAccount);
 		accountRedisRepository.save(secondAccount);
 		accountRedisRepository.save(thirdAccount);
-		accountController.findAccountsByUsername(username);
+		window.textBox("textFieldSearchText").enterText(username);
+		window.button("buttonFindByUsernameAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(firstAccount,thirdAccount);
+		assertThat(accountRedisRepository.findByUsername(username)).containsExactly(firstAccount, thirdAccount);
+
+	}
+	
+	@Test
+	@GUITest
+	public void testFindByPassword() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		String password = "remepassword";
+		Account firstAccount = new Account("github.com", new Credential("remeic", password));
+		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
+		Account thirdAccount = new Account("gitlab.com", new Credential("remeic", password));
+		accountRedisRepository.save(firstAccount);
+		accountRedisRepository.save(secondAccount);
+		accountRedisRepository.save(thirdAccount);
+		window.textBox("textFieldSearchText").enterText(password);
+		window.button("buttonFindByPasswordAccounts").click();
+		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		assertThat(accountList).containsExactly(firstAccount,thirdAccount);
+		assertThat(accountRedisRepository.findByPassword(password)).containsExactly(firstAccount, thirdAccount);
+
 	}
 
 	private List<Account> getAccountsList(String[][] tableContent) {
