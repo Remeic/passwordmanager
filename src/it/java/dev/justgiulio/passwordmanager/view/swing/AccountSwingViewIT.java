@@ -77,6 +77,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
+		assertThat(window.label("labelOperationResult").text())
+		.isEqualTo("Account Modified!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
@@ -93,6 +95,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newUsername");
 		window.button("buttonModifyUsername").click();
+		assertThat(window.label("labelOperationResult").text())
+		.isEqualTo("Account Modified!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
@@ -108,6 +112,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		accountController.findAllAccounts();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonDeleteAccount").click();
+		assertThat(window.label("labelOperationResult").text())
+		.isEqualTo("Account Deleted!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).isEmpty();
@@ -125,6 +131,7 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
 		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
 		window.button("buttonSaveAccount").click();
+		assertThat(window.label("labelAccountAdded").text()).isEqualTo("Account Saved!");
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
@@ -245,16 +252,33 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
 		accountSwingView.setListAccountTableData(accounts);
+		assertThat(accountRedisRepository.findAll()).isEmpty();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
-		assertThat(accountRedisRepository.findAll()).isEmpty();
-		window.tabbedPane("tabbedPanel").selectTab(0);
-
-		assertThat(window.label("labelErrorMessage").text())
+		assertThat(window.label("labelOperationResult").text())
 		.isEqualTo("Can't find any account for selected site with specified password");
 		
 	}
+	
+	
+	@Test
+	@GUITest
+	public void testDeleteAccountNotExistingShowErrorLabel() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		assertThat(accountRedisRepository.findAll()).isEmpty();
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.button("buttonDeleteAccount").click();
+		assertThat(window.label("labelOperationResult").text())
+		.isEqualTo("Can't find any account for selected site");
+		
+	}
+	
+	
+	
 	
 	private List<Account> getAccountsList(String[][] tableContent) {
 		List<Account> accounts = new ArrayList<Account>();
