@@ -229,6 +229,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.button("buttonSaveAccount").click();
 		assertThat(window.label("labelErrorMessage").text())
 		.isEqualTo("Already existing credential for the same site with the same username: "+accountToSave.toString());
+		assertThat(accountRedisRepository.findAll()).containsExactly(accountToSave);
+
 
 	}
 	
@@ -245,6 +247,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.button("buttonModifyUsername").click();
 		assertThat(window.label("labelOperationResult").text())
 		.isEqualTo("Can't find any account for selected site with specified username");
+		assertThat(accountRedisRepository.findAll()).isEmpty();
+
 		
 	}
 	
@@ -261,6 +265,7 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.button("buttonModifyPassword").click();
 		assertThat(window.label("labelOperationResult").text())
 		.isEqualTo("Can't find any account for selected site with specified password");
+		assertThat(accountRedisRepository.findAll()).isEmpty();
 		
 	}
 	
