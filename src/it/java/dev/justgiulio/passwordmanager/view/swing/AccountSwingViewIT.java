@@ -73,7 +73,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
 		accountRedisRepository.save(accountToSave);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAllAccounts();
+		GuiActionRunner.execute(
+				() ->accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
@@ -91,7 +92,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
 		accountRedisRepository.save(accountToSave);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAllAccounts();
+		GuiActionRunner.execute(
+				() ->accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newUsername");
 		window.button("buttonModifyUsername").click();
@@ -109,7 +111,8 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
 		accountRedisRepository.save(accountToSave);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		accountController.findAllAccounts();
+		GuiActionRunner.execute(
+				() ->accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonDeleteAccount").click();
 		assertThat(window.label("labelOperationResult").text())
