@@ -87,10 +87,9 @@ public class AccountRedisRepository implements AccountRepository {
 	}
 
 	
-	private List<Account> sortAccounts(List<Account> accounts) {
+	private void sortAccounts(List<Account> accounts) {
 		Comparator<Account> bySite = (Account tmpAccount1, Account tmpAccount2)->tmpAccount1.getSite().compareTo(tmpAccount2.getSite());	
 		accounts.sort(bySite);
-		return accounts;
 	}
 
 	
