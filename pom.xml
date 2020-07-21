@@ -20,6 +20,7 @@
 		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<failsafe.version>2.22.2</failsafe.version>
+    	<build.helper.version>3.0.0</build.helper.version>
 
 		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
@@ -308,6 +309,26 @@
 						</mutators>
 						<mutationThreshold>100</mutationThreshold>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build.helper.version}</version>
+					<executions>
+						<execution>
+							<id>add-test-source</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>add-test-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>src/it/java</source>
+									<source>src/e2e/java</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
