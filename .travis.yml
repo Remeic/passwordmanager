@@ -1,29 +1,29 @@
 language: java
 
 addons:
-   sonarcloud:
-     organization: "remeic"
-     token: ${SONAR_TOKEN}
+  sonarcloud:
+    organization: "remeic"
+    token: ${SONAR_TOKEN}
 
 git:
-   depth: false
-   
+  depth: false
+
 matrix:
-   include:
-      # always build this environment
-      - jdk: openjdk8
-        env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
-      # only on PR
-      - jdk: openjdk8
-        if: type IN (pull_request)
-        env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
-      - jdk: openjdk8
-        if: type IN (pull_request)
-        env: MAVEN_ARGS="-Ppit"
-        
+  include:
+    - jdk: openjdk8
+      if: type IN (push) AND type NOT IN (pull_request)
+      env: MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
+    # only on PR
+    - jdk: openjdk8
+      if: type IN (pull_request)
+      env: MAVEN_ARGS="-Pjacoco,it coveralls:report sonar:sonar"
+    - jdk: openjdk8
+      if: type IN (pull_request)
+      env: MAVEN_ARGS="-Ppit"
+
 services:
-   - docker
-   - xvfb
+  - docker
+  - xvfb
 
 # skip installation step
 install: true
@@ -31,13 +31,13 @@ install: true
 env: DISPLAY=:99.0
 
 cache:
-   directories:
-      - $HOME/.m2
-      - $HOME/.sonar/cache
+  directories:
+    - $HOME/.m2
+    - $HOME/.sonar/cache
 
 before_script:
-   - "Xvfb :99 &"
-   - "export DISPLAY=:99"
+  - "Xvfb :99 &"
+  - "export DISPLAY=:99"
 
 script:
-   - ./mvnw clean verify $MAVEN_ARGS
+  - ./mvnw clean verify $MAVEN_ARGS

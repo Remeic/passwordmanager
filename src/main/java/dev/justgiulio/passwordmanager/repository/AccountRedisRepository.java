@@ -1,6 +1,7 @@
 package dev.justgiulio.passwordmanager.repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class AccountRedisRepository implements AccountRepository {
 			.stream()
 			.map(key -> this.fromMapToAccounts(key,this.getMapFromKey(key)))
 			.forEach(accounts::addAll);
+		sortAccounts(accounts);
 		return accounts;
 	}
 
@@ -85,6 +87,10 @@ public class AccountRedisRepository implements AccountRepository {
 	}
 
 	
+	private void sortAccounts(List<Account> accounts) {
+		Comparator<Account> bySite = (Account tmpAccount1, Account tmpAccount2)->tmpAccount1.getSite().compareTo(tmpAccount2.getSite());	
+		accounts.sort(bySite);
+	}
 
 	
 

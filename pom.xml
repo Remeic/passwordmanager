@@ -16,9 +16,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		
-		<!-- For SonarQube -->
+
+		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
+		<failsafe.version>2.22.2</failsafe.version>
+
+		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
@@ -77,9 +80,9 @@
 		<sonar.issue.ignore.multicriteria.e6.resourceKey>
 			**/*.java
 		</sonar.issue.ignore.multicriteria.e6.resourceKey>
-		
+
 		<!-- End SonarQube -->
-		
+
 	</properties>
 
 	<dependencies>
@@ -122,6 +125,12 @@
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-compat</artifactId>
 			<version>3.0.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -299,6 +308,34 @@
 						</mutators>
 						<mutationThreshold>100</mutationThreshold>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${failsafe.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
