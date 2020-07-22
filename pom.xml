@@ -20,7 +20,9 @@
 		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<failsafe.version>2.22.2</failsafe.version>
-    	<build.helper.version>3.0.0</build.helper.version>
+		<build.helper.version>3.0.0</build.helper.version>
+		<picocli.version>3.9.6</picocli.version>
+
 
 		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
@@ -133,6 +135,11 @@
 			<artifactId>testcontainers</artifactId>
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
 		</dependency>
 	</dependencies>
 
