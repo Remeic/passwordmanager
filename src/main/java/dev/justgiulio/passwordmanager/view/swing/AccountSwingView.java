@@ -37,6 +37,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 
 	private void initComponents() {
 		this.setVisible(true);
+		this.setTitle("Password Manager");
 		modelDisplayedAccounts = new DisplayedAccountsTableModel();
 		tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
 		tableDisplayedAccounts.setName("tableDisplayedAccounts");
