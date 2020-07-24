@@ -50,8 +50,8 @@ public class AccountControllerIT {
 		MockitoAnnotations.initMocks(this);
 		jedis = new Jedis("localhost", 6379);
 		accountRedisRepository = new AccountRedisRepository(jedis);
-		accountController = new AccountController(accountView, accountRedisRepository, passwordGenerator);
 		passwordGenerator = new SecureRandomGenerator();
+		accountController = new AccountController(accountView, accountRedisRepository, passwordGenerator);
 		jedis.flushAll();
 		jedis.flushDB();
 	}
@@ -185,6 +185,7 @@ public class AccountControllerIT {
 	public void testGenerateMediumPassword() {
 		accountController.generatePassword(16, "STRENGHT_PASSWORD_MEDIUM");		
 		verify(accountView).passwordIsGenereated(anyString());
+  
 					
 	}
 	

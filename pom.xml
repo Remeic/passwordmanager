@@ -20,10 +20,10 @@
 		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<failsafe.version>2.22.2</failsafe.version>
-		<build.helper.version>3.0.0</build.helper.version>
 		<picocli.version>3.9.6</picocli.version>
-
-
+		<codehaus.version>3.0.0</codehaus.version>
+		<fabric.version>0.27.2</fabric.version>
+		<jacoco.version>0.8.3</jacoco.version>
 		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
@@ -103,8 +103,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>sonar-maven-plugin</artifactId>
-			<version>${sonar.version}</version>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>${codehaus.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -112,6 +112,12 @@
 			<version>3.1.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-jdk14</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.fppt</groupId>
@@ -144,6 +150,29 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
@@ -192,9 +221,37 @@
 					<version>4.3.0</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${failsafe.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.2</version>
+					<version>${jacoco.version}</version>
 					<configuration>
 						<excludes>
 							<exclude>**/model/*</exclude>
@@ -317,51 +374,38 @@
 						<mutationThreshold>100</mutationThreshold>
 					</configuration>
 				</plugin>
+
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>${build.helper.version}</version>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${fabric.version}</version>
+					<configuration>
+                                                <dockerHost>unix:///var/run/docker.sock</dockerHost>
+						<images>
+							<image>
+								<name>redis:3.0.2</name>
+								<run>
+									<ports>
+										<port>6379:6379</port>
+									</ports>
+								</run>
+							</image>
+						</images>
+					</configuration>
 					<executions>
 						<execution>
-							<id>add-test-source</id>
-							<phase>generate-test-sources</phase>
+							<id>docker:start</id>
+							<phase>pre-integration-test</phase>
 							<goals>
-								<goal>add-test-source</goal>
-							</goals>
-							<configuration>
-								<sources>
-									<source>src/it/java</source>
-									<source>src/e2e/java</source>
-								</sources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${failsafe.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
+								<goal>start</goal>
 							</goals>
 						</execution>
 						<execution>
-							<id>e2e-tests</id>
+							<id>docker:stop</id>
+							<phase>post-integration-test</phase>
 							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
+								<goal>stop</goal>
 							</goals>
-							<configuration>
-								<excludes>
-									<exclude>**/*IT.java</exclude>
-								</excludes>
-								<includes>
-									<include>**/*E2E.java</include>
-								</includes>
-							</configuration>
 						</execution>
 					</executions>
 				</plugin>
@@ -409,6 +453,28 @@
 								<phase>verify</phase>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>it</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<skip.integration-tests>false</skip.integration-tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Configured in pluginManagement -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
