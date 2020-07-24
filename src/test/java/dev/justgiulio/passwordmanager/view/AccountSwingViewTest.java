@@ -417,6 +417,20 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldGeneratedPassword").requireText("generatedPassword");
 		window.textBox("textFieldGeneratedPassword").requireNotEditable();
 	}
+	
+	@Test
+	@GUITest
+	public void testPasswordIsGeneratedResetInputField() {
+		window.panel("panelGeneratePassword").focus();
+		window.textBox("textFieldSiteName").enterText("siteName");
+		window.textBox("textFieldUsername").enterText("username");
+		window.textBox("textFieldPassword").enterText("password");
+		accountSwingView.accountIsAdded();
+		window.textBox("textFieldSiteName").requireText("");
+		window.textBox("textFieldUsername").requireText("");
+		window.textBox("textFieldPassword").requireText("");
+		
+	}
 
 	@Test
 	@GUITest
