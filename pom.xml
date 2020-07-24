@@ -359,6 +359,7 @@
 					<artifactId>docker-maven-plugin</artifactId>
 					<version>${fabric.version}</version>
 					<configuration>
+                                                <dockerHost>unix:///var/run/docker.sock</dockerHost>
 						<images>
 							<image>
 								<name>redis:3.0.2</name>
