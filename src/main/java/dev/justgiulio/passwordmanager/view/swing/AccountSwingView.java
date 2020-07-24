@@ -638,9 +638,14 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 
 	@Override
 	public void accountIsAdded() {
+		
 		SwingUtilities.invokeLater(() -> {
 			labelAccountAdded.setEnabled(true);
 			labelAccountAdded.setText("Account Saved!");
+			textFieldUsername.setText("");
+			textFieldSiteName.setText("");
+			textFieldPassword.setText("");
+
 		});
 	}
 
@@ -665,6 +670,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelOperationResult.setEnabled(true);
 			labelOperationResult.setText("Account Modified!");
+			textFieldUpdateCell.setText("");
 		});
 
 	}
