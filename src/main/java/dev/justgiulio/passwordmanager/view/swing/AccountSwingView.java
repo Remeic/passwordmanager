@@ -638,9 +638,14 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 
 	@Override
 	public void accountIsAdded() {
+		
 		SwingUtilities.invokeLater(() -> {
 			labelAccountAdded.setEnabled(true);
 			labelAccountAdded.setText("Account Saved!");
+			textFieldUsername.setText("");
+			textFieldSiteName.setText("");
+			textFieldPassword.setText("");
+
 		});
 	}
 
