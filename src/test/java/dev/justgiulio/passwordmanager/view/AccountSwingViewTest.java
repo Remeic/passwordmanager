@@ -263,6 +263,21 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("labelOperationResult").requireText("Account Modified!");
 
 	}
+	
+	
+	@Test
+	@GUITest
+	public void testAccountIsModifiedResetTextField() {
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
+				new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText("modifyInput");
+		accountSwingView.accountIsModified();
+		window.textBox("textFieldUpdateCell").requireText("");
+	}
 
 	@Test
 	@GUITest
@@ -292,6 +307,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("labelOperationResult").requireEnabled();
 		window.label("labelOperationResult").requireText("Account Deleted!");
 	}
+	
 
 	@Test
 	@GUITest
