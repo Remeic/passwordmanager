@@ -670,6 +670,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelOperationResult.setEnabled(true);
 			labelOperationResult.setText("Account Modified!");
+			textFieldUpdateCell.setText("");
 		});
 
 	}
