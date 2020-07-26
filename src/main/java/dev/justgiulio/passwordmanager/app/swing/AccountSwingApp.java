@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import dev.justgiulio.passwordmanager.controller.AccountController;
 import dev.justgiulio.passwordmanager.generator.Generator;
+import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
 import dev.justgiulio.passwordmanager.repository.AccountRedisRepository;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
 
@@ -42,6 +43,7 @@ public class AccountSwingApp implements Callable<Void> {
 				redisClient = new Jedis(redisHost,redisPort);
 				accountRedisRepository = new AccountRedisRepository(redisClient);
 				accountSwingView = new AccountSwingView();
+				passwordGenerator = new SecureRandomGenerator();
 				accountController = new AccountController(accountSwingView, accountRedisRepository, passwordGenerator);
 				accountSwingView.setAccountController(accountController);
 				accountSwingView.setVisible(true);

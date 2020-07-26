@@ -1,514 +1,513 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.justgiulio.passwordmanager</groupId>
-    <artifactId>passwordmanager</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<groupId>dev.justgiulio.passwordmanager</groupId>
+	<artifactId>passwordmanager</artifactId>
+	<version>1.0-SNAPSHOT</version>
 
-    <name>passwordmanager</name>
-
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <testcontainers.version>1.11.3</testcontainers.version>
-        <sonar.version>3.7.0.1746</sonar.version>
-        <failsafe.version>2.22.2</failsafe.version>
-        <picocli.version>3.9.6</picocli.version>
-        <codehaus.version>3.0.0</codehaus.version>
-        <fabric.version>0.27.2</fabric.version>
-        <jacoco.version>0.8.3</jacoco.version>
-        <!-- For SonarQube -->
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.reporting.outputDirectory}/jacoco/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.junit.reportPaths>
-            ${project.build.directory}/surefire-reports,
-            ${project.build.directory}/failsafe-reports
-        </sonar.junit.reportPaths>
-        <sonar.coverage.exclusions>
-            **/model/*
-        </sonar.coverage.exclusions>
-        <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
-        <!-- Disable rule for "Anonymous inner classes containing only one method 
-        should become lambda" -->
-        <sonar.issue.ignore.multicriteria.e1.ruleKey>
-            java:S1604
-        </sonar.issue.ignore.multicriteria.e1.ruleKey>
-        <sonar.issue.ignore.multicriteria.e1.resourceKey>
-            **/AccountSwingView.java
-        </sonar.issue.ignore.multicriteria.e1.resourceKey>
-        <!-- Disable rule for "Cognitive Complexity of methods should not be too 
-        high " initComponents method of AccountSwingView -->
-        <sonar.issue.ignore.multicriteria.e2.ruleKey>
-            java:S3776
-        </sonar.issue.ignore.multicriteria.e2.ruleKey>
-        <sonar.issue.ignore.multicriteria.e2.resourceKey>
-            **/AccountSwingView.java
-        </sonar.issue.ignore.multicriteria.e2.resourceKey>
-        <!-- Disable rule for "Private fields only used as local variables in methods 
-        should become local variables" -->
-        <sonar.issue.ignore.multicriteria.e3.ruleKey>
-            java:S1450
-        </sonar.issue.ignore.multicriteria.e3.ruleKey>
-        <sonar.issue.ignore.multicriteria.e3.resourceKey>
-            **/AccountSwingView.java
-        </sonar.issue.ignore.multicriteria.e3.resourceKey>
-        <!-- "Tests should include assertions" disabled on tests using AssertJ 
-        Swing since its assertions are not recognized as assertions -->
-        <sonar.issue.ignore.multicriteria.e4.ruleKey>
-            java:S2699
-        </sonar.issue.ignore.multicriteria.e4.ruleKey>
-        <sonar.issue.ignore.multicriteria.e4.resourceKey>
-            **/AccountSwingView*.java
-        </sonar.issue.ignore.multicriteria.e4.resourceKey>
-        <!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
-        not be used" Using it for swingSlider label -->
-        <sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey>
-        <sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
-        <!-- "Inheritance tree of classes should not be too deep -->
-        <sonar.issue.ignore.multicriteria.e6.ruleKey>
-            java:S110
-        </sonar.issue.ignore.multicriteria.e6.ruleKey>
-        <sonar.issue.ignore.multicriteria.e6.resourceKey>
-            **/*.java
-        </sonar.issue.ignore.multicriteria.e6.resourceKey>
-
-        <!-- End SonarQube -->
-
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-swing-junit</artifactId>
-            <version>3.9.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>${codehaus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.1.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-jdk14</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.fppt</groupId>
-            <artifactId>jedis-mock</artifactId>
-            <version>0.1.16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.23.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-compat</artifactId>
-            <version>3.0.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.picocli</groupId>
-            <artifactId>picocli</artifactId>
-            <version>${picocli.version}</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>add-test-source</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/it/java</source>
-                                <source>src/e2e/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+	<name>passwordmanager</name>
 
 
-        <pluginManagement><!-- lock down plugins versions to avoid using Maven 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<testcontainers.version>1.11.3</testcontainers.version>
+		<sonar.version>3.7.0.1746</sonar.version>
+		<failsafe.version>2.22.2</failsafe.version>
+		<picocli.version>3.9.6</picocli.version>
+		<codehaus.version>3.0.0</codehaus.version>
+		<fabric.version>0.27.2</fabric.version>
+		<jacoco.version>0.8.3</jacoco.version>
+		<!-- For SonarQube -->
+		<sonar.coverage.jacoco.xmlReportPaths>
+			${project.reporting.outputDirectory}/jacoco/jacoco.xml
+		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.junit.reportPaths>
+			${project.build.directory}/surefire-reports,
+			${project.build.directory}/failsafe-reports
+		</sonar.junit.reportPaths>
+		<sonar.coverage.exclusions>
+			**/model/*
+		</sonar.coverage.exclusions>
+		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
+		<!-- Disable rule for "Anonymous inner classes containing only one method 
+			should become lambda" -->
+		<sonar.issue.ignore.multicriteria.e1.ruleKey>
+			java:S1604
+		</sonar.issue.ignore.multicriteria.e1.ruleKey>
+		<sonar.issue.ignore.multicriteria.e1.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e1.resourceKey>
+		<!-- Disable rule for "Cognitive Complexity of methods should not be too 
+			high " initComponents method of AccountSwingView -->
+		<sonar.issue.ignore.multicriteria.e2.ruleKey>
+			java:S3776
+		</sonar.issue.ignore.multicriteria.e2.ruleKey>
+		<sonar.issue.ignore.multicriteria.e2.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e2.resourceKey>
+		<!-- Disable rule for "Private fields only used as local variables in methods 
+			should become local variables" -->
+		<sonar.issue.ignore.multicriteria.e3.ruleKey>
+			java:S1450
+		</sonar.issue.ignore.multicriteria.e3.ruleKey>
+		<sonar.issue.ignore.multicriteria.e3.resourceKey>
+			**/AccountSwingView.java
+		</sonar.issue.ignore.multicriteria.e3.resourceKey>
+		<!-- "Tests should include assertions" disabled on tests using AssertJ 
+			Swing since its assertions are not recognized as assertions -->
+		<sonar.issue.ignore.multicriteria.e4.ruleKey>
+			java:S2699
+		</sonar.issue.ignore.multicriteria.e4.ruleKey>
+		<sonar.issue.ignore.multicriteria.e4.resourceKey>
+			**/AccountSwingView*.java
+		</sonar.issue.ignore.multicriteria.e4.resourceKey>
+		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
+			not be used" Using it for swingSlider label -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey><sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
+<!-- "Inheritance tree of classes should not be too deep -->
+		<sonar.issue.ignore.multicriteria.e6.ruleKey>
+			java:S110
+		</sonar.issue.ignore.multicriteria.e6.ruleKey>
+		<sonar.issue.ignore.multicriteria.e6.resourceKey>
+			**/*.java
+		</sonar.issue.ignore.multicriteria.e6.resourceKey>
+
+		<!-- End SonarQube -->
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-swing-junit</artifactId>
+			<version>3.9.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>${codehaus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>3.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-jdk14</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.fppt</groupId>
+			<artifactId>jedis-mock</artifactId>
+			<version>0.1.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.23.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>3.0.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+								<source>src/e2e/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
-            <plugins>
-                <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
-                <plugin>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
-                </plugin>
-                <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
-                </plugin>
-                <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.7.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.eluder.coveralls</groupId>
-                    <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.3.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafe.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>e2e-tests</id>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                            <configuration>
-                                <excludes>
-                                    <exclude>**/*IT.java</exclude>
-                                </excludes>
-                                <includes>
-                                    <include>**/*E2E.java</include>
-                                </includes>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.version}</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>**/model/*</exclude>
-                            <exclude>**/AccountSwingApp.*</exclude>
-                        </excludes>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>jacoco-check</id>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <rule>
-                                        <element>CLASS</element>
-                                        <limits>
-                                            <limit>
-                                                <counter>LINE</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>1.0</minimum>
-                                            </limit>
-                                        </limits>
-                                    </rule>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.pitest</groupId>
-                    <artifactId>pitest-maven</artifactId>
-                    <version>1.5.2</version>
-                    <configuration>
-                        <targetClasses>
-                            <param>dev.justgiulio.passwordmanager.*</param>
-                        </targetClasses>
-                        <excludedClasses>
-                            <param>dev.justgiulio.passwordmanager.model.*</param>
-                            <param>dev.justgiulio.passwordmanager.view.*</param>
-                            <param>dev.justgiulio.passwordmanager.view.swing.*</param>
-                        </excludedClasses>
-                        <excludedTestClasses>
-                            <param>dev.justgiulio.passwordmanager.view.*</param>
-                        </excludedTestClasses>
-                        <excludedMethods>
-                            <excludedMethod>
-                                <!-- "Removed conditional replace equality with false" This is a 
-                                private method tested with tests on password (with different dictionary) 
-                                And the generation of password is random so, a valid password ( medium strength 
-                                ) can contains only letters -->
-                                getDictionary
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Decremented a integer local variable number & Replace 0 with 
-                                1 " I don't understand how fix this, for replace 0 with 1 the choice of char 
-                                is random, i can't fix the start position -->
-                                getPassword
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Decremented a integer local variable number 2 & Negated integer 
-                                local variable number" I don't understand how fix this, there isn't a variable -->
-                                generate
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Replaced call map with receiver | Decremented and Incremented 
-                                local a variable | Remove shuffle method of Collectors" I don't understand 
-                                how fix this, there isn't a variable a and i don't understand received replacement 
-                                For shuffle method, i think the only methdod is mock Generator and ints method -->
-                                shufflePassword
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Substitued 0 with 1 | Icremented and Decremented local variable 
-                                " For the substitution, the position from start can be 0 or anyone else number, 
-                                the generation of password is random so, i can't check from where ints star 
-                                No local variable a is present -->
-                                getCharsFromDictionary
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Equal to less or equal" I don't understand how fix this, boolean 
-                                check -->
-                                saveAccount
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Equal to less or equal" I don't understand how fix this, boolean 
-                                check -->
-                                modifyPassword
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Equal to less or equal" I don't understand how fix this, boolean 
-                                check -->
-                                modifyUsername
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Equal to less or equal" I don't understand how fix this, boolean 
-                                check -->
-                                delete
-                            </excludedMethod>
-                            <excludedMethod>
-                                <!-- "Equal to less or equal" I don't understand how fix this, boolean 
-                                check -->
-                                generatePassword
-                            </excludedMethod>
-                        </excludedMethods>
-                        <targetTests>
-                            <param>dev.justgiulio.passwordmanager.*</param>
-                        </targetTests>
-                        <mutators>
-                            <mutator>ALL</mutator>
-                        </mutators>
-                        <mutationThreshold>100</mutationThreshold>
-                    </configuration>
-                </plugin>
+			<plugins>
+				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.7.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eluder.coveralls</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>4.3.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${failsafe.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+					<configuration>
+						<excludes>
+							<exclude>**/model/*</exclude>
+							<exclude>**/AccountSwingApp.*</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+								<goal>report</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>jacoco-check</id>
+							<goals>
+								<goal>check</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<rule>
+										<element>CLASS</element>
+										<limits>
+											<limit>
+												<counter>LINE</counter>
+												<value>COVEREDRATIO</value>
+												<minimum>1.0</minimum>
+											</limit>
+										</limits>
+									</rule>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>1.5.2</version>
+					<configuration>
+						<targetClasses>
+							<param>dev.justgiulio.passwordmanager.*</param>
+						</targetClasses>
+						<excludedClasses>
+							<param>dev.justgiulio.passwordmanager.model.*</param>
+							<param>dev.justgiulio.passwordmanager.view.*</param>
+							<param>dev.justgiulio.passwordmanager.view.swing.*</param>
+						</excludedClasses>
+						<excludedTestClasses>
+							<param>dev.justgiulio.passwordmanager.view.*</param>
+						</excludedTestClasses>
+						<excludedMethods>
+							<excludedMethod>
+								<!-- "Removed conditional replace equality with false" This is a 
+									private method tested with tests on password (with different dictionary) 
+									And the generation of password is random so, a valid password ( medium strength 
+									) can contains only letters -->
+								getDictionary
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Decremented a integer local variable number & Replace 0 with 
+									1 " I don't understand how fix this, for replace 0 with 1 the choice of char 
+									is random, i can't fix the start position -->
+								getPassword
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Decremented a integer local variable number 2 & Negated integer 
+									local variable number" I don't understand how fix this, there isn't a variable -->
+								generate
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Replaced call map with receiver | Decremented and Incremented 
+									local a variable | Remove shuffle method of Collectors" I don't understand 
+									how fix this, there isn't a variable a and i don't understand received replacement 
+									For shuffle method, i think the only methdod is mock Generator and ints method -->
+								shufflePassword
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Substitued 0 with 1 | Icremented and Decremented local variable 
+									" For the substitution, the position from start can be 0 or anyone else number, 
+									the generation of password is random so, i can't check from where ints star 
+									No local variable a is present -->
+								getCharsFromDictionary
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								saveAccount
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								modifyPassword
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								modifyUsername
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								delete
+							</excludedMethod>
+							<excludedMethod>
+								<!-- "Equal to less or equal" I don't understand how fix this, boolean 
+									check -->
+								generatePassword
+							</excludedMethod>
+						</excludedMethods>
+						<targetTests>
+							<param>dev.justgiulio.passwordmanager.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>ALL</mutator>
+						</mutators>
+						<mutationThreshold>100</mutationThreshold>
+					</configuration>
+				</plugin>
 
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${fabric.version}</version>
-                    <configuration>
-                        <dockerHost>unix:///var/run/docker.sock</dockerHost>
-                        <images>
-                            <image>
-                                <name>redis:3.0.2</name>
-                                <run>
-                                    <ports>
-                                        <port>6379:6379</port>
-                                    </ports>
-                                </run>
-                            </image>
-                        </images>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>docker:start</id>
-                            <phase>pre-integration-test</phase>
-                            <goals>
-                                <goal>start</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>docker:stop</id>
-                            <phase>post-integration-test</phase>
-                            <goals>
-                                <goal>stop</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${fabric.version}</version>
+					<configuration>
+						<dockerHost>unix:///var/run/docker.sock</dockerHost>
+						<images>
+							<image>
+								<name>redis:3.0.2</name>
+								<run>
+									<ports>
+										<port>6379:6379</port>
+									</ports>
+								</run>
+							</image>
+						</images>
+					</configuration>
+					<executions>
+						<execution>
+							<id>docker:start</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>start</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>docker:stop</id>
+							<phase>post-integration-test</phase>
+							<goals>
+								<goal>stop</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
-    <profiles>
-        <profile>
-            <id>jacoco</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- configured in pluginManagement -->
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
+	<profiles>
+		<profile>
+			<id>jacoco</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
 
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>pit</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- configured in pluginManagement -->
-                        <groupId>org.pitest</groupId>
-                        <artifactId>pitest-maven</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>mutationCoverage</goal>
-                                </goals>
-                                <phase>verify</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>it</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <skip.integration-tests>false</skip.integration-tests>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- Configured in pluginManagement -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>e2e</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <skip.unit-tests>true</skip.unit-tests>
-                <skip.integration-tests>false</skip.integration-tests>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- configured in pluginManagement -->
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <!-- configured in pluginManagement -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <configuration>
-                                    <excludes>
-                                        <exclude>**/*IT.java</exclude>
-                                    </excludes>
-                                    <includes>
-                                        <include>**/*E2E.java</include>
-                                    </includes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>pit</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>it</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<skip.integration-tests>false</skip.integration-tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Configured in pluginManagement -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>e2e</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<skip.unit-tests>true</skip.unit-tests>
+				<skip.integration-tests>false</skip.integration-tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<configuration>
+									<excludes>
+										<exclude>**/*IT.java</exclude>
+									</excludes>
+									<includes>
+										<include>**/*E2E.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-    </profiles>
+	</profiles>
 </project>
