@@ -20,6 +20,7 @@
 		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<failsafe.version>2.22.2</failsafe.version>
+		<picocli.version>3.9.6</picocli.version>
 		<codehaus.version>3.0.0</codehaus.version>
 		<fabric.version>0.27.2</fabric.version>
 		<jacoco.version>0.8.3</jacoco.version>
@@ -32,7 +33,8 @@
 			${project.build.directory}/failsafe-reports
 		</sonar.junit.reportPaths>
 		<sonar.coverage.exclusions>
-			**/model/*
+			**/model/*,
+			 **/AccountSwingApp.*
 		</sonar.coverage.exclusions>
 		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<!-- Disable rule for "Anonymous inner classes containing only one method 
@@ -69,13 +71,8 @@
 		</sonar.issue.ignore.multicriteria.e4.resourceKey>
 		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
 			not be used" Using it for swingSlider label -->
-		<sonar.issue.ignore.multicriteria.e5.ruleKey>
-			java:S1149
-		</sonar.issue.ignore.multicriteria.e5.ruleKey>
-		<sonar.issue.ignore.multicriteria.e5.resourceKey>
-			**/AccountSwingView.java
-		</sonar.issue.ignore.multicriteria.e5.resourceKey>
-		<!-- "Inheritance tree of classes should not be too deep -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey><sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
+<!-- "Inheritance tree of classes should not be too deep -->
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>
 			java:S110
 		</sonar.issue.ignore.multicriteria.e6.ruleKey>
@@ -141,6 +138,11 @@
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -159,6 +161,7 @@
 						<configuration>
 							<sources>
 								<source>src/it/java</source>
+								<source>src/e2e/java</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -217,13 +220,28 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.22.1</version>
+					<version>${failsafe.version}</version>
 					<executions>
 						<execution>
 							<goals>
 								<goal>integration-test</goal>
 								<goal>verify</goal>
 							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
@@ -234,6 +252,7 @@
 					<configuration>
 						<excludes>
 							<exclude>**/model/*</exclude>
+							<exclude>**/AccountSwingApp.*</exclude>
 						</excludes>
 					</configuration>
 					<executions>
@@ -275,6 +294,7 @@
 						</targetClasses>
 						<excludedClasses>
 							<param>dev.justgiulio.passwordmanager.model.*</param>
+							<param>dev.justgiulio.passwordmanager.app.swing.*</param>
 							<param>dev.justgiulio.passwordmanager.view.*</param>
 							<param>dev.justgiulio.passwordmanager.view.swing.*</param>
 						</excludedClasses>
@@ -295,13 +315,11 @@
 									is random, i can't fix the start position -->
 								getPassword
 							</excludedMethod>
-							<excludedMethod />
 							<excludedMethod>
 								<!-- "Decremented a integer local variable number 2 & Negated integer 
 									local variable number" I don't understand how fix this, there isn't a variable -->
 								generate
 							</excludedMethod>
-							<excludedMethod />
 							<excludedMethod>
 								<!-- "Replaced call map with receiver | Decremented and Incremented 
 									local a variable | Remove shuffle method of Collectors" I don't understand 
@@ -309,7 +327,6 @@
 									For shuffle method, i think the only methdod is mock Generator and ints method -->
 								shufflePassword
 							</excludedMethod>
-							<excludedMethod />
 							<excludedMethod>
 								<!-- "Substitued 0 with 1 | Icremented and Decremented local variable 
 									" For the substitution, the position from start can be 0 or anyone else number, 
@@ -343,7 +360,6 @@
 								generatePassword
 							</excludedMethod>
 						</excludedMethods>
-
 						<targetTests>
 							<param>dev.justgiulio.passwordmanager.*</param>
 						</targetTests>
@@ -359,7 +375,7 @@
 					<artifactId>docker-maven-plugin</artifactId>
 					<version>${fabric.version}</version>
 					<configuration>
-                                                <dockerHost>unix:///var/run/docker.sock</dockerHost>
+						<dockerHost>unix:///var/run/docker.sock</dockerHost>
 						<images>
 							<image>
 								<name>redis:3.0.2</name>
@@ -458,5 +474,42 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>e2e</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<skip.unit-tests>true</skip.unit-tests>
+				<skip.integration-tests>false</skip.integration-tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<configuration>
+									<excludes>
+										<exclude>**/*IT.java</exclude>
+									</excludes>
+									<includes>
+										<include>**/*E2E.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 </project>
