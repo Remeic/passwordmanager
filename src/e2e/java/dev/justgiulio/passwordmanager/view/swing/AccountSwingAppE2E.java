@@ -1,12 +1,21 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.launcher.ApplicationLauncher.application;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.swing.JFrame;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.GenericTypeMatcher;
-import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JTableCellFixture;
-import org.assertj.swing.fixture.JTextComponentFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.After;
@@ -19,16 +28,8 @@ import org.testcontainers.containers.GenericContainer;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import redis.clients.jedis.Jedis;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.swing.launcher.ApplicationLauncher.*;
+import java.util.Arrays;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import javax.swing.JFrame;
 
 @RunWith(GUITestRunner.class)
 public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
@@ -142,7 +143,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testSaveAccountShowErrorLabelIfAccountAlreadyExists() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		Account accountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
@@ -156,7 +158,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testDeleteAccountShowErrorLabelIfAccountNotExistsAnymore() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
@@ -170,7 +173,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountUsernameShowErrorLabelIfAccountNotExistsAnymore() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
@@ -186,7 +190,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordShowErrorLabelIfAccountNotExistsAnymore() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
@@ -202,9 +207,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindBySiteShowCorrectAccounts() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
@@ -219,9 +225,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByUsernameShowCorrectAccounts() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_2_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
 		window.tabbedPane("tabbedPanel").selectTab(1);
@@ -234,9 +241,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByPasswordShowCorrectAccounts() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
@@ -251,9 +259,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByPasswordShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
@@ -273,9 +282,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindBySiteShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
@@ -295,8 +305,9 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByUsernameShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_3_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD);
+		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
+		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
+		addAccountUsingUi(Arrays.asList(secondAccount,thirdAccount));
 		Account firstAccountToSave  = new Account(ACCOUNT_FIXTURE_2_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
 		Account  secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
@@ -316,7 +327,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordUsingGeneratedPasswordFromGeneratorPanel() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
@@ -335,8 +347,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountUsernameSuccessWithCorrectResultLabel() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
-		window.tabbedPane("tabbedPanel").selectTab(1);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
 				.cell(Pattern.compile(ACCOUNT_FIXTURE_1_USERNAME));
@@ -349,7 +361,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordSuccessWithCorrectResultLabel() {
-		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
+		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
+		addAccountUsingUi(Arrays.asList(firstAccount));		
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.button("buttonFindAllAccounts").click();
 		JTableCellFixture cell = window.table("tableDisplayedAccounts")
@@ -360,8 +373,17 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.label("labelOperationResult").text()).isEqualTo("Account Modified!");
 	}
 
-//	manca le find, usare il genratore per reimpostare la password con la modify
 
+	private void addAccountUsingUi(List<Account> accounts) {
+		for(Account account : accounts) {
+			window.textBox("textFieldSiteName").enterText(account.getSite());
+			window.textBox("textFieldUsername").enterText(account.getCredential().getUsername());
+			window.textBox("textFieldPassword").enterText(account.getCredential().getPassword());
+			window.button("buttonSaveAccount").click();
+		}
+		
+	}
+	
 	private void addTestAccountDirectlyToDB(String site, String username, String password) {
 		Map<String, String> mapToSave = new HashMap<>();
 		mapToSave.put(username, password);
