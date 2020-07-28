@@ -191,7 +191,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		jLabel7.setText("Length");
 
 		sliderPasswordLength.setMaximum(32);
-		sliderPasswordLength.setMinimum(1);
+		sliderPasswordLength.setMinimum(8);
 		sliderPasswordLength.setMinorTickSpacing(1);
 		sliderPasswordLength.setPaintLabels(true);
 		sliderPasswordLength.setPaintTicks(true);
