@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testcontainers.containers.GenericContainer;
 
 import dev.justgiulio.passwordmanager.generator.Generator;
 import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
@@ -25,17 +27,15 @@ import redis.clients.jedis.Jedis;
  * 
  * Communicates with a Redis server on localhost 
  * 
- * Run Redis on docker with:
- * <pre>
- * docker run -p 6379:6379 --rm redis:3.0.2
- * </pre>
  * 
  * @author Giulio Fagioli
  *
  */
 public class AccountControllerIT {
 
-
+	@SuppressWarnings("rawtypes")
+	@ClassRule
+	public static final GenericContainer redis = new GenericContainer("redis:3.0.2").withExposedPorts(6379);
 	
 	public  Jedis jedis;
 	public AccountRedisRepository accountRedisRepository;
@@ -48,10 +48,10 @@ public class AccountControllerIT {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		jedis = new Jedis("localhost", 6379);
+		jedis = new Jedis(redis.getContainerIpAddress(), redis.getFirstMappedPort());
 		accountRedisRepository = new AccountRedisRepository(jedis);
-		accountController = new AccountController(accountView, accountRedisRepository, passwordGenerator);
 		passwordGenerator = new SecureRandomGenerator();
+		accountController = new AccountController(accountView, accountRedisRepository, passwordGenerator);
 		jedis.flushAll();
 		jedis.flushDB();
 	}
@@ -185,6 +185,7 @@ public class AccountControllerIT {
 	public void testGenerateMediumPassword() {
 		accountController.generatePassword(16, "STRENGHT_PASSWORD_MEDIUM");		
 		verify(accountView).passwordIsGenereated(anyString());
+  
 					
 	}
 	
