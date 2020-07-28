@@ -82,9 +82,20 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldUpdateCell").requireText("");
 		window.label("labelOperationResult").requireDisabled();
 		window.label("labelOperationResult").requireText("");
+	}
+	
+
+	@Test
+	@GUITest
+	public void testSliderHaveMinimumValueOf8andMaximumOf32() {
+		int minimumAllowedValueOfLength = 8;
+		int maximumAllowedValueOfLength = 32;
+
+		assertThat(window.slider("sliderPasswordLength").target().getMinimum()).isEqualTo(minimumAllowedValueOfLength);
+		assertThat(window.slider("sliderPasswordLength").target().getMaximum()).isEqualTo(maximumAllowedValueOfLength);
 
 	}
-
+	
 	@Test
 	@GUITest
 	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
