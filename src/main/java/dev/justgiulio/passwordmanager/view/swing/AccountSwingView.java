@@ -198,7 +198,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		sliderPasswordLength.setPaintTicks(true);
 		sliderPasswordLength.setSnapToTicks(true);
 		sliderPasswordLength.setToolTipText("");
-		sliderPasswordLength.setValue(1);
+		sliderPasswordLength.setValue(8);
 
 		buttonGeneratePassword.setFont(new java.awt.Font(SELECTED_FONT, 1, 16)); // NOI18N
 		buttonGeneratePassword.setText("Generate");
@@ -283,12 +283,12 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		buttonDeleteAccount.setName("buttonDeleteAccount");
 		buttonDeleteAccount.setEnabled(false);
 
-		JButton buttonModifyUsername = new JButton("Modify Username");
+		buttonModifyUsername = new JButton("Modify Username");
 		buttonModifyUsername.setActionCommand(ACTION_MODIFY_USERNAME);
 		buttonModifyUsername.setName("buttonModifyUsername");
 		buttonModifyUsername.setEnabled(false);
 
-		JButton buttonModifyPassword = new JButton("Modify Password");
+		buttonModifyPassword = new JButton("Modify Password");
 		buttonModifyPassword.setActionCommand("MODIFY_PASSWORD");
 		buttonModifyPassword.setName("buttonModifyPassword");
 		buttonModifyPassword.setEnabled(false);
@@ -435,8 +435,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		radioButtonGroupPasswordStrength.add(radioButtonHighStrength);
 
 		sliderLengthPasswordLabel = new Hashtable<>();
-		sliderLengthPasswordLabel.put(1, new JLabel("1"));
-		sliderLengthPasswordLabel.put(16, new JLabel("15"));
+		sliderLengthPasswordLabel.put(8, new JLabel("8"));
+		sliderLengthPasswordLabel.put(24, new JLabel("24"));
 		sliderLengthPasswordLabel.put(32, new JLabel("32"));
 		sliderPasswordLength.setLabelTable(sliderLengthPasswordLabel);
 		sliderPasswordLength.setPaintLabels(true);
@@ -623,6 +623,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	private JLabel labelOperationResult;
 	private JLabel labelAccountAdded;
 	private static final String SELECTED_FONT = "sansserif";
+	private javax.swing.JButton buttonModifyUsername;
+	private javax.swing.JButton buttonModifyPassword;
 
 	public void setListAccountTableData(List<Account> accountsTableData) {
 		SwingUtilities.invokeLater(() -> {
@@ -672,6 +674,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelOperationResult.setEnabled(true);
 			labelOperationResult.setText("Account Modified!");
 			textFieldUpdateCell.setText("");
+			resetModifyButtonsState();
 		});
 
 	}
@@ -707,6 +710,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelOperationResult.setEnabled(false);
 			labelOperationResult.setText("");
+		});
+	}
+	
+	private void resetModifyButtonsState() {
+		SwingUtilities.invokeLater(() -> {
+			buttonModifyPassword.setEnabled(false);
+			buttonModifyUsername.setEnabled(false);
 		});
 	}
 
