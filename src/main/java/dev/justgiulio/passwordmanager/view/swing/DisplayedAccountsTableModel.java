@@ -31,9 +31,15 @@ public class DisplayedAccountsTableModel  extends AbstractTableModel {
         return columnNames[col];
     }
     
+    /**
+     * Cell are editable to allow user to copy the username or password
+     * it is not intended to modify the field, to achieve this goal use buttons instead
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-    	return false;
+    	boolean result = true;
+    	if(columnIndex == 0) result = false;
+    	return result;
     }
     
 	@Override
