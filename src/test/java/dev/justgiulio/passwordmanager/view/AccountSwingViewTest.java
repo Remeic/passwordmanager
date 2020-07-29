@@ -1,13 +1,17 @@
 package dev.justgiulio.passwordmanager.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.data.TableCell.row;
+import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.data.TableCell;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -530,6 +534,114 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("labelOperationResult").requireEnabled();
 		window.label("labelOperationResult").requireText("Generic Error");
 	}
+	
+	
+	@Test
+	@GUITest
+	public void testModifyUsernameButtonReturnDisableAfterModifyUsernameIsCalledSuccessfull() {
+		final String UPDATED_USERNAME = "newUsername";
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
+		window.button("buttonModifyUsername").requireEnabled();
+		accountSwingView.accountIsModified();
+		window.label("labelOperationResult").requireText("Account Modified!");
+		window.button("buttonModifyUsername").requireDisabled();
+
+
+	}
+	
+	@Test
+	@GUITest
+	public void testModifyPasswordButtonReturnDisableAfterModifyPasswordIsCalledSuccessfull() {
+		final String UPDATED_PASSWORD = "newPassword";
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		window.table("tableDisplayedAccounts").selectRows(0);
+		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
+		window.button("buttonModifyPassword").requireEnabled();
+		accountSwingView.accountIsModified();
+		window.label("labelOperationResult").requireText("Account Modified!");
+		window.button("buttonModifyPassword").requireDisabled();
+
+
+	}
+	
+	@Test
+	@GUITest
+	public void testCellOnThirdColumnForPasswordIsEditable() {
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		TableCell cell = row(0).column(2);
+		window.table("tableDisplayedAccounts").requireEditable(cell);
+		cell = row(1).column(2);
+		window.table("tableDisplayedAccounts").requireEditable(cell);
+	
+	}
+	
+	@Test
+	@GUITest
+	public void testCellOnSecondColumnForUsernameIsEditable() {
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		TableCell cell = row(0).column(1);
+		window.table("tableDisplayedAccounts").requireEditable(cell);
+		cell = row(1).column(1);
+		window.table("tableDisplayedAccounts").requireEditable(cell);
+	
+	}
+	
+	@Test
+	@GUITest
+	public void testCellOnFirstAndSecondColumnAreNotEditable() {
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		TableCell cell = row(0).column(0);
+		window.table("tableDisplayedAccounts").requireNotEditable(cell);
+		cell = row(1).column(0);
+		window.table("tableDisplayedAccounts").requireNotEditable(cell);
+        verifyNoMoreInteractions(ignoreStubs(accountController));
+	}
+	
+	@Test
+	@GUITest
+	public void testEditAnEditableCellNotCallAnyMethodOnController() {
+		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
+		accountSwingView.setListAccountTableData(accounts);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		TableCell cell = row(0).column(1);
+		window.table("tableDisplayedAccounts").enterValue(cell, "newUsername");
+		verifyNoMoreInteractions(ignoreStubs(accountController));
+		cell = row(0).column(2);
+		window.table("tableDisplayedAccounts").enterValue(cell, "newPassword");
+        verifyNoMoreInteractions(ignoreStubs(accountController));
+	}
+	
+	
 	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
