@@ -642,6 +642,57 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	
+	@Test
+	@GUITest
+	public void testSaveAccountButtonIsDisableAfterAccountIsAdded() {
+		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
+		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
+		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
+		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
+		window.button("buttonSaveAccount").requireEnabled();
+		accountSwingView.accountIsAdded();
+		window.button("buttonSaveAccount").requireDisabled();
+	}
+	
+	@Test
+	@GUITest
+	public void testSaveAccountLabelNotVisibleWhenGenericErrorIsShowed() {
+		accountSwingView.accountIsAdded();
+		window.label("labelAccountAdded").requireEnabled();
+		window.label("labelAccountAdded").requireText("Account Saved!");
+		accountSwingView.showError("Generic Error");
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+	}
+	
+	@Test
+	@GUITest
+	public void testSaveAccountLabelNotVisibleWhenSpecificErrorIsShowed() {
+		Account account = new Account("github.com", new Credential("remeic", "remepassword"));
+		accountSwingView.accountIsAdded();
+		window.label("labelAccountAdded").requireEnabled();
+		window.label("labelAccountAdded").requireText("Account Saved!");
+		accountSwingView.showError("Specific Error Related to", account);
+		window.label("labelAccountAdded").requireDisabled();
+		window.label("labelAccountAdded").requireText("");
+	}
+	
+	@Test
+	@GUITest
+	public void testErrorLabelNotVisibileWhenAccountSavedWithSuccess() {
+		Account account = new Account("github.com", new Credential("remeic", "remepassword"));
+		accountSwingView.showError("Specific Error Related to", account);
+		window.label("labelErrorMessage").requireEnabled();
+		assertThat(window.label("labelErrorMessage")).isNotEqualTo("");
+		accountSwingView.accountIsAdded();
+		window.label("labelErrorMessage").requireDisabled();
+		window.label("labelErrorMessage").requireText("");
+
+
+	}
+	
+	
+	
 	
 	private void resetInputTextAccountCredential() {
 		window.textBox("textFieldSiteName").deleteText();
