@@ -683,7 +683,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		Account account = new Account("github.com", new Credential("remeic", "remepassword"));
 		accountSwingView.showError("Specific Error Related to", account);
 		window.label("labelErrorMessage").requireEnabled();
-		assertThat(window.label("labelErrorMessage")).isNotEqualTo("");
+		assertThat(window.label("labelErrorMessage").target().getText()).isNotEqualTo("");
 		accountSwingView.accountIsAdded();
 		window.label("labelErrorMessage").requireDisabled();
 		window.label("labelErrorMessage").requireText("");
