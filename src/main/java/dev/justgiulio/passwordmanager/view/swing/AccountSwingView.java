@@ -1,5 +1,6 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -67,6 +68,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		labelErrorMessage = new javax.swing.JLabel();
 		labelErrorMessage.setEnabled(false);
 		labelErrorMessage.setName("labelErrorMessage");
+		labelErrorMessage.setSize(new Dimension(100,200));
 		jSeparator2 = new javax.swing.JSeparator();
 		jPanel4 = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
@@ -436,6 +438,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 
 		sliderLengthPasswordLabel = new Hashtable<>();
 		sliderLengthPasswordLabel.put(8, new JLabel("8"));
+		sliderLengthPasswordLabel.put(16, new JLabel("16"));
 		sliderLengthPasswordLabel.put(24, new JLabel("24"));
 		sliderLengthPasswordLabel.put(32, new JLabel("32"));
 		sliderPasswordLength.setLabelTable(sliderLengthPasswordLabel);
@@ -645,10 +648,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelAccountAdded.setEnabled(true);
 			labelAccountAdded.setText("Account Saved!");
-			textFieldUsername.setText("");
-			textFieldSiteName.setText("");
-			textFieldPassword.setText("");
-
+			resetTextFieldAccounts();
+			resetErrorLabel();
+			buttonSaveAccount.setEnabled(false);
 		});
 	}
 
@@ -657,6 +659,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelErrorMessage.setEnabled(true);
 			labelErrorMessage.setText(string);
+			resetAccountAddedLabel();
 		});
 	}
 
@@ -665,6 +668,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelErrorMessage.setEnabled(true);
 			labelErrorMessage.setText(string + ": " + accountToSave);
+			resetAccountAddedLabel();
 		});
 	}
 
@@ -732,6 +736,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelAccountAdded.setEnabled(false);
 			labelAccountAdded.setText("");
 		});
+	}
+	
+	private void resetTextFieldAccounts() {
+		SwingUtilities.invokeLater(() -> {
+			textFieldUsername.setText("");
+			textFieldSiteName.setText("");
+			textFieldPassword.setText("");
+		});
+
 	}
 
 	
