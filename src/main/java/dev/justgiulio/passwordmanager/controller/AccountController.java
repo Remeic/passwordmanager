@@ -45,7 +45,7 @@ public class AccountController {
 
 	public void saveAccount(Account accountToSave) {
 		if(checkIfAccountAlreadyExists(accountToSave)) {
-			accountView.showError("Already existing credential for the same site with the same username", accountToSave);
+			accountView.showError("Already existing: ", accountToSave);
 		}else {
 			accountRepository.save(accountToSave);
 			accountView.accountIsAdded();

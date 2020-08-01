@@ -96,7 +96,7 @@ public class AccountControllerTest {
 		Account accountAlreadySaved = new Account("github.com", new Credential("giulio","passgiulio"));
 		when(accountRepository.findByKey(site)).thenReturn(Arrays.asList(accountToSave, new Account("github.com",new Credential("remeic","passremeic"))));
 		controller.saveAccount(accountToSave);
-		verify(accountView).showError("Already existing credential for the same site with the same username", accountAlreadySaved);
+		verify(accountView).showError("Already existing: ", accountAlreadySaved);
 		verifyNoMoreInteractions(ignoreStubs(accountRepository));
 	}
 	

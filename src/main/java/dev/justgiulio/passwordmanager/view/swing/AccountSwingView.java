@@ -1,5 +1,6 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -67,6 +68,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		labelErrorMessage = new javax.swing.JLabel();
 		labelErrorMessage.setEnabled(false);
 		labelErrorMessage.setName("labelErrorMessage");
+		labelErrorMessage.setSize(new Dimension(100,200));
 		jSeparator2 = new javax.swing.JSeparator();
 		jPanel4 = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
@@ -192,13 +194,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		jLabel7.setText("Length");
 
 		sliderPasswordLength.setMaximum(32);
-		sliderPasswordLength.setMinimum(1);
+		sliderPasswordLength.setMinimum(8);
 		sliderPasswordLength.setMinorTickSpacing(1);
 		sliderPasswordLength.setPaintLabels(true);
 		sliderPasswordLength.setPaintTicks(true);
 		sliderPasswordLength.setSnapToTicks(true);
 		sliderPasswordLength.setToolTipText("");
-		sliderPasswordLength.setValue(1);
+		sliderPasswordLength.setValue(8);
 
 		buttonGeneratePassword.setFont(new java.awt.Font(SELECTED_FONT, 1, 16)); // NOI18N
 		buttonGeneratePassword.setText("Generate");
@@ -283,12 +285,12 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		buttonDeleteAccount.setName("buttonDeleteAccount");
 		buttonDeleteAccount.setEnabled(false);
 
-		JButton buttonModifyUsername = new JButton("Modify Username");
+		buttonModifyUsername = new JButton("Modify Username");
 		buttonModifyUsername.setActionCommand(ACTION_MODIFY_USERNAME);
 		buttonModifyUsername.setName("buttonModifyUsername");
 		buttonModifyUsername.setEnabled(false);
 
-		JButton buttonModifyPassword = new JButton("Modify Password");
+		buttonModifyPassword = new JButton("Modify Password");
 		buttonModifyPassword.setActionCommand("MODIFY_PASSWORD");
 		buttonModifyPassword.setName("buttonModifyPassword");
 		buttonModifyPassword.setEnabled(false);
@@ -435,8 +437,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		radioButtonGroupPasswordStrength.add(radioButtonHighStrength);
 
 		sliderLengthPasswordLabel = new Hashtable<>();
-		sliderLengthPasswordLabel.put(1, new JLabel("1"));
-		sliderLengthPasswordLabel.put(16, new JLabel("15"));
+		sliderLengthPasswordLabel.put(8, new JLabel("8"));
+		sliderLengthPasswordLabel.put(16, new JLabel("16"));
+		sliderLengthPasswordLabel.put(24, new JLabel("24"));
 		sliderLengthPasswordLabel.put(32, new JLabel("32"));
 		sliderPasswordLength.setLabelTable(sliderLengthPasswordLabel);
 		sliderPasswordLength.setPaintLabels(true);
@@ -623,6 +626,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	private JLabel labelOperationResult;
 	private JLabel labelAccountAdded;
 	private static final String SELECTED_FONT = "sansserif";
+	private javax.swing.JButton buttonModifyUsername;
+	private javax.swing.JButton buttonModifyPassword;
 
 	public void setListAccountTableData(List<Account> accountsTableData) {
 		SwingUtilities.invokeLater(() -> {
@@ -643,10 +648,9 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelAccountAdded.setEnabled(true);
 			labelAccountAdded.setText("Account Saved!");
-			textFieldUsername.setText("");
-			textFieldSiteName.setText("");
-			textFieldPassword.setText("");
-
+			resetTextFieldAccounts();
+			resetErrorLabel();
+			buttonSaveAccount.setEnabled(false);
 		});
 	}
 
@@ -655,6 +659,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		SwingUtilities.invokeLater(() -> {
 			labelErrorMessage.setEnabled(true);
 			labelErrorMessage.setText(string);
+			resetAccountAddedLabel();
 		});
 	}
 
@@ -662,7 +667,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	public void showError(String string, Account accountToSave) {
 		SwingUtilities.invokeLater(() -> {
 			labelErrorMessage.setEnabled(true);
-			labelErrorMessage.setText(string + ": " + accountToSave);
+			labelErrorMessage.setText(string + accountToSave);
+			resetAccountAddedLabel();
 		});
 	}
 
@@ -672,6 +678,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelOperationResult.setEnabled(true);
 			labelOperationResult.setText("Account Modified!");
 			textFieldUpdateCell.setText("");
+			resetModifyButtonsState();
 		});
 
 	}
@@ -709,6 +716,13 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelOperationResult.setText("");
 		});
 	}
+	
+	private void resetModifyButtonsState() {
+		SwingUtilities.invokeLater(() -> {
+			buttonModifyPassword.setEnabled(false);
+			buttonModifyUsername.setEnabled(false);
+		});
+	}
 
 	private void resetErrorLabel() {
 		SwingUtilities.invokeLater(() -> {
@@ -722,6 +736,15 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 			labelAccountAdded.setEnabled(false);
 			labelAccountAdded.setText("");
 		});
+	}
+	
+	private void resetTextFieldAccounts() {
+		SwingUtilities.invokeLater(() -> {
+			textFieldUsername.setText("");
+			textFieldSiteName.setText("");
+			textFieldPassword.setText("");
+		});
+
 	}
 
 	
