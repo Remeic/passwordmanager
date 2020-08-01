@@ -667,7 +667,7 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	public void showError(String string, Account accountToSave) {
 		SwingUtilities.invokeLater(() -> {
 			labelErrorMessage.setEnabled(true);
-			labelErrorMessage.setText(string + ": " + accountToSave);
+			labelErrorMessage.setText(string + accountToSave);
 			resetAccountAddedLabel();
 		});
 	}

@@ -228,7 +228,7 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
 		window.button("buttonSaveAccount").click();
 		assertThat(window.label("labelErrorMessage").text())
-		.isEqualTo("Already existing credential for the same site with the same username: "+accountToSave.toString());
+		.isEqualTo("Already existing: "+accountToSave.toString());
 		assertThat(accountRedisRepository.findAll()).containsExactly(accountToSave);
 
 

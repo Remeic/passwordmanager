@@ -346,7 +346,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("labelErrorMessage").requireText("");
 		String accountToString = "Account [site=github.com, credential=Credential [username=remeic, password=passremeic]]";
 
-		accountSwingView.showError("Generic Error", new Account("github.com", new Credential("remeic", "passremeic")));
+		accountSwingView.showError("Generic Error: ", new Account("github.com", new Credential("remeic", "passremeic")));
 		window.label("labelErrorMessage").requireEnabled();
 		window.label("labelErrorMessage").requireText("Generic Error: " + accountToString);
 	}
