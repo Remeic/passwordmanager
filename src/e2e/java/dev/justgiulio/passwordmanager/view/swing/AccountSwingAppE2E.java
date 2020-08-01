@@ -1,8 +1,11 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.data.TableCell.row;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +16,8 @@ import javax.swing.JFrame;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.data.TableCell;
+import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JTableCellFixture;
@@ -371,6 +376,27 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
 		assertThat(window.label("labelOperationResult").text()).isEqualTo("Account Modified!");
+	}
+	
+	@Test
+	@GUITest
+	public void testUsingCellToModifyValueOfAccountDoNotAffect() {
+		Account firstAccount = new Account("github.com", new Credential("remeic", "remepassword"));
+		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
+		List<Account> accountList = Arrays.asList(firstAccount,secondAccount);
+		addAccountUsingUi(accountList);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		window.button("buttonFindAllAccounts").click();
+		JTableCellFixture cell = window.table("tableDisplayedAccounts")
+				.cell(Pattern.compile(ACCOUNT_FIXTURE_1_PASSWORD));
+		cell.enterValue("newPassword");
+		cell = window.table("tableDisplayedAccounts")
+				.cell(Pattern.compile(ACCOUNT_FIXTURE_1_USERNAME));
+		window.button("buttonFindByUsernameAccounts").click();
+		cell.enterValue("newUsername");
+		window.button("buttonFindAllAccounts").click();
+		List<Account>  recoveredAccount = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		assertThat(recoveredAccount).containsExactlyElementsOf(accountList);
 	}
 
 
