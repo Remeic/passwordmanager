@@ -1,6 +1,7 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.data.TableCell.row;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.data.TableCell;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -283,6 +285,30 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		assertThat(window.label("labelOperationResult").text())
 		.isEqualTo("Can't find any account for selected site");
 		
+	}
+	
+
+	@Test
+	@GUITest
+	public void testModifyUsingCellDoNotModify() {
+		Account firstAccount = new Account("github.com", new Credential("remeic", "remepassword"));
+		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
+		accountRedisRepository.save(firstAccount);
+		accountRedisRepository.save(secondAccount);
+		window.tabbedPane("tabbedPanel").selectTab(1);
+		GuiActionRunner.execute(
+				() ->accountController.findAllAccounts());
+		window.panel("panelDisplayedAccounts").focus();
+		window.scrollPane("scrollPaneAccounts").focus();
+		window.table("tableDisplayedAccounts").focus();
+		TableCell cell = row(0).column(1);
+		window.table("tableDisplayedAccounts").enterValue(cell, "newUsername");
+		cell = row(0).column(2);
+		window.table("tableDisplayedAccounts").enterValue(cell, "newPassword");
+		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		assertThat(accountList).containsExactly(firstAccount, secondAccount);
+		assertThat(accountRedisRepository.findAll()).containsExactly(firstAccount, secondAccount);
+	
 	}
 	
 	
