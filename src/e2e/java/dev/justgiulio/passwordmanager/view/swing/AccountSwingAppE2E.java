@@ -394,8 +394,9 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				.cell(Pattern.compile(ACCOUNT_FIXTURE_1_USERNAME));
 		window.button("buttonFindByUsernameAccounts").click();
 		cell.enterValue("newUsername");
-		accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
-		assertThat(accountList).containsExactlyElementsOf(accountList);
+		window.button("buttonFindAllAccounts").click();
+		List<Account>  recoveredAccount = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		assertThat(recoveredAccount).containsExactlyElementsOf(accountList);
 	}
 
 
