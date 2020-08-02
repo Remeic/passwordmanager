@@ -25,6 +25,7 @@
 		<fabric.version>0.27.2</fabric.version>
 		<jacoco.version>0.8.3</jacoco.version>
 		<jedis.version>3.1.0</jedis.version>
+		<coverall.version>4.3.0</coverall.version>
 		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
@@ -35,7 +36,7 @@
 		</sonar.junit.reportPaths>
 		<sonar.coverage.exclusions>
 			**/model/*,
-			 **/AccountSwingApp.*
+			**/AccountSwingApp.*
 		</sonar.coverage.exclusions>
 		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<!-- Disable rule for "Anonymous inner classes containing only one method 
@@ -72,8 +73,9 @@
 		</sonar.issue.ignore.multicriteria.e4.resourceKey>
 		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
 			not be used" Using it for swingSlider label -->
-		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey><sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
-<!-- "Inheritance tree of classes should not be too deep -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey>
+		<sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
+		<!-- "Inheritance tree of classes should not be too deep -->
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>
 			java:S110
 		</sonar.issue.ignore.multicriteria.e6.ruleKey>
@@ -168,6 +170,16 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${coverall.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.version}</version>
+			</plugin>
 		</plugins>
 
 
@@ -212,11 +224,6 @@
 				<plugin>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
