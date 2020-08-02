@@ -41,7 +41,7 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 	@SuppressWarnings("rawtypes")
 	@ClassRule
-	public static final GenericContainer redis = new GenericContainer("redis:3.0.2").withExposedPorts(6379);
+	public static final GenericContainer redis = new GenericContainer("redis:6.0.6").withExposedPorts(6379);
 
 	private FrameFixture window;
 	private Jedis redisClient;
