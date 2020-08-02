@@ -24,6 +24,7 @@
 		<codehaus.version>3.0.0</codehaus.version>
 		<fabric.version>0.27.2</fabric.version>
 		<jacoco.version>0.8.3</jacoco.version>
+		<jedis.version>3.1.0</jedis.version>
 		<!-- For SonarQube -->
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco/jacoco.xml
@@ -105,7 +106,7 @@
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<version>3.1.0</version>
+			<version>${jedis.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 			<exclusions>
@@ -227,19 +228,9 @@
 								<goal>integration-test</goal>
 								<goal>verify</goal>
 							</goals>
-						</execution>
-						<execution>
-							<id>e2e-tests</id>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
 							<configuration>
-								<excludes>
-									<exclude>**/*IT.java</exclude>
-								</excludes>
 								<includes>
-									<include>**/*E2E.java</include>
+									<include>**/*IT.java</include>
 								</includes>
 							</configuration>
 						</execution>
@@ -378,7 +369,7 @@
 						<dockerHost>unix:///var/run/docker.sock</dockerHost>
 						<images>
 							<image>
-								<name>redis:3.0.2</name>
+								<name>redis:6.0.6</name>
 								<run>
 									<ports>
 										<port>6379:6379</port>
