@@ -20,6 +20,9 @@ matrix:
     - jdk: openjdk8
       if: type IN (pull_request)
       env: MAVEN_ARGS="-Ppit"
+    - jdk: openjdk8
+      if: type IN (pull_request)
+      env: MAVEN_ARGS="-Pe2e"
 
 services:
   - docker
