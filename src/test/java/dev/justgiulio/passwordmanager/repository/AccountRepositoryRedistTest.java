@@ -196,10 +196,10 @@ public class AccountRepositoryRedistTest {
 	 */
 	@Test
 	public void testSaveAccountWhenDatabaseIsEmpty() {
-		String result = accountRedisRepository.save(new Account("github",new Credential("giulio","passgiulio")));
+		Long result = accountRedisRepository.save(new Account("github",new Credential("giulio","passgiulio")));
 		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
 		assertThatList.containsExactly(new Account("github",new Credential("giulio","passgiulio")));
-		assertThat(result).isEqualTo("OK");
+		assertThat(result).isEqualTo(1);
 	}
 	
 	@Test
@@ -210,10 +210,10 @@ public class AccountRepositoryRedistTest {
 		savedAccounts.add(githubAccount);
 		savedAccounts.add(gitlabAccount);
 		addAccountToRedisDatabase(githubAccount);
-		String result = accountRedisRepository.save(gitlabAccount);
+		Long result = accountRedisRepository.save(gitlabAccount);
 		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
 		assertThatList.containsAll(savedAccounts);
-		assertThat(result).isEqualTo("OK");
+		assertThat(result).isEqualTo(1);
 	}
 	
 	@Test
@@ -223,12 +223,12 @@ public class AccountRepositoryRedistTest {
 		List<Account> savedAccounts = new ArrayList<>();
 		savedAccounts.add(githubAccount);
 		savedAccounts.add(gitlabAccount);
-		String resultGithub = accountRedisRepository.save(githubAccount);
-		String resultGitlab = accountRedisRepository.save(gitlabAccount);
+		Long resultGithub = accountRedisRepository.save(githubAccount);
+		Long resultGitlab = accountRedisRepository.save(gitlabAccount);
 		ListAssert<Account> assertThatList = assertThat(accountRedisRepository.findAll());
 		assertThatList.containsAll(savedAccounts);
-		assertThat(resultGithub).isEqualTo("OK");
-		assertThat(resultGitlab).isEqualTo("OK");
+		assertThat(resultGithub).isEqualTo(1);
+		assertThat(resultGitlab).isEqualTo(1);
 	}
 	
 	@Test

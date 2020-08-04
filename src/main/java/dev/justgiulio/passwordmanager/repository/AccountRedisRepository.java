@@ -52,10 +52,10 @@ public class AccountRedisRepository implements AccountRepository {
 	}
 	
 	@Override
-	public String save(Account accountToSave) {
+	public Long save(Account accountToSave) {
 		Map<String, String> mapToSave = new HashMap<>();
 		mapToSave.put(accountToSave.getCredential().getUsername(), accountToSave.getCredential().getPassword());
-		return this.client.hmset(accountToSave.getSite(), mapToSave);
+		return this.client.hset(accountToSave.getSite(), mapToSave);
 	}
 	
 	@Override
