@@ -14,7 +14,7 @@ public interface AccountRepository {
 
 	List<Account> findByPassword(String password);
 
-	String save(Account accountToSave);
+	Long save(Account accountToSave);
 
 	void delete(Account account);
 
