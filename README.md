@@ -10,7 +10,16 @@
 <br>
 ## TDD Simple Password Manager | Generator UNIFI
 
-The purpose of this repo is show a TDD approach for develop an entire application that envolves UI and DB.
+The purpose of this repo is to show a TDD approach to develop an entire application which envolves both UI and DB.
 
-Saving passoword in a secure way is *not* the purporse of this repo.
+Saving password in a secure way is *not* the purpose of this repo.
+
+### Screenshot
+![Password Generator And Save](https://i.imgur.com/yVMgE3d.png)
+![Save Password](https://i.imgur.com/jm8H4UX.png)
+![Saved Password](https://i.imgur.com/eamG7Q8.png)
+
+### Database and Communication 
+Redis
+Jedis
 
