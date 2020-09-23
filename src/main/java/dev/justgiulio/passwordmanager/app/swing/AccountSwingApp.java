@@ -2,6 +2,7 @@ package dev.justgiulio.passwordmanager.app.swing;
 import java.awt.EventQueue;
 import java.util.concurrent.Callable;
 
+
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -32,8 +33,8 @@ public class AccountSwingApp implements Callable<Void> {
 	private Generator passwordGenerator;
 	private Jedis redisClient;
 	
-	public static void main(String[] args) {
-		CommandLine.call(new AccountSwingApp(), args);
+	public static void main(String... args) {
+		 new CommandLine(new AccountSwingApp()).execute(args);
 	}
 	
 	@Override

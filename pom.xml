@@ -20,7 +20,7 @@
 		<testcontainers.version>1.11.3</testcontainers.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<failsafe.version>2.22.2</failsafe.version>
-		<picocli.version>3.9.6</picocli.version>
+		<picocli.version>4.5.1</picocli.version>
 		<codehaus.version>3.0.0</codehaus.version>
 		<fabric.version>0.27.2</fabric.version>
 		<jacoco.version>0.8.3</jacoco.version>
@@ -35,7 +35,7 @@
 		</sonar.junit.reportPaths>
 		<sonar.coverage.exclusions>
 			**/model/*,
-			 **/AccountSwingApp.*
+			**/AccountSwingApp.*
 		</sonar.coverage.exclusions>
 		<sonar.issue.ignore.multicriteria>e1,e2,e3,e4,e5,e6</sonar.issue.ignore.multicriteria>
 		<!-- Disable rule for "Anonymous inner classes containing only one method 
@@ -72,8 +72,9 @@
 		</sonar.issue.ignore.multicriteria.e4.resourceKey>
 		<!-- "Synchronized classes Vector, Hashtable, Stack and StringBuffer should 
 			not be used" Using it for swingSlider label -->
-		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey><sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
-<!-- "Inheritance tree of classes should not be too deep -->
+		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S1149</sonar.issue.ignore.multicriteria.e5.ruleKey>
+		<sonar.issue.ignore.multicriteria.e5.resourceKey>**/AccountSwingView.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
+		<!-- "Inheritance tree of classes should not be too deep -->
 		<sonar.issue.ignore.multicriteria.e6.ruleKey>
 			java:S110
 		</sonar.issue.ignore.multicriteria.e6.ruleKey>
@@ -168,6 +169,39 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>dev.justgiulio.passwordmanager.app.swing.AccountSwingApp</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>dev.justgiulio.passwordmanager.app.swing.AccountSwingApp</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 
@@ -218,11 +252,11 @@
 					<artifactId>coveralls-maven-plugin</artifactId>
 					<version>4.3.0</version>
 				</plugin>
-				 <plugin>
-		          <groupId>org.sonarsource.scanner.maven</groupId>
-		          <artifactId>sonar-maven-plugin</artifactId>
-		          <version>${sonar.version}</version>
-		        </plugin>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
