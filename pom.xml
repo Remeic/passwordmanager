@@ -7,7 +7,7 @@
 
 	<groupId>dev.justgiulio.passwordmanager</groupId>
 	<artifactId>passwordmanager</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 
 	<name>passwordmanager</name>
 
@@ -190,6 +190,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<finalName>passwordmanager-${version}</finalName>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
