@@ -190,7 +190,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>passwordmanager-${version}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
