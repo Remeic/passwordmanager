@@ -424,7 +424,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showError("Generic Error");
 		});
-		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnable();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnabled();
 		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error");
 	}
 
@@ -442,7 +442,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showError("Generic Error: ", new Account("github.com", new Credential("remeic", "passremeic")));
 		});
-		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnable();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnabled();
 		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error: " + accountToString);
 	}
 
