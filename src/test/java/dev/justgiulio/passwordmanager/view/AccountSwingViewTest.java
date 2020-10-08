@@ -406,7 +406,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.accountIsDeleted();
 		});
-		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireEnabled();
 		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Account Deleted!");
 	}
 	
@@ -424,7 +424,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showError("Generic Error");
 		});
-		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnable();
 		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error");
 	}
 
@@ -442,7 +442,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showError("Generic Error: ", new Account("github.com", new Credential("remeic", "passremeic")));
 		});
-		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnable();
 		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error: " + accountToString);
 	}
 
@@ -705,7 +705,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showAccountRelatedError("Generic Error");
 		});
-		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireEnable();
 		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Generic Error");
 	}
 	
@@ -750,12 +750,12 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();	
 		panelAccounts.scrollPane("scrollPaneAccounts").focus();
-		JTableFixture table = window.table("tableDisplayedAccounts");
-		table.focus();
-		table.selectRows(0);
 		GuiActionRunner.execute(() -> {
 			accountSwingView.setListAccountTableData(accounts);
 		});
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
 		
 		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText(UPDATED_PASSWORD);
 		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireEnabled();
