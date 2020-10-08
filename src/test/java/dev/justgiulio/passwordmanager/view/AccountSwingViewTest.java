@@ -705,7 +705,7 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			accountSwingView.showAccountRelatedError("Generic Error");
 		});
-		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireEnable();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireEnabled();
 		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Generic Error");
 	}
 	
