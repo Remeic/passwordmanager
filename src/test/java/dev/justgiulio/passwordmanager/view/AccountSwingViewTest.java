@@ -10,10 +10,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.core.Robot;
+import org.assertj.swing.core.matcher.JButtonMatcher;
+import org.assertj.swing.core.matcher.JLabelMatcher;
+import org.assertj.swing.core.matcher.JTextComponentMatcher;
 import org.assertj.swing.data.TableCell;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JPanelFixture;
+import org.assertj.swing.fixture.JScrollPaneFixture;
+import org.assertj.swing.fixture.JTabbedPaneFixture;
+import org.assertj.swing.fixture.JTableFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Before;
@@ -31,7 +42,7 @@ import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
 public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	private FrameFixture window;
 	private AccountSwingView accountSwingView;
-
+	private Robot customRobot;
 	@Mock
 	private AccountController accountController;
 
@@ -43,49 +54,52 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 			accountSwingView.setAccountController(accountController);
 			return accountSwingView;
 		});
-		window = new FrameFixture(robot(), accountSwingView);
+		this.customRobot = robot();
+		window = new FrameFixture(this.customRobot, accountSwingView);
 		window.show(); // shows the frame to test
 	}
 
 	@Test
 	@GUITest
 	public void testControlsInitialStates() {
-
 		// Verify Components on first panel of tabbedPanel
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
-		window.button("buttonGeneratePassword").requireEnabled();
-		window.button("buttonSaveAccount").requireDisabled();
-		window.tabbedPane("tabbedPanel").requireVisible();
-		window.radioButton("radioButtonHighStrength");
-		window.radioButton("radioButtonLowStrength");
-		window.radioButton("radioButtonMediumStrength").check(true);
-		window.slider("sliderPasswordLength");
-		window.textBox("textFieldGeneratedPassword").requireText("");
-		window.textBox("textFieldGeneratedPassword").requireNotEditable();
-		window.textBox("textFieldPassword").requireText("");
-		window.textBox("textFieldSiteName").requireText("");
-		window.textBox("textFieldUsername").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
+		panelPass.button(JButtonMatcher.withName("buttonGeneratePassword")).requireEnabled();
+		panelPass.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
+		panelPass.radioButton("radioButtonHighStrength").requireVisible();
+		panelPass.radioButton("radioButtonLowStrength").requireVisible();
+		panelPass.radioButton("radioButtonMediumStrength").check(true);
+		panelPass.slider("sliderPasswordLength").requireVisible();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireNotEditable();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).requireText("");
 		// Verify Components on second panel of tabbedPanel
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.button("buttonFindAllAccounts").requireEnabled();
-		window.button("buttonFindByPasswordAccounts").requireDisabled();
-		window.button("buttonFindBySiteAccounts").requireDisabled();
-		window.button("buttonFindByUsernameAccounts").requireDisabled();
-		window.table("tableDisplayedAccounts");
-		window.textBox("textFieldSearchText").requireText("");
-		window.button("buttonDeleteAccount").requireDisabled();
-		window.button("buttonModifyUsername").requireDisabled();
-		window.button("buttonModifyPassword").requireDisabled();
-		window.textBox("textFieldUpdateCell").requireDisabled();
-		window.textBox("textFieldUpdateCell").requireText("");
-		window.label("labelOperationResult").requireDisabled();
-		window.label("labelOperationResult").requireText("");
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindAllAccounts")).requireEnabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByPasswordAccounts")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindBySiteAccounts")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByUsernameAccounts")).requireDisabled();
+		panelAccounts.table("tableDisplayedAccounts").requireVisible();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).requireText("");
+		panelAccounts.button(JButtonMatcher.withName("buttonDeleteAccount")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireDisabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireDisabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
 	}
 	
 
@@ -95,140 +109,172 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		int minimumAllowedValueOfLength = 8;
 		int maximumAllowedValueOfLength = 32;
 
-		assertThat(window.slider("sliderPasswordLength").target().getMinimum()).isEqualTo(minimumAllowedValueOfLength);
-		assertThat(window.slider("sliderPasswordLength").target().getMaximum()).isEqualTo(maximumAllowedValueOfLength);
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		assertThat(panelPass.slider("sliderPasswordLength").target().getMinimum()).isEqualTo(minimumAllowedValueOfLength);
+		assertThat(panelPass.slider("sliderPasswordLength").target().getMaximum()).isEqualTo(maximumAllowedValueOfLength);
 
 	}
 	
 	@Test
 	@GUITest
 	public void testWhenTextFieldForSiteAndUsernameAndPasswordAreNotEmptySaveButtonIsEnabled() {
-		window.panel("panelGeneratePassword").focus();
-		window.textBox("textFieldSiteName").enterText("github.com");
-		window.textBox("textFieldUsername").enterText("");
-		window.textBox("textFieldPassword").enterText("");
-		window.button("buttonSaveAccount").requireDisabled();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("github.com");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("github.com");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("");
-		window.textBox("textFieldUsername").enterText("remeic");
-		window.textBox("textFieldPassword").enterText("");
-		window.button("buttonSaveAccount").requireDisabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("remeic");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("");
-		window.textBox("textFieldUsername").enterText("");
-		window.textBox("textFieldPassword").enterText("passgiulio");
-		window.button("buttonSaveAccount").requireDisabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("passgiulio");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("github.com");
-		window.textBox("textFieldUsername").enterText("remeic");
-		window.textBox("textFieldPassword").enterText("");
-		window.button("buttonSaveAccount").requireDisabled();
+
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("github.com");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("remeic");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("");
-		window.textBox("textFieldUsername").enterText("remeic");
-		window.textBox("textFieldPassword").enterText("passgiulio");
-		window.button("buttonSaveAccount").requireDisabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("remeic");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("passgiulio");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("github.com");
-		window.textBox("textFieldUsername").enterText("");
-		window.textBox("textFieldPassword").enterText("passgiulio");
-		window.button("buttonSaveAccount").requireDisabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("github.com");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("passgiulio");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 		resetInputTextAccountCredential();
 
-		window.textBox("textFieldSiteName").enterText("github.com");
-		window.textBox("textFieldUsername").enterText("remeic");
-		window.textBox("textFieldPassword").enterText("passgiulio");
-		window.button("buttonSaveAccount").requireEnabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("github.com");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("remeic");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("passgiulio");
+		window.button(JButtonMatcher.withName("buttonSaveAccount")).requireEnabled();
 	}
 
 	@Test
 	@GUITest
 	public void testWhenTextFieldForFindsOperationIsNotEmptyFindButtonsAreEnabled() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).focus();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).enterText("github.com");
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByPasswordAccounts")).requireEnabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindBySiteAccounts")).requireEnabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByUsernameAccounts")).requireEnabled();
 
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.textBox("textFieldSearchText").focus();
-		window.textBox("textFieldSearchText").enterText("github.com");
-		window.button("buttonFindByPasswordAccounts").requireEnabled();
-		window.button("buttonFindBySiteAccounts").requireEnabled();
-		window.button("buttonFindByUsernameAccounts").requireEnabled();
-
-		window.textBox("textFieldSearchText").focus();
-		window.textBox("textFieldSearchText").deleteText();
-		window.button("buttonFindByPasswordAccounts").requireDisabled();
-		window.button("buttonFindBySiteAccounts").requireDisabled();
-		window.button("buttonFindByUsernameAccounts").requireDisabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).focus();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).deleteText();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByPasswordAccounts")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindBySiteAccounts")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByUsernameAccounts")).requireDisabled();
 
 	}
 
 	@Test
 	@GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndFieldCellUpdateIsNotEmptyMofidyButtonsAreEnable() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").requireText("");
-		window.textBox("textFieldUpdateCell").requireEnabled();
-		window.button("buttonDeleteAccount").requireEnabled();
-		window.button("buttonModifyUsername").requireDisabled();
-		window.button("buttonModifyPassword").requireDisabled();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.selectRows(0);
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireEnabled();
+		panelAccounts.button("buttonDeleteAccount").requireEnabled();
+		panelAccounts.button("buttonModifyUsername").requireDisabled();
+		panelAccounts.button("buttonModifyPassword").requireDisabled();
 
-		window.textBox("textFieldUpdateCell").enterText("newValue");
-		window.button("buttonModifyUsername").requireEnabled();
-		window.button("buttonModifyPassword").requireEnabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText("newValue");
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).requireEnabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireEnabled();
 
-		window.textBox("textFieldUpdateCell").deleteText();
-		window.button("buttonModifyUsername").requireDisabled();
-		window.button("buttonModifyPassword").requireDisabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).deleteText();
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).requireDisabled();
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireDisabled();
 
 	}
 
 	@Test
 	@GUITest
 	public void testWhenAccountIsSelectedOnDisplayedAccountsTableAndUserClickModifyButtonsCellUpdateComponentsAreEnable() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
 
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.button("buttonModifyUsername").click();
-		window.textBox("textFieldUpdateCell").requireText("");
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).click();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
 
-		window.table("tableDisplayedAccounts").unselectRows(0);
-		window.textBox("textFieldUpdateCell").requireText("");
+		table.unselectRows(0);
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
 
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.button("buttonModifyPassword").click();
-		window.textBox("textFieldUpdateCell").requireEnabled();
-		window.textBox("textFieldUpdateCell").requireText("");
+		table.selectRows(0);
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).click();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireEnabled();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
 
 	}
 
 	@Test
 	@GUITest
 	public void testModifyUsernameButtonsDelegateToController() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
 		final String UPDATED_USERNAME = "newUsername";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
-
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
 		// Verify modifyUsername called when action performed on Modify Username Button
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
-		window.button("buttonModifyUsername").click();
+		JScrollPaneFixture scrollPane = panelAccounts.scrollPane("scrollPaneAccounts");
+		scrollPane.focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText(UPDATED_USERNAME);
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).click();
 		verify(accountController).modifyUsername(new Account("github.com", new Credential("giulio", "passgiulio")),
 				UPDATED_USERNAME);
 
@@ -237,18 +283,24 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyPasswordButtonDelegateToController() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
 		final String UPDATED_PASSWORD = "newPassword";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
-
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
 		// Verify modifyUsername called when action performed on Modify Password Button
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
-		window.button("buttonModifyPassword").click();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		JScrollPaneFixture scrollPane = panelAccounts.scrollPane("scrollPaneAccounts");
+		scrollPane.focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		window.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText(UPDATED_PASSWORD);
+		window.button(JButtonMatcher.withName("buttonModifyPassword")).click();
 		verify(accountController).modifyPassword(new Account("github.com", new Credential("giulio", "passgiulio")),
 				UPDATED_PASSWORD);
 	}
@@ -256,26 +308,39 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testShowAccountsDisplayCorrectAccountsIntoTable() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		
 		Account firstAccount = new Account("github.com", new Credential("giulio", "passgiulio"));
 		Account secondAccount = new Account("github.com", new Credential("remeic", "remegiulio"));
 		List<Account> accountDisplayed = Arrays.asList(firstAccount, secondAccount);
-		accountSwingView.showAccounts(accountDisplayed);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showAccounts(accountDisplayed);
+		});
+
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		List<Account> accountList = getAccountsList(table.contents());
 		assertThat(accountList).containsAll(accountDisplayed);
 	}
 
 	@Test
 	@GUITest
 	public void testAccountIsModifiedShowLabelWithSuccessInfo() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.label("labelOperationResult").requireDisabled();
-		window.label("labelOperationResult").requireText("");
-		accountSwingView.accountIsModified();
-		window.label("labelOperationResult").requireEnabled();
-		window.label("labelOperationResult").requireText("Account Modified!");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsModified();
+		});
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireEnabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Account Modified!");
 
 	}
 	
@@ -283,212 +348,302 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAccountIsModifiedResetTextField() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").enterText("modifyInput");
-		accountSwingView.accountIsModified();
-		window.textBox("textFieldUpdateCell").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.selectRows(0);
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText("modifyInput");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsModified();
+
+		});
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
 	}
 
 	@Test
 	@GUITest
 	public void testLabelReturnToInitialStateWhenTableSelectionChange() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.table("tableDisplayedAccounts").selectRows(0);
-		accountSwingView.accountIsModified();
-		window.table("tableDisplayedAccounts").unselectRows(0);
-		window.table("tableDisplayedAccounts").selectRows(1);
-		window.label("labelOperationResult").requireDisabled();
-		window.label("labelOperationResult").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.selectRows(0);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsModified();
 
+		});
+		table.unselectRows(0);
+		table.selectRows(1);
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
 	}
 
 	@Test
 	@GUITest
 	public void testAccountIsDeletedShowLabelWithSuccessInfo() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.label("labelOperationResult").requireDisabled();
-		window.label("labelOperationResult").requireText("");
-		accountSwingView.accountIsDeleted();
-		window.label("labelOperationResult").requireEnabled();
-		window.label("labelOperationResult").requireText("Account Deleted!");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsDeleted();
+		});
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Account Deleted!");
 	}
 	
 
 	@Test
 	@GUITest
 	public void testShowErrorDisplayErrorLabelWithCorrectText() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
-
-		accountSwingView.showError("Generic Error");
-		window.label("labelErrorMessage").requireEnabled();
-		window.label("labelErrorMessage").requireText("Generic Error");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error");
+		});
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error");
 	}
 
 	@Test
 	@GUITest
 	public void testShowErrorAccountDisplayErrorLabelWithCorrectText() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
 		String accountToString = "Account [site=github.com, credential=Credential [username=remeic, password=passremeic]]";
-
-		accountSwingView.showError("Generic Error: ", new Account("github.com", new Credential("remeic", "passremeic")));
-		window.label("labelErrorMessage").requireEnabled();
-		window.label("labelErrorMessage").requireText("Generic Error: " + accountToString);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error: ", new Account("github.com", new Credential("remeic", "passremeic")));
+		});
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("Generic Error: " + accountToString);
 	}
 
 	@Test
 	@GUITest
 	public void testLabelErrorReturnToInitalStateIfAccountInputFieldsChange() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		accountSwingView.showError("Generic Error");
-		window.textBox("textFieldSiteName").enterText(" ");
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error");
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
 
-		accountSwingView.showError("Generic Error");
-		window.textBox("textFieldUsername").enterText(" ");
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error");
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
 
-		accountSwingView.showError("Generic Error");
-		window.textBox("textFieldPassword").enterText(" ");
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error");
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
 	}
 
 	@Test
 	@GUITest
 	public void testAccountIsAddedShowLabelWithCorrectText() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
-
-		accountSwingView.accountIsAdded();
-		window.label("labelAccountAdded").requireEnabled();
-		window.label("labelAccountAdded").requireText("Account Saved!");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireEnabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("Account Saved!");
 
 	}
 
 	@Test
 	@GUITest
 	public void testLabelAccountAddedReturnToInitalStateIfAccountInputFieldsChange() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		accountSwingView.accountIsAdded();
-		window.textBox("textFieldSiteName").enterText(" ");
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
 
-		accountSwingView.accountIsAdded();
-		window.textBox("textFieldUsername").enterText(" ");
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
 
-		accountSwingView.accountIsAdded();
-		window.textBox("textFieldPassword").enterText(" ");
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText(" ");
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
+
 	}
 
 	@Test
 	@GUITest
 	public void testGenerateButtonDelegateControllerHighStrength() {
-		window.tabbedPane("tabbedPanel").selectTab(0);
-		window.panel("panelGeneratePassword").focus();
-		window.radioButton("radioButtonHighStrength").check();
-		window.slider("sliderPasswordLength").slideTo(15);
-		window.button("buttonGeneratePassword").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.radioButton("radioButtonHighStrength").check();
+		panelPass.slider("sliderPasswordLength").slideTo(15);
+		panelPass.button(JButtonMatcher.withName("buttonGeneratePassword")).click();
 		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_HIGH");
 	}
 
 	@Test
 	@GUITest
 	public void testGenerateButtonDelegateControllerMediumStrength() {
-		window.panel("panelGeneratePassword").focus();
-		window.radioButton("radioButtonMediumStrength").check();
-		window.slider("sliderPasswordLength").slideTo(15);
-		window.button("buttonGeneratePassword").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.radioButton("radioButtonMediumStrength").check();
+		panelPass.slider("sliderPasswordLength").slideTo(15);
+		panelPass.button(JButtonMatcher.withName("buttonGeneratePassword")).click();
 		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_MEDIUM");
+		
 	}
 
 	@Test
 	@GUITest
 	public void testGenerateButtonDelegateControllerLowStrength() {
-		window.panel("panelGeneratePassword").focus();
-		window.radioButton("radioButtonLowStrength").check();
-		window.slider("sliderPasswordLength").slideTo(15);
-		window.button("buttonGeneratePassword").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.radioButton("radioButtonLowStrength").check();
+		panelPass.slider("sliderPasswordLength").slideTo(15);
+		panelPass.button(JButtonMatcher.withName("buttonGeneratePassword")).click();
 		verify(accountController).generatePassword(15, "STRENGHT_PASSWORD_LOW");
 	}
 
 	@Test
 	@GUITest
 	public void testPasswordIsGeneratedDisplayCorrectTextInsideInputField() {
-		window.panel("panelGeneratePassword").focus();
-		window.textBox("textFieldGeneratedPassword").requireText("");
-		window.textBox("textFieldGeneratedPassword").requireNotEditable();
-		accountSwingView.passwordIsGenereated("generatedPassword");
-		window.textBox("textFieldGeneratedPassword").requireText("generatedPassword");
-		window.textBox("textFieldGeneratedPassword").requireNotEditable();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireNotEditable();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.passwordIsGenereated("generatedPassword");
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireText("generatedPassword");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldGeneratedPassword")).requireNotEditable();
 	}
 	
 	@Test
 	@GUITest
 	public void testPasswordIsGeneratedResetInputField() {
-		window.panel("panelGeneratePassword").focus();
-		window.textBox("textFieldSiteName").enterText("siteName");
-		window.textBox("textFieldUsername").enterText("username");
-		window.textBox("textFieldPassword").enterText("password");
-		accountSwingView.accountIsAdded();
-		window.textBox("textFieldSiteName").requireText("");
-		window.textBox("textFieldUsername").requireText("");
-		window.textBox("textFieldPassword").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText("siteName");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText("username");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText("password");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).requireText("");
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).requireText("");
 		
 	}
 
 	@Test
 	@GUITest
 	public void testButtonSaveAccountDelegateControllerSaveAccount() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
-		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
-		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
-		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
-		window.button("buttonSaveAccount").click();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText(accountToSave.getSite());
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText(accountToSave.getCredential().getUsername());
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText(accountToSave.getCredential().getPassword());
+		panelPass.button(JButtonMatcher.withName("buttonSaveAccount")).click();
 		verify(accountController).saveAccount(accountToSave);
 	}
 	
 	@Test
 	@GUITest
 	public void testFindAccountsByUsernameDelegateControllerFindByUsername() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.textBox("textFieldSearchText").enterText("textToSearch");
-		window.button("buttonFindByUsernameAccounts").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).enterText("textToSearch");
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByUsernameAccounts")).click();
 		verify(accountController).findAccountsByUsername("textToSearch");
 	}
 	
 	@Test
 	@GUITest
 	public void testFindAccountsByPasswordDelegateControllerFindByPassword() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.textBox("textFieldSearchText").enterText("textToSearch");
-		window.button("buttonFindByPasswordAccounts").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).enterText("textToSearch");
+		panelAccounts.button(JButtonMatcher.withName("buttonFindByPasswordAccounts")).click();
 		verify(accountController).findAccountsByPassword("textToSearch");
 	}
 	
@@ -496,43 +651,62 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindAccountsBySiteDelegateControllerFindBySite() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.textBox("textFieldSearchText").enterText("textToSearch");
-		window.button("buttonFindBySiteAccounts").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();		
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldSearchText")).enterText("textToSearch");
+		panelAccounts.button(JButtonMatcher.withName("buttonFindBySiteAccounts")).click();
 		verify(accountController).findAccountsByKey("textToSearch");
 	}
 	
 	@Test
 	@GUITest
 	public void testFindAllAccountDelegateControllerFindAll() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.button("buttonFindAllAccounts").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();		
+		panelAccounts.button(JButtonMatcher.withName("buttonFindAllAccounts")).click();
 		verify(accountController).findAllAccounts();
 	}
 	
 	@Test
 	@GUITest
 	public void testDeleteAccountDelegateControllerDeleteAccount() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();		
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.button("buttonDeleteAccount").click();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.selectRows(0);
+		panelAccounts.button(JButtonMatcher.withName("buttonDeleteAccount")).click();
 		verify(accountController).delete(new Account("github.com", new Credential("giulio", "passgiulio")));
 	}
 
 	@Test
 	@GUITest
 	public void testModifyOperationErrorShowLabel() {
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.label("labelOperationResult").requireDisabled();
-		window.label("labelOperationResult").requireText("");
-		accountSwingView.showAccountRelatedError("Generic Error");
-		window.label("labelOperationResult").requireEnabled();
-		window.label("labelOperationResult").requireText("Generic Error");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();		
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showAccountRelatedError("Generic Error");
+		});
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Generic Error");
 	}
 	
 	
@@ -541,17 +715,26 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testModifyUsernameButtonReturnDisableAfterModifyUsernameIsCalledSuccessfull() {
 		final String UPDATED_USERNAME = "newUsername";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").enterText(UPDATED_USERNAME);
-		window.button("buttonModifyUsername").requireEnabled();
-		accountSwingView.accountIsModified();
-		window.label("labelOperationResult").requireText("Account Modified!");
-		window.button("buttonModifyUsername").requireDisabled();
+		
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText(UPDATED_USERNAME);
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).requireEnabled();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsModified();
+		});
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Account Modified!");
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyUsername")).requireDisabled();
 
 
 	}
@@ -561,17 +744,24 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testModifyPasswordButtonReturnDisableAfterModifyPasswordIsCalledSuccessfull() {
 		final String UPDATED_PASSWORD = "newPassword";
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
-		window.table("tableDisplayedAccounts").selectRows(0);
-		window.textBox("textFieldUpdateCell").enterText(UPDATED_PASSWORD);
-		window.button("buttonModifyPassword").requireEnabled();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		
+		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).enterText(UPDATED_PASSWORD);
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireEnabled();
 		accountSwingView.accountIsModified();
-		window.label("labelOperationResult").requireText("Account Modified!");
-		window.button("buttonModifyPassword").requireDisabled();
+		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("Account Modified!");
+		panelAccounts.button(JButtonMatcher.withName("buttonModifyPassword")).requireDisabled();
 
 
 	}
@@ -580,15 +770,23 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testCellOnThirdColumnForPasswordIsEditable() {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
 		TableCell cell = row(0).column(2);
-		window.table("tableDisplayedAccounts").requireEditable(cell);
+		table.requireEditable(cell);
 		cell = row(1).column(2);
-		window.table("tableDisplayedAccounts").requireEditable(cell);
+		table.requireEditable(cell);
 	
 	}
 	
@@ -596,15 +794,23 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testCellOnSecondColumnForUsernameIsEditable() {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
 		TableCell cell = row(0).column(1);
-		window.table("tableDisplayedAccounts").requireEditable(cell);
+		table.requireEditable(cell);
 		cell = row(1).column(1);
-		window.table("tableDisplayedAccounts").requireEditable(cell);
+		table.requireEditable(cell);
 	
 	}
 	
@@ -612,32 +818,48 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testCellOnFirstAndSecondColumnAreNotEditable() {
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
 		TableCell cell = row(0).column(0);
-		window.table("tableDisplayedAccounts").requireNotEditable(cell);
+		table.requireNotEditable(cell);
 		cell = row(1).column(0);
-		window.table("tableDisplayedAccounts").requireNotEditable(cell);
+		table.requireNotEditable(cell);
         verifyNoMoreInteractions(ignoreStubs(accountController));
 	}
 	
 	@Test
 	@GUITest
 	public void testEditAnEditableCellNotCallAnyMethodOnController() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),new Account("gitlab.com", new Credential("remeic", "remepassword")));
-		accountSwingView.setListAccountTableData(accounts);
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.panel("panelDisplayedAccounts").focus();
-		window.scrollPane("scrollPaneAccounts").focus();
-		window.table("tableDisplayedAccounts").focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+		});
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();	
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
+		JTableFixture table = window.table("tableDisplayedAccounts");
+		table.focus();
+		table.selectRows(0);
+		panelAccounts.scrollPane("scrollPaneAccounts").focus();
 		TableCell cell = row(0).column(1);
-		window.table("tableDisplayedAccounts").enterValue(cell, "newUsername");
+		table.enterValue(cell, "newUsername");
 		verifyNoMoreInteractions(ignoreStubs(accountController));
 		cell = row(0).column(2);
-		window.table("tableDisplayedAccounts").enterValue(cell, "newPassword");
+		table.enterValue(cell, "newPassword");
         verifyNoMoreInteractions(ignoreStubs(accountController));
 	}
 	
@@ -645,48 +867,80 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testSaveAccountButtonIsDisableAfterAccountIsAdded() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
-		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
-		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
-		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
-		window.button("buttonSaveAccount").requireEnabled();
-		accountSwingView.accountIsAdded();
-		window.button("buttonSaveAccount").requireDisabled();
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldSiteName")).enterText(accountToSave.getSite());
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldUsername")).enterText(accountToSave.getCredential().getUsername());
+		panelPass.textBox(JTextComponentMatcher.withName("textFieldPassword")).enterText(accountToSave.getCredential().getPassword());
+		panelPass.button(JButtonMatcher.withName("buttonSaveAccount")).requireEnabled();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.button(JButtonMatcher.withName("buttonSaveAccount")).requireDisabled();
 	}
 	
 	@Test
 	@GUITest
 	public void testSaveAccountLabelNotVisibleWhenGenericErrorIsShowed() {
-		accountSwingView.accountIsAdded();
-		window.label("labelAccountAdded").requireEnabled();
-		window.label("labelAccountAdded").requireText("Account Saved!");
-		accountSwingView.showError("Generic Error");
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireEnabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("Account Saved!");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Generic Error");
+		});
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
 	}
 	
 	@Test
 	@GUITest
 	public void testSaveAccountLabelNotVisibleWhenSpecificErrorIsShowed() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
 		Account account = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountSwingView.accountIsAdded();
-		window.label("labelAccountAdded").requireEnabled();
-		window.label("labelAccountAdded").requireText("Account Saved!");
-		accountSwingView.showError("Specific Error Related to", account);
-		window.label("labelAccountAdded").requireDisabled();
-		window.label("labelAccountAdded").requireText("");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.accountIsAdded();
+		});
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireEnabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("Account Saved!");
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Specific Error Related to", account);
+		});
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelAccountAdded")).requireText("");
 	}
 	
 	@Test
 	@GUITest
 	public void testErrorLabelNotVisibileWhenAccountSavedWithSuccess() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(0);
+		JPanelFixture panelPass = window.panel("panelGeneratePassword");
+		panelPass.focus();
 		Account account = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountSwingView.showError("Specific Error Related to", account);
-		window.label("labelErrorMessage").requireEnabled();
+		GuiActionRunner.execute(() -> {
+			accountSwingView.showError("Specific Error Related to", account);
+		});
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireEnabled();
 		assertThat(window.label("labelErrorMessage").target().getText()).isNotEqualTo("");
 		accountSwingView.accountIsAdded();
-		window.label("labelErrorMessage").requireDisabled();
-		window.label("labelErrorMessage").requireText("");
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireDisabled();
+		panelPass.label(JLabelMatcher.withName("labelErrorMessage")).requireText("");
 
 
 	}
