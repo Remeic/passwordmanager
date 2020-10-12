@@ -1,12 +1,10 @@
 package dev.justgiulio.passwordmanager.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.swing.data.TableCell.row;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import javax.swing.JFrame;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.GenericTypeMatcher;
-import org.assertj.swing.data.TableCell;
-import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JTableCellFixture;
@@ -33,7 +29,6 @@ import org.testcontainers.containers.GenericContainer;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import redis.clients.jedis.Jedis;
-import java.util.Arrays;
 
 
 @RunWith(GUITestRunner.class)

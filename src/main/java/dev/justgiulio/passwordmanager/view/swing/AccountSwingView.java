@@ -37,7 +37,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 	}
 
 	private void initComponents() {
-		this.setVisible(true);
 		this.setTitle("Password Manager");
 		modelDisplayedAccounts = new DisplayedAccountsTableModel();
 		tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
@@ -578,6 +577,8 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		buttonDeleteAccount.addActionListener(deleteAccountListener);
 
 		pack();
+		this.setMinimumSize(new Dimension(600,450));
+		this.setVisible(true);
 	}// </editor-fold>
 
 	private javax.swing.JButton buttonFindAllAccounts;
