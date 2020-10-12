@@ -8,6 +8,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import redis.clients.jedis.Jedis;
 
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 
 import dev.justgiulio.passwordmanager.controller.AccountController;
@@ -34,7 +35,8 @@ public class AccountSwingApp implements Callable<Void> {
 	private Jedis redisClient;
 	
 	public static void main(String... args) {
-		 new CommandLine(new AccountSwingApp()).execute(args);
+		BasicConfigurator.configure();
+		new CommandLine(new AccountSwingApp()).execute(args);
 	}
 	
 	@Override

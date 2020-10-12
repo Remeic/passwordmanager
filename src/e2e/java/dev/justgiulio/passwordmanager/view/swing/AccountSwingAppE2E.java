@@ -14,8 +14,11 @@ import javax.swing.JFrame;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JPanelFixture;
+import org.assertj.swing.fixture.JTabbedPaneFixture;
 import org.assertj.swing.fixture.JTableCellFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
@@ -78,6 +81,11 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	protected void onTearDown() {
 		redisClient.close();
 	}
+	
+	@After
+	public void cleanUpWindow() {
+		window.cleanUp();
+	}
 
 	@Test
 	@GUITest
@@ -133,8 +141,12 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
-		window.tabbedPane("tabbedPanel").selectTab(1);
-		window.button("buttonFindAllAccounts").click();
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.requireVisible();
+		tabbedPane.selectTab(1);
+		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
+		panelAccounts.focus();
+		panelAccounts.button(JButtonMatcher.withName("buttonFindAllAccounts")).click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(firstAccount, secondAccount);
 

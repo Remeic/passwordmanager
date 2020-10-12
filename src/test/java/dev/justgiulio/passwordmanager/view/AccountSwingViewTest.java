@@ -70,7 +70,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testControlsInitialStates() {
 		// Verify Components on first panel of tabbedPanel
-		await().atMost(40, TimeUnit.SECONDS).untilAsserted(() ->{
 		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.requireVisible();
 		tabbedPane.selectTab(0);
@@ -108,7 +107,6 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		panelAccounts.textBox(JTextComponentMatcher.withName("textFieldUpdateCell")).requireText("");
 		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireDisabled();
 		panelAccounts.label(JLabelMatcher.withName("labelOperationResult")).requireText("");
-		});
 	}
 	
 
