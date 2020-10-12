@@ -28,6 +28,7 @@ import org.assertj.swing.fixture.JTabbedPaneFixture;
 import org.assertj.swing.fixture.JTableFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,11 @@ public class AccountSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.show(); // shows the frame to test
 	}
 
+	@After
+	public void cleanUpWindow() {
+		window.cleanUp();
+	}
+	
 	@Test
 	@GUITest
 	public void testControlsInitialStates() {
