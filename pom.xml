@@ -20,7 +20,7 @@
         <skip.unit-tests>false</skip.unit-tests>
         <skip.integration-tests>true</skip.integration-tests>
  
-        <testcontainers.version>1.11.3</testcontainers.version>
+        <testcontainers.version>1.14.3</testcontainers.version>
         <sonar.version>3.7.0.1746</sonar.version>
         <failsafe.version>2.22.2</failsafe.version>
         <picocli.version>4.5.1</picocli.version>
