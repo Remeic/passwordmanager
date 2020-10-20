@@ -38,6 +38,14 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 
 	private void initComponents() {
 		this.setTitle("Password Manager");
+		tabbedPanel = new javax.swing.JTabbedPane();
+		tabbedPanel.setName("tabbedPanel");
+		panelGeneratePassword = new javax.swing.JPanel();
+		panelGeneratePassword.setName("panelGeneratePassword");
+		panelGeneratePassword.setVisible(true);
+		panelDisplayedAccounts = new javax.swing.JPanel();
+		panelDisplayedAccounts.setName("panelDisplayedAccounts");
+		panelDisplayedAccounts.setVisible(true);
 		modelDisplayedAccounts = new DisplayedAccountsTableModel();
 		tableDisplayedAccounts = new javax.swing.JTable(modelDisplayedAccounts);
 		tableDisplayedAccounts.setName("tableDisplayedAccounts");
@@ -45,10 +53,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		scrollPaneAccountsTable.setName("scrollPaneAccounts");
 		scrollPaneAccountsTable.setViewportView(tableDisplayedAccounts);
 		radioButtonGroupPasswordStrength = new javax.swing.ButtonGroup();
-		tabbedPanel = new javax.swing.JTabbedPane();
-		tabbedPanel.setName("tabbedPanel");
-		panelGeneratePassword = new javax.swing.JPanel();
-		panelGeneratePassword.setName("panelGeneratePassword");
 		jPanel3 = new javax.swing.JPanel();
 		jLabel2 = new javax.swing.JLabel();
 		jLabel3 = new javax.swing.JLabel();
@@ -90,8 +94,6 @@ public class AccountSwingView extends javax.swing.JFrame implements AccountView 
 		textFieldGeneratedPassword.setEditable(false);
 		textFieldGeneratedPassword.setName("textFieldGeneratedPassword");
 		jLabel8 = new javax.swing.JLabel();
-		panelDisplayedAccounts = new javax.swing.JPanel();
-		panelDisplayedAccounts.setName("panelDisplayedAccounts");
 		jLabel9 = new javax.swing.JLabel();
 		textFieldSearchText = new javax.swing.JTextField();
 		textFieldSearchText.setName("textFieldSearchText");

@@ -155,13 +155,14 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAccountListAlreadyContainsAccountIfAccountIsPresentInDB() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_1_SITE, ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD);
 		addTestAccountDirectlyToDB(ACCOUNT_FIXTURE_2_SITE, ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -174,11 +175,12 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testSaveAccountShowErrorLabelIfAccountAlreadyExists() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
 		Account accountToSave = new Account(ACCOUNT_FIXTURE_1_SITE,
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(0);
 		JPanelFixture panelPass = window.panel("panelGeneratePassword");
 		panelPass.focus();
@@ -193,9 +195,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testDeleteAccountShowErrorLabelIfAccountNotExistsAnymore() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -213,9 +216,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountUsernameShowErrorLabelIfAccountNotExistsAnymore() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -235,9 +239,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordShowErrorLabelIfAccountNotExistsAnymore() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -257,6 +262,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindBySiteShowCorrectAccounts() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
@@ -265,7 +272,6 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
 				new Credential(ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -280,13 +286,14 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByUsernameShowCorrectAccounts() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount,secondAccount,thirdAccount));
 		Account firstAccountToSave = new Account(ACCOUNT_FIXTURE_2_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -301,6 +308,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByPasswordShowCorrectAccounts() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
@@ -309,7 +318,6 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
 				new Credential(ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -324,6 +332,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByPasswordShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
@@ -332,7 +342,6 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
 				new Credential(ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -352,7 +361,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindBySiteShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
-		
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_3_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
@@ -361,7 +371,6 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_1_USERNAME, ACCOUNT_FIXTURE_1_PASSWORD));
 		Account secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
 				new Credential(ACCOUNT_FIXTURE_3_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -381,6 +390,8 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testFindByUsernameShowUpdatedValueWhenRecalledOnceAccountIsRemovedFromDB() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account secondAccount = new Account(ACCOUNT_FIXTURE_2_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_2_PASSWORD));
 		Account thirdAccount = new Account(ACCOUNT_FIXTURE_3_SITE,new Credential(ACCOUNT_FIXTURE_2_USERNAME,ACCOUNT_FIXTURE_3_PASSWORD));
 		addAccountUsingUi(Arrays.asList(secondAccount,thirdAccount));
@@ -388,7 +399,6 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_2_PASSWORD));
 		Account  secondAccountToSave = new Account(ACCOUNT_FIXTURE_3_SITE,
 				new Credential(ACCOUNT_FIXTURE_2_USERNAME, ACCOUNT_FIXTURE_3_PASSWORD));
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -408,9 +418,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordUsingGeneratedPasswordFromGeneratorPanel() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -435,9 +446,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountUsernameSuccessWithCorrectResultLabel() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -455,9 +467,10 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testModifyAccountPasswordSuccessWithCorrectResultLabel() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account(ACCOUNT_FIXTURE_1_SITE,new Credential(ACCOUNT_FIXTURE_1_USERNAME,ACCOUNT_FIXTURE_1_PASSWORD));
 		addAccountUsingUi(Arrays.asList(firstAccount));		
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
@@ -475,11 +488,12 @@ public class AccountSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testUsingCellToModifyValueOfAccountDoNotAffect() {
+		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
+		tabbedPane.selectTab(0);
 		Account firstAccount = new Account("github.com", new Credential("remeic", "remepassword"));
 		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
 		List<Account> accountList = Arrays.asList(firstAccount,secondAccount);
 		addAccountUsingUi(accountList);
-		JTabbedPaneFixture tabbedPane = window.tabbedPane("tabbedPanel");
 		tabbedPane.selectTab(1);
 		JPanelFixture panelAccounts = window.panel("panelDisplayedAccounts");
 		panelAccounts.focus();
