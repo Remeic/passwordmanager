@@ -6,7 +6,6 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import dev.justgiulio.passwordmanager.generator.Generator;
-import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
 import dev.justgiulio.passwordmanager.model.Account;
 import dev.justgiulio.passwordmanager.model.Credential;
 import dev.justgiulio.passwordmanager.repository.AccountRepository;

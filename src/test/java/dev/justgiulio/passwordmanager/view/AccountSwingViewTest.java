@@ -5,14 +5,10 @@ import static org.assertj.swing.data.TableCell.row;
 import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.awaitility.Awaitility.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.Robot;

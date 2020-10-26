@@ -1,6 +1,7 @@
 package dev.justgiulio.passwordmanager.view;
-import dev.justgiulio.passwordmanager.model.Account;
 import java.util.List;
+
+import dev.justgiulio.passwordmanager.model.Account;
 
 public interface AccountView {
 	void showAccounts(List<Account> accounts);
