@@ -2,12 +2,7 @@ package dev.justgiulio.passwordmanager.app.swing;
 import java.awt.EventQueue;
 import java.util.concurrent.Callable;
 
-
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
-import redis.clients.jedis.Jedis;
-
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 
 import dev.justgiulio.passwordmanager.controller.AccountController;
@@ -15,6 +10,10 @@ import dev.justgiulio.passwordmanager.generator.Generator;
 import dev.justgiulio.passwordmanager.generator.SecureRandomGenerator;
 import dev.justgiulio.passwordmanager.repository.AccountRedisRepository;
 import dev.justgiulio.passwordmanager.view.swing.AccountSwingView;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import redis.clients.jedis.Jedis;
 
 
 @Command(mixinStandardHelpOptions = true)
@@ -34,7 +33,8 @@ public class AccountSwingApp implements Callable<Void> {
 	private Jedis redisClient;
 	
 	public static void main(String... args) {
-		 new CommandLine(new AccountSwingApp()).execute(args);
+		BasicConfigurator.configure();
+		new CommandLine(new AccountSwingApp()).execute(args);
 	}
 	
 	@Override

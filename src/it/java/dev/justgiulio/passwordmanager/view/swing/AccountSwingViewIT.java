@@ -73,60 +73,57 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testAccountIsModifiedPassword() {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
+		GuiActionRunner.execute(() -> accountRedisRepository.save(accountToSave));
 		accountRedisRepository.save(accountToSave);
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		GuiActionRunner.execute(
-				() ->accountController.findAllAccounts());
+		GuiActionRunner.execute(() -> accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
-		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Account Modified!");
+		assertThat(window.label("labelOperationResult").text()).isEqualTo("Account Modified!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
-		assertThat(accountRedisRepository.findAll()).containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
+		assertThat(accountRedisRepository.findAll())
+				.containsExactly(new Account("github.com", new Credential("remeic", "newPassword")));
 	}
 
 	@Test
 	@GUITest
 	public void testAccountIsModifiedUsername() {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountRedisRepository.save(accountToSave);
+		GuiActionRunner.execute(() -> accountRedisRepository.save(accountToSave));
+
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		GuiActionRunner.execute(
-				() ->accountController.findAllAccounts());
+		GuiActionRunner.execute(() -> accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newUsername");
 		window.button("buttonModifyUsername").click();
-		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Account Modified!");
+		assertThat(window.label("labelOperationResult").text()).isEqualTo("Account Modified!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
-		assertThat(accountList).containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
-		assertThat(accountRedisRepository.findAll()).containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
+		assertThat(accountList)
+				.containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
+		assertThat(accountRedisRepository.findAll())
+				.containsExactly(new Account("github.com", new Credential("newUsername", "remepassword")));
 	}
 
 	@Test
 	@GUITest
 	public void testAccountIsDeleted() {
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountRedisRepository.save(accountToSave);
+		GuiActionRunner.execute(() -> accountRedisRepository.save(accountToSave));
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		GuiActionRunner.execute(
-				() ->accountController.findAllAccounts());
+		GuiActionRunner.execute(() -> accountController.findAllAccounts());
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonDeleteAccount").click();
-		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Account Deleted!");
+		assertThat(window.label("labelOperationResult").text()).isEqualTo("Account Deleted!");
 		window.button("buttonFindAllAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).isEmpty();
 		assertThat(accountRedisRepository.findAll()).isEmpty();
 
 	}
-	
-	
 
 	@Test
 	@GUITest
@@ -169,9 +166,11 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account firstAccount = new Account(site, new Credential("remeic", "remepassword"));
 		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
 		Account thirdAccount = new Account(site, new Credential("remegiulio", "remepassword"));
-		accountRedisRepository.save(firstAccount);
-		accountRedisRepository.save(secondAccount);
-		accountRedisRepository.save(thirdAccount);
+		GuiActionRunner.execute(() -> {
+			accountRedisRepository.save(firstAccount);
+			accountRedisRepository.save(secondAccount);
+			accountRedisRepository.save(thirdAccount);
+		});
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		window.textBox("textFieldSearchText").enterText(site);
 		window.button("buttonFindBySiteAccounts").click();
@@ -189,17 +188,19 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account firstAccount = new Account("github.com", new Credential(username, "remepassword"));
 		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
 		Account thirdAccount = new Account("gitlab.com", new Credential(username, "remepassword"));
-		accountRedisRepository.save(firstAccount);
-		accountRedisRepository.save(secondAccount);
-		accountRedisRepository.save(thirdAccount);
+		GuiActionRunner.execute(() -> {
+			accountRedisRepository.save(firstAccount);
+			accountRedisRepository.save(secondAccount);
+			accountRedisRepository.save(thirdAccount);
+		});
 		window.textBox("textFieldSearchText").enterText(username);
 		window.button("buttonFindByUsernameAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
-		assertThat(accountList).containsExactly(firstAccount,thirdAccount);
+		assertThat(accountList).containsExactly(firstAccount, thirdAccount);
 		assertThat(accountRedisRepository.findByUsername(username)).containsExactly(firstAccount, thirdAccount);
 
 	}
-	
+
 	@Test
 	@GUITest
 	public void testFindByPassword() {
@@ -208,34 +209,36 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		Account firstAccount = new Account("github.com", new Credential("remeic", password));
 		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
 		Account thirdAccount = new Account("gitlab.com", new Credential("remeic", password));
-		accountRedisRepository.save(firstAccount);
-		accountRedisRepository.save(secondAccount);
-		accountRedisRepository.save(thirdAccount);
+		GuiActionRunner.execute(() -> {
+			accountRedisRepository.save(firstAccount);
+			accountRedisRepository.save(secondAccount);
+			accountRedisRepository.save(thirdAccount);
+		});
 		window.textBox("textFieldSearchText").enterText(password);
 		window.button("buttonFindByPasswordAccounts").click();
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
-		assertThat(accountList).containsExactly(firstAccount,thirdAccount);
+		assertThat(accountList).containsExactly(firstAccount, thirdAccount);
 		assertThat(accountRedisRepository.findByPassword(password)).containsExactly(firstAccount, thirdAccount);
 
 	}
-	
+
 	@Test
 	@GUITest
 	public void testSaveAccountAlreadyPresentDipslayErrorLabel() {
 		window.tabbedPane("tabbedPanel").selectTab(0);
 		Account accountToSave = new Account("github.com", new Credential("remeic", "remepassword"));
-		accountRedisRepository.save(accountToSave);
+		GuiActionRunner.execute(() -> {
+			accountRedisRepository.save(accountToSave);
+		});
+
 		window.textBox("textFieldSiteName").enterText(accountToSave.getSite());
 		window.textBox("textFieldUsername").enterText(accountToSave.getCredential().getUsername());
 		window.textBox("textFieldPassword").enterText(accountToSave.getCredential().getPassword());
 		window.button("buttonSaveAccount").click();
-		assertThat(window.label("labelErrorMessage").text())
-		.isEqualTo("Already existing: "+accountToSave.toString());
+		assertThat(window.label("labelErrorMessage").text()).isEqualTo("Already existing: " + accountToSave.toString());
 		assertThat(accountRedisRepository.findAll()).containsExactly(accountToSave);
 
-
 	}
-	
 
 	@Test
 	@GUITest
@@ -243,61 +246,67 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+
+		});
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newUsername");
 		window.button("buttonModifyUsername").click();
 		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Can't find any account for selected site with specified username");
+				.isEqualTo("Can't find any account for selected site with specified username");
 		assertThat(accountRedisRepository.findAll()).isEmpty();
 
-		
 	}
-	
+
 	@Test
 	@GUITest
 	public void testModifyPasswordAccountNotExistingShowErrorLabel() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+
+		});
 		assertThat(accountRedisRepository.findAll()).isEmpty();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.textBox("textFieldUpdateCell").enterText("newPassword");
 		window.button("buttonModifyPassword").click();
 		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Can't find any account for selected site with specified password");
+				.isEqualTo("Can't find any account for selected site with specified password");
 		assertThat(accountRedisRepository.findAll()).isEmpty();
-		
+
 	}
-	
-	
+
 	@Test
 	@GUITest
 	public void testDeleteAccountNotExistingShowErrorLabel() {
 		window.tabbedPane("tabbedPanel").selectTab(1);
 		List<Account> accounts = Arrays.asList(new Account("github.com", new Credential("giulio", "passgiulio")),
 				new Account("github.com", new Credential("remeic", "passremeic")));
-		accountSwingView.setListAccountTableData(accounts);
+		GuiActionRunner.execute(() -> {
+			accountSwingView.setListAccountTableData(accounts);
+
+		});
 		assertThat(accountRedisRepository.findAll()).isEmpty();
 		window.table("tableDisplayedAccounts").selectRows(0);
 		window.button("buttonDeleteAccount").click();
-		assertThat(window.label("labelOperationResult").text())
-		.isEqualTo("Can't find any account for selected site");
-		
+		assertThat(window.label("labelOperationResult").text()).isEqualTo("Can't find any account for selected site");
+
 	}
-	
 
 	@Test
 	@GUITest
 	public void testModifyUsingCellDoNotModify() {
 		Account firstAccount = new Account("github.com", new Credential("remeic", "remepassword"));
 		Account secondAccount = new Account("gitlab.com", new Credential("giulio", "giuliopassword"));
-		accountRedisRepository.save(firstAccount);
-		accountRedisRepository.save(secondAccount);
+		GuiActionRunner.execute(() -> {
+			accountRedisRepository.save(firstAccount);
+			accountRedisRepository.save(secondAccount);
+		});
 		window.tabbedPane("tabbedPanel").selectTab(1);
-		GuiActionRunner.execute(
-				() ->accountController.findAllAccounts());
+		GuiActionRunner.execute(() -> accountController.findAllAccounts());
 		window.panel("panelDisplayedAccounts").focus();
 		window.scrollPane("scrollPaneAccounts").focus();
 		window.table("tableDisplayedAccounts").focus();
@@ -308,12 +317,9 @@ public class AccountSwingViewIT extends AssertJSwingJUnitTestCase {
 		List<Account> accountList = getAccountsList(window.table("tableDisplayedAccounts").contents());
 		assertThat(accountList).containsExactly(firstAccount, secondAccount);
 		assertThat(accountRedisRepository.findAll()).containsExactly(firstAccount, secondAccount);
-	
+
 	}
-	
-	
-	
-	
+
 	private List<Account> getAccountsList(String[][] tableContent) {
 		List<Account> accounts = new ArrayList<Account>();
 		for (int i = 0; i < tableContent.length; i++) {
